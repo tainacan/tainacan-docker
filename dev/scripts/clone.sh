@@ -31,6 +31,3 @@ done
 #clonando os projetos:
 git clone $_TAINACAN_THEME_REPO $_FOLDER_DESTINATIO'tainacan-theme'
 git clone $_TAINACAN_PLUGIN_REPO $_FOLDER_DESTINATIO'tainacan'
-
-docker-compose -f docker-compose-dev.yml up --build
-#docker-compose -f docker-compose-dev.yml down
