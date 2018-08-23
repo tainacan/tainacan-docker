@@ -5,7 +5,7 @@ do
     case $i in
         --build-image*)
             echo "[BUILD IMAGE]"
-            docker-compose -f docker-compose-dev.yml up --build
+            docker-compose -f docker-compose-dev.yml build
             exit
         ;;
         --build*)
