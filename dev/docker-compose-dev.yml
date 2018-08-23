@@ -1,0 +1,33 @@
+version: '3.3'
+services:
+ db:
+   image: mysql:5.7
+   container_name: mysql_tainacan
+   ports:
+     - "3306"
+   restart: always
+   environment:
+     MYSQL_ROOT_PASSWORD: tainacan
+     MYSQL_DATABASE: tainacan
+     MYSQL_USER: tainacan
+     MYSQL_PASSWORD: tainacan
+   volumes:
+   - /home/vinicius/Development/medialab/tainacan/env_docker/dev/data:/var/lib/mysql
+ wordpress:
+  build:
+    context: .
+    dockerfile: ./Dockerfile
+  container_name: wordpress_tainacan
+  ports:
+     - "3002:80"
+     - "25"
+  restart: always
+  environment:
+    WORDPRESS_DB_HOST: db:3306
+    WORDPRESS_DB_USER: tainacan
+    WORDPRESS_DB_PASSWORD: tainacan
+    WORDPRESS_DB: tainacan
+  depends_on:
+     - db
+  volumes:
+   - /home/vinicius/Development/medialab/tainacan/env_docker/dev/repo:/repo
