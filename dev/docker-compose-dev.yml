@@ -12,7 +12,7 @@ services:
      MYSQL_USER: tainacan
      MYSQL_PASSWORD: tainacan
    volumes:
-   - /home/vinicius/Development/medialab/tainacan/env_docker/dev/data:/var/lib/mysql
+   - ./data:/var/lib/mysql
  wordpress:
   build:
     context: .
@@ -30,4 +30,4 @@ services:
   depends_on:
      - db
   volumes:
-   - /home/vinicius/Development/medialab/tainacan/env_docker/dev/repo:/repo
+   - ./repo:/repo
