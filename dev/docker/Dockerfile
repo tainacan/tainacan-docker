@@ -48,12 +48,18 @@ RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
     && php -r "unlink('composer-setup.php');" \
     && mv composer.phar /usr/local/bin/composer
 
+# install phpunit
+RUN curl https://phar.phpunit.de/phpunit.phar -L > phpunit.phar \
+  && chmod +x phpunit.phar \
+  && mv phpunit.phar /usr/local/bin/phpunit \
+  && phpunit --version
+
 # Instalando o wp-cli
 RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar \
     && chmod +x wp-cli.phar \
     && mv wp-cli.phar /usr/local/bin/wp    
 
-# Baixando o Wordpress e o Tainacan
+# Baixando o Wordpress
 RUN chown -R www-data:www-data $path \
     && wp --allow-root core download --path="$path"
     #RUN wp config create --dbname=${WORDPRESS_DB} --dbuser=${WORDPRESS_DB_USER} --dbpass=${WORDPRESS_DB_PASSWORD} --dbhost=${WORDPRESS_DB_HOST} --allow-root \
@@ -67,6 +73,7 @@ RUN curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash - \
     && gem install sass
     
 COPY ./repo/ /repo/
+COPY ./repo/confs_wp/wp-config.php /var/www/html/wp-config.php
 RUN chmod +x /repo/build_plugin.sh /repo/build_theme.sh
 
 EXPOSE 80
