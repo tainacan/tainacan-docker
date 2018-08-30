@@ -25,6 +25,7 @@ ENV TOOLS_DEPS \
         curl \
         nano \
         git \
+        subversion \
         vim
 #npm \
 #composer \
@@ -49,10 +50,10 @@ RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
     && mv composer.phar /usr/local/bin/composer
 
 # install phpunit
-RUN curl https://phar.phpunit.de/phpunit.phar -L > phpunit.phar \
-  && chmod +x phpunit.phar \
-  && mv phpunit.phar /usr/local/bin/phpunit \
-  && phpunit --version
+RUN wget https://phar.phpunit.de/phpunit-6.4.phar \
+ && chmod +x phpunit-6.4.phar \
+ && sudo mv phpunit-6.4.phar /usr/local/bin/phpunit \
+ && phpunit --version
 
 # Instalando o wp-cli
 RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar \
@@ -74,6 +75,7 @@ RUN curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash - \
     
 COPY ./repo/ /repo/
 COPY ./repo/confs_wp/wp-config.php /var/www/html/wp-config.php
+COPY ./repo/confs_plugin/bootstrap-config.php /repo/tainacan/tests/bootstrap-config.php
 RUN chmod +x /repo/build_plugin.sh /repo/build_theme.sh
 
 EXPOSE 80

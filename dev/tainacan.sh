@@ -29,6 +29,11 @@ do
             ./scripts/clone.sh 
             exit
         ;;
+        --run-tests*)
+            echo "[EXECUTANDO TESTES--PHPUnit]"
+            docker exec -it wordpress_tainacan sh /repo/run_tests.sh
+            exit
+        ;;
         --help)
             echo "
             --build-image =  build imagem docker.
@@ -36,11 +41,12 @@ do
             --start       =  iniciar container do Tainacan em segundo plano.
             --stop        =  para execução do container do Tainacan.
             --clona       =  clona o repositorio de codigo do Tainacan.
+            --run-tests   =  executa os testes unitários
             --help        =  ajuda.
             "
             exit
         ;;
     esac
 done
-
-docker-compose -f docker-compose-dev.yml up --build
+echo "opção invalida, para ajuda: --help"
+#docker-compose -f docker-compose-dev.yml up --build

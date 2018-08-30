@@ -13,6 +13,7 @@ services:
      MYSQL_PASSWORD: tainacan
    volumes:
    - ./data:/var/lib/mysql
+   - ./docker/init.d:/docker-entrypoint-initdb.d
  wordpress:
   build:
     context: .
@@ -27,6 +28,8 @@ services:
     WORDPRESS_DB_USER: tainacan
     WORDPRESS_DB_PASSWORD: tainacan
     WORDPRESS_DB: tainacan
+    WORDPRESS_DB_TEST: tainacan_test
+    WORDPRESS_PATH_TEST: /tainacan_test
   depends_on:
      - db
   volumes:
