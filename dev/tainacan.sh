@@ -36,12 +36,12 @@ do
         ;;
         --help)
             echo "
-            --build-image =  build imagem docker.
-            --build       =  build do plugin e do tema do Tainacan.
-            --start       =  iniciar container do Tainacan em segundo plano.
-            --stop        =  para execução do container do Tainacan.
-            --clona       =  clona o repositorio de codigo do Tainacan.
-            --run-tests   =  executa os testes unitários
+            --build-image =  build imagem docker (super user).
+            --build       =  build do plugin e do tema do Tainacan (super user).
+            --start       =  iniciar container do Tainacan em segundo plano (super user).
+            --stop        =  para execução do container do Tainacan (super user).
+            --clone       =  clona o repositorio de codigo do Tainacan.
+            --run-tests   =  executa os testes unitários (super user).
             --help        =  ajuda.
             "
             exit
