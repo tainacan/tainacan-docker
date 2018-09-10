@@ -40,6 +40,8 @@ RUN apt-get update && apt-get install -y \
     memcached-3.0.4
     
 RUN docker-php-ext-enable xdebug memcached
+
+RUN a2enmod rewrite
  
 ENV path="/var/www/html"
 ENV url="localhost"
