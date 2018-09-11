@@ -5,23 +5,23 @@ do
     case $i in
         --build-image*)
             echo "[BUILD IMAGE]"
-            docker-compose -f docker-compose-dev.yml build
+            sudo docker-compose -f docker-compose-dev.yml build
             exit
         ;;
         --build*)
             echo "[BUILD TAINACAN]"
-            ./scripts/build_tainacan.sh 
+            sudo ./scripts/build_tainacan.sh 
             exit
         ;;    
         --stop*)
             echo "[STOP TAINACAN]"
-            docker-compose -f docker-compose-dev.yml down
+            sudo docker-compose -f docker-compose-dev.yml down
             exit
         ;;    
         --start*)
             echo "[START TAINACAN]"
-            docker-compose -f docker-compose-dev.yml up
-            ./scripts/build_tainacan.sh 
+            sudo docker-compose -f docker-compose-dev.yml up
+            sudo ./scripts/build_tainacan.sh 
             exit
         ;;    
         --clone*)
@@ -31,7 +31,7 @@ do
         ;;
         --run-tests*)
             echo "[EXECUTANDO TESTES--PHPUnit]"
-            docker exec -it wordpress_tainacan sh /repo/run_tests.sh
+            sudo docker exec -it wordpress_tainacan sh /repo/run_tests.sh
             exit
         ;;
         --help)
