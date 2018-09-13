@@ -82,5 +82,3 @@ RUN chmod +x /repo/build_plugin.sh /repo/build_theme.sh
 
 EXPOSE 80
 EXPOSE 443
-
-

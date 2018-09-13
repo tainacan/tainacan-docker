@@ -13,7 +13,7 @@ function env($name, $default) {
 }
 
 return [
-    'tests_dir' => env('WORDPRESS_PATH_TEST/wodpress-tests-lib', '/tainacan_test/wodpress-tests-lib'),
+    'tests_dir' => env('WORDPRESS_PATH_TEST', '/tainacan_test') . '/wodpress-tests-lib',
     //'tests_dir' => '/tainacan_test/wordpress-tests-lib',
 
 ];

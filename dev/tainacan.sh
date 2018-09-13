@@ -21,7 +21,7 @@ do
         --start*)
             echo "[START TAINACAN]"
             sudo docker-compose -f docker-compose-dev.yml up
-            sudo ./scripts/build_tainacan.sh 
+            #sudo ./scripts/build_tainacan.sh 
             exit
         ;;    
         --clone*)
