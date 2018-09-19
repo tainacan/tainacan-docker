@@ -20,7 +20,7 @@ services:
     dockerfile: ./docker/Dockerfile
   container_name: wordpress_tainacan
   ports:
-     - "3002:80"
+     - "80:80"
      - "25"
   restart: always
   environment:
