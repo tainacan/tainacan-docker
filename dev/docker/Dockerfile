@@ -26,7 +26,8 @@ ENV TOOLS_DEPS \
         nano \
         git \
         subversion \
-        vim
+        vim \
+        inotify-tools
 #npm \
 #composer \
 
@@ -62,11 +63,15 @@ RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli
     && chmod +x wp-cli.phar \
     && mv wp-cli.phar /usr/local/bin/wp    
 
-# Baixando o Wordpress
+# Baixando e instalando o Wordpress
 RUN chown -R www-data:www-data $path \
     && wp --allow-root core download --path="$path"
-    #RUN wp config create --dbname=${WORDPRESS_DB} --dbuser=${WORDPRESS_DB_USER} --dbpass=${WORDPRESS_DB_PASSWORD} --dbhost=${WORDPRESS_DB_HOST} --allow-root \
-    #    && wp core install --allow-root
+
+RUN mkdir $path/wp-content/uploads; \
+    chown -R www-data:www-data $path/wp-content/uploads
+
+#RUN wp config create --dbname=${WORDPRESS_DB} --dbuser=${WORDPRESS_DB_USER} --dbpass=${WORDPRESS_DB_PASSWORD} --dbhost=${WORDPRESS_DB_HOST} --allow-root \
+#    && wp core install --allow-root
 
 RUN curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash - \
     && apt-get install -y nodejs \

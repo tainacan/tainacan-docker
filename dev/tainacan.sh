@@ -10,23 +10,27 @@ do
         ;;
         --build*)
             echo "[BUILD TAINACAN]"
-            sudo ./scripts/build_tainacan.sh 
+            sudo ./scripts/build_tainacan.sh --build
             exit
-        ;;    
+        ;;
+        --watch-build*)
+            echo "[BUILD WATCH TAINACAN]"
+            sudo ./scripts/build_tainacan.sh --watch-build
+            exit
+        ;;
         --stop*)
             echo "[STOP TAINACAN]"
             sudo docker-compose -f docker-compose-dev.yml down
             exit
-        ;;    
+        ;;
         --start*)
             echo "[START TAINACAN]"
             sudo docker-compose -f docker-compose-dev.yml up
-            #sudo ./scripts/build_tainacan.sh 
             exit
-        ;;    
+        ;;
         --clone*)
             echo "[CLONE REPO TAINACAN]"
-            ./scripts/clone.sh 
+            ./scripts/clone.sh
             exit
         ;;
         --run-tests*)
@@ -38,6 +42,7 @@ do
             echo "
             --build-image =  build imagem docker (super user).
             --build       =  build do plugin e do tema do Tainacan (super user).
+            --watch-build =  watch build do plugin e do tema do Tainacan (super user).
             --start       =  iniciar container do Tainacan em segundo plano (super user).
             --stop        =  para execução do container do Tainacan (super user).
             --clone       =  clona o repositorio de codigo do Tainacan.
