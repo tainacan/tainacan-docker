@@ -8,6 +8,7 @@ A pasta `repo` vai conter os fontes para desenvolvimento.
 
             --build-image =  build imagem docker (super user).
             --build       =  build do plugin e do tema do Tainacan (super user).
+            --watch-build =  watch build do plugin e do tema do Tainacan (super user).
             --start       =  iniciar container do Tainacan em segundo plano (super user).
             --stop        =  para execução do container do Tainacan (super user).
             --clone       =  clona o repositorio de codigo do Tainacan.
