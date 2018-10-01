@@ -12,7 +12,7 @@ do
         --ssh*)
             echo "[USING SSH]"
             _TAINACAN_THEME_REPO="git@github.com:tainacan/tainacan-theme.git"
-            _TAINACAN_PLUGIN_REPO="git@github.com:tainacan/tainacan-theme.git"
+            _TAINACAN_PLUGIN_REPO="git@github.com:tainacan/tainacan.git"
             shift
         ;;
         #-d=*|--dest=*)
@@ -21,7 +21,7 @@ do
         #;;
         --help)
             echo "
-            -ssh =  Abilita o clone dos repositório por ssh.        
+            -ssh =  Abilita o clone dos repositório por ssh. 
             "
             exit
         ;;

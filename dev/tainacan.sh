@@ -33,6 +33,11 @@ do
             ./scripts/clone.sh
             exit
         ;;
+        --ssh-clone*)
+            echo "[CLONE REPO TAINACAN - SSH]"
+            ./scripts/clone.sh --ssh
+            exit
+        ;;        
         --run-tests*)
             echo "[EXECUTANDO TESTES--PHPUnit]"
             sudo docker exec -it wordpress_tainacan sh /repo/run_tests.sh
@@ -46,6 +51,7 @@ do
             --start       =  iniciar container do Tainacan em segundo plano (super user).
             --stop        =  para execução do container do Tainacan (super user).
             --clone       =  clona o repositorio de codigo do Tainacan.
+            --ssh-clone   =  clona o repositorio de codigo do Tainacan usando ssh.
             --run-tests   =  executa os testes unitários (super user).
             --help        =  ajuda.
             "
