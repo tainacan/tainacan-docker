@@ -34,5 +34,6 @@ services:
      - db
   volumes:
    - ./repo:/repo
+   - ./wp-content:/var/www/html/wp-content
    - /etc/timezone:/etc/timezone:ro
    - /etc/localtime:/etc/localtime:ro
