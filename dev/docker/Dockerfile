@@ -39,7 +39,7 @@ RUN apt-get update && apt-get install -y \
     pecl install \
     xdebug-2.6.0 \
     memcached-3.0.4
-    
+
 RUN docker-php-ext-enable xdebug memcached
 
 RUN a2enmod rewrite
@@ -69,9 +69,6 @@ RUN chown -R www-data:www-data $path \
 
 RUN mkdir $path/wp-content/uploads; \
     chown -R www-data:www-data $path/wp-content/uploads
-
-#RUN wp config create --dbname=${WORDPRESS_DB} --dbuser=${WORDPRESS_DB_USER} --dbpass=${WORDPRESS_DB_PASSWORD} --dbhost=${WORDPRESS_DB_HOST} --allow-root \
-#    && wp core install --allow-root
 
 RUN curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash - \
     && apt-get install -y nodejs \

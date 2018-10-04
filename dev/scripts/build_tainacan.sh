@@ -1,5 +1,6 @@
 #!/bin/bash
 
+docker exec -it wordpress_tainacan sh /repo/build_theme.sh
 for i in "$@"
 do
     case $i in
@@ -12,4 +13,4 @@ do
     esac
 done
 
-docker exec -it wordpress_tainacan sh /repo/build_theme.sh
+
