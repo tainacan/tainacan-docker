@@ -43,6 +43,16 @@ do
             sudo docker exec -it wordpress_tainacan sh /repo/run_tests.sh
             exit
         ;;
+        --bash)
+            echo "[INTO A CONTAINER /bin/bash]"
+            sudo docker exec -it wordpress_tainacan /bin/bash
+            exit
+        ;;
+        --bash-mysql)
+            echo "[INTO A CONTAINER OF MYSQL /bin/bash]"
+            sudo docker exec -it mysql_tainacan /bin/bash            
+            exit
+        ;;
         --help)
             echo "
             --build-image =  build imagem docker (super user).
@@ -53,6 +63,8 @@ do
             --clone       =  clona o repositorio de codigo do Tainacan.
             --ssh-clone   =  clona o repositorio de codigo do Tainacan usando ssh.
             --run-tests   =  executa os testes unitários (super user).
+            --bash        =  CLI do container do tainacan
+            --bash-mysql  =  CLI do container do mysql para o tainacan
             --help        =  ajuda.
             "
             exit
