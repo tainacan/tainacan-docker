@@ -27,6 +27,7 @@ ENV TOOLS_DEPS \
         git \
         subversion \
         vim \
+        libpng-dev \
         inotify-tools
 #npm \
 #composer \
@@ -35,7 +36,7 @@ RUN apt-get update && apt-get install -y \
     $TOOLS_DEPS \    
     $RUBY_DEPS \
     libmemcached-dev zlib1g-dev && \
-    docker-php-ext-install pdo pdo_mysql mysqli && \
+    docker-php-ext-install pdo pdo_mysql mysqli gd && \
     pecl install \
     xdebug-2.6.0 \
     memcached-3.0.4
@@ -81,6 +82,9 @@ COPY ./repo/ /repo/
 COPY ./repo/confs_wp/wp-config.php /var/www/html/wp-config.php
 COPY ./repo/confs_plugin/bootstrap-config.php /repo/tainacan/tests/bootstrap-config.php
 RUN chmod +x /repo/build_plugin.sh /repo/build_theme.sh
+
+RUN apt-get update && apt-get install -y libmagickwand-dev --no-install-recommends
+RUN pecl install imagick && docker-php-ext-enable imagick
 
 EXPOSE 80
 EXPOSE 443
