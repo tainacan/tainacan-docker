@@ -56,7 +56,7 @@ services:
   volumes:
     - esdata:/usr/share/elasticsearch/data
     #-  ./elasticsearch/custom_elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
-    -  ./elasticsearch/log4j2.properties:/usr/share/elasticsearch/config/log4j2.properties
+    #-  ./elasticsearch/log4j2.properties:/usr/share/elasticsearch/config/log4j2.properties
   ports:
     - 9200:9200
     - 9300:9300
