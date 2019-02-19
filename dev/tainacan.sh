@@ -3,42 +3,53 @@
 for i in "$@"
 do
     case $i in
-        --build-image*)
+        --build-image)
             echo "[BUILD IMAGE]"
             sudo docker-compose -f docker-compose-dev.yml build
             exit
         ;;
-        --build*)
+        --build-image-elastic)
+            echo "[BUILD IMAGE WITH ELASTICSEARCH]"
+            sudo docker-compose -f docker-compose-dev-elastic.yml build
+            exit
+        ;;
+        --build)
             echo "[BUILD TAINACAN]"
             sudo ./scripts/build_tainacan.sh --build
             exit
         ;;
-        --watch-build*)
+        --watch-build)
             echo "[BUILD WATCH TAINACAN]"
             sudo ./scripts/build_tainacan.sh --watch-build
             exit
         ;;
-        --stop*)
+        --stop)
             echo "[STOP TAINACAN]"
             sudo docker-compose -f docker-compose-dev.yml down
+            sudo docker-compose -f docker-compose-dev-elastic.yml down
             exit
         ;;
-        --start*)
+        --start)
             echo "[START TAINACAN]"
             sudo docker-compose -f docker-compose-dev.yml up
             exit
         ;;
-        --clone*)
+        --start-elastic)
+            echo "[START TAINACAN WITH ELASTICSEARCH]"
+            sudo docker-compose -f docker-compose-dev-elastic.yml up
+            exit
+        ;;
+        --clone)
             echo "[CLONE REPO TAINACAN]"
             ./scripts/clone.sh
             exit
         ;;
-        --ssh-clone*)
+        --ssh-clone)
             echo "[CLONE REPO TAINACAN - SSH]"
             ./scripts/clone.sh --ssh
             exit
         ;;        
-        --run-tests*)
+        --run-tests)
             echo "[EXECUTANDO TESTES--PHPUnit]"
             sudo docker exec -it wordpress_tainacan sh /repo/run_tests.sh
             exit
@@ -56,9 +67,11 @@ do
         --help)
             echo "
             --build-image =  build imagem docker (super user).
+            --build-image-elastic =  build imagem docker with elasticsearch (super user).
             --build       =  build do plugin e do tema do Tainacan (super user).
             --watch-build =  watch build do plugin e do tema do Tainacan (super user).
             --start       =  iniciar container do Tainacan em segundo plano (super user).
+            --start-elastic = iniciar container do Tainacan em segundo plano (super user) junto com o container do elasticsearch
             --stop        =  para execução do container do Tainacan (super user).
             --clone       =  clona o repositorio de codigo do Tainacan.
             --ssh-clone   =  clona o repositorio de codigo do Tainacan usando ssh.
