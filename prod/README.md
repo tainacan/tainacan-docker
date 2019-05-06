@@ -14,3 +14,8 @@ docker run -p 80:80 --name some-wordpress -e WORDPRESS_DB_HOST=<DB-HOST> \
 sudo docker-compose build
 sudo docker-compose up -d
 ```
+
+## Básico instalando o tainacan:
+```
+docker exec -it [cnt-tainacan] install-tainacan.sh
+```
