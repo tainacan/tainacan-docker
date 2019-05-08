@@ -9,11 +9,12 @@ services:
   environment:
     MYSQL_ROOT_PASSWORD: tainacan
     MYSQL_DATABASE: tainacan
-    MYSQL_USER: root
+    MYSQL_USER: tainacan
     MYSQL_PASSWORD: tainacan
   volumes:
   - ./data:/var/lib/mysql
-  - ./docker/init.d:/docker-entrypoint-initdb.d
+  - ./docker/mysql-entrypoint-initdb:/docker-entrypoint-initdb.d
+  - ./docker/conf/mysql:/etc/mysql/conf.d
 
  wordpress:
   build:
@@ -26,7 +27,7 @@ services:
   restart: always
   environment:
     WORDPRESS_DB_HOST: db:3306
-    WORDPRESS_DB_USER: root
+    WORDPRESS_DB_USER: tainacan
     WORDPRESS_DB_PASSWORD: tainacan
     WORDPRESS_DB: tainacan
     DB_HOST: db
@@ -53,6 +54,7 @@ services:
   privileged: true
   volumes:
     - esdata:/usr/share/elasticsearch/data
+    #- ./esdata:/usr/share/elasticsearch/data
   ports:
     - 9200:9200
     - 9300:9300

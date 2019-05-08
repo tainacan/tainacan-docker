@@ -34,7 +34,15 @@ function env($name, $default) {
 // ** MySQL settings - You can get this info from your web host ** //
 /** The name of the database for WordPress */
 //define('DB_NAME', 'tainacan');
-define('DB_NAME', env('WORDPRESS_DB', 'tainacan'));
+$fn = fopen("/script/env/db_name","r");
+if(! feof($fn))  {
+    $wp_db = fgets($fn) . "";
+    define('DB_NAME', trim($wp_db));
+} else {
+   define('DB_NAME', env('WORDPRESS_DB', 'tainacan'));
+}
+
+
 
 /** MySQL database username */
 //define('DB_USER', 'tainacan');
