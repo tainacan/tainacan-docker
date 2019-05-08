@@ -66,19 +66,19 @@ do
         ;;
         --help)
             echo "
-            --build-image =  build imagem docker (super user).
-            --build-image-elastic =  build imagem docker with elasticsearch (super user).
-            --build       =  build do plugin e do tema do Tainacan (super user).
-            --watch-build =  watch build do plugin e do tema do Tainacan (super user).
-            --start       =  iniciar container do Tainacan em segundo plano (super user).
-            --start-elastic = iniciar container do Tainacan em segundo plano (super user) junto com o container do elasticsearch
-            --stop        =  para execução do container do Tainacan (super user).
-            --clone       =  clona o repositorio de codigo do Tainacan.
-            --ssh-clone   =  clona o repositorio de codigo do Tainacan usando ssh.
-            --run-tests   =  executa os testes unitários (super user).
-            --bash        =  CLI do container do tainacan
-            --bash-mysql  =  CLI do container do mysql para o tainacan
-            --help        =  ajuda.
+            --build-image =  build docker images for application and database (super user).
+            --build-image-elastic =  build docker images for application, database and elasticsearch server (super user).
+            --start       =  start the containers (super user).
+            --start-elastic = start the containers and the elastic search server (super user)
+            --stop        =  stops all containers(super user).
+            --clone       =  clones tainacan and tainacan-interface repositories into the dev folder
+            --ssh-clone   =  clones tainacan and tainacan-interface repositories into the dev folder using your ssh keys
+            --run-tests   =  run phpunit tests (super user).
+            --bash        =  enters the container
+            --bash-mysql  =  enters the mysql container
+            --build       =  builds tainacan plugin and theme (super user).
+            --watch-build =  watches for changes in the plugin and theme and builds them (super user).
+            --help        =  displays this help message
             "
             exit
         ;;
