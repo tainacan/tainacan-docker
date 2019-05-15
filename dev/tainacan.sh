@@ -36,6 +36,7 @@ do
         ;;
         --start-elastic)
             echo "[START TAINACAN WITH ELASTICSEARCH]"
+            sudo sysctl -w vm.max_map_count=262144
             sudo docker-compose -f docker-compose-dev-elastic.yml up
             exit
         ;;
