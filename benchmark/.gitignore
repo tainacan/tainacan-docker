@@ -1,1 +1,2 @@
 bases/mysql_tainacan/*
+docker/mysql-entrypoint-initdb/*

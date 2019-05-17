@@ -1,4 +1,4 @@
-version: '3.3'
+version: "3.7"
 services:
  db:
   image: mysql:5.7
@@ -34,7 +34,7 @@ services:
   depends_on:
      - db
   volumes:
-   - ./script:/script
+   - ./script/tnc:/script
 
  elasticsearch: #before execute sudo sysctl -w vm.max_map_count=262144
   image: docker.elastic.co/elasticsearch/elasticsearch:6.3.0
@@ -58,5 +58,73 @@ services:
   ports:
     - 9200:9200
     - 9300:9300
+
+
+ dspacedb:
+  image: dspace/dspace-postgres-pgcrypto
+  # Note that a separate image exists for DSpace 4x
+  # image: dspace/dspace-postgres-4x
+  container_name: dspacedb
+  environment:
+    - PGDATA=/pgdata
+  volumes:
+    - pgdata:/pgdata
+    - "./docker/add-ons/dspace-docker-tools:/dspace-docker-tools"
+  networks:
+    - dspacenet
+  tty: true
+  stdin_open: true
+
+ dspace:
+  image: "${DOCKER_OWNER:-dspace}/dspace:${DSPACE_VER:-dspace-6_x-jdk8-test}"
+  container_name: dspace
+  environment:
+    # - JAVA_OPTS=
+    # The following memory allocation will be appended to any JAVA_OPTS settings
+    # - JAVA_MEM=-Xmx2500m
+    - SCRIPTVER=6
+    - DSPACE_INSTALL=/dspace
+    - ADMIN_EMAIL=${ADMIN_EMAIL:-test@test.edu}
+    - ADMIN_PASS=${ADMIN_PASS:-admin}
+    - ADMIN_FNAME=${ADMIN_FNAME:-AdminFirst}
+    - ADMIN_LNAME=${ADMIN_LNAME:-AdminLast}
+    - AIPZIP=${AIPZIP:-https://github.com/DSpace-Labs/AIP-Files/raw/master/dogAndReport.zip}
+    # export SKIPAIP=Y
+    - SKIPAIP=${SKIPAIP:-N}
+    # Number of sec to wait before attempting AIP ingest
+    - AIPWAIT=0
+    # Number of sec to wait before attempting to start tomcat
+    - DBWAIT=0
+    # Env vars with double underbars in names will be replaced with periods and written to local.cfg
+    # The defaul values for local.cfg will be provided here
+    # __D__ -> -
+    # __P__ -> .
+    - dspace__P__dir=/dspace
+    - db__P__url=jdbc:postgresql://dspacedb:5432/dspace
+    - dspace__P__hostname=localhost
+    - dspace__P__baseUrl=http://localhost:8080
+    - dspace__P__name=DSpace Started with Docker Compose
+  ports:
+    - ${PORT:-8080}:8080
+  volumes:
+    - "./script/dspace/:/scripts"
+    - "./docker/add-ons/dspace-docker-tools:/dspace-docker-tools"
+  entrypoint: /dspace-docker-tools/ingestAIP.sh
+  networks:
+    - dspacenet
+  depends_on:
+    - dspacedb
+  tty: true
+  stdin_open: true
 volumes:
   esdata:
+  assetstore:
+  pgdata:
+  # The Solr volumes will be defined in one of the dX.override.yml files
+  solr_authority:
+  solr_oai:
+  solr_search:
+  solr_statistics:
+
+networks:
+  dspacenet:

@@ -76,10 +76,10 @@ RUN curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash - \
 RUN apt-get update && apt-get install -y libmagickwand-dev --no-install-recommends
 RUN pecl install imagick && docker-php-ext-enable imagick
 
-COPY ./docker/wp/wp-config.php $path/wp-config.php
-
 RUN wget -P $path/wp-content/plugins/ http://tainacan.org/nightly-builds/tainacan-nightly.zip
 RUN unzip $path/wp-content/plugins/tainacan-nightly.zip -d $path/wp-content/plugins/
+
+COPY ./docker/conf/wp/wp-config.php $path/wp-config.php
 
 EXPOSE 80
 EXPOSE 443
