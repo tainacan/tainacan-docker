@@ -6,13 +6,15 @@ CMD_OPT=''
 
 help () {
   echo "help:"
-  echo "--container"
+  echo "--container=[ID_CONTAINER]"
+  echo "--setup-init"
   echo "--install-plugin"
   echo "--install-theme"
   echo "--update-plugin"
   echo "--update-theme"
   echo "--upgrade-wp"
   echo "--install-theme"
+  echo "--install-language=pt_Br"
   echo "exemple of use: ./tainacan.sh --container=wordpress_tainacan --install-plugin"
 }
 
@@ -51,6 +53,14 @@ while [ "$1" != "" ]; do
       echo "[INSTALL THEME]"
       CMD_OPT='install-tainacan-theme.sh'
     ;;
+    --setup-init)
+      echo "[SETUP INITIAL OF TAINACAN]"
+      CMD_OPT='setup-init.sh'
+    ;;
+    --install-language)
+      echo "[SETUP INITIAL OF TAINACAN]"
+      CMD_OPT="wp-install-language.sh ${VALUE}"
+    ;;
     *)
       echo "ERROR: unknown parameter \"$PARAM\""
       usage
@@ -65,8 +75,3 @@ if [ -z "$container" ] || [ -z "$CMD_OPT" ]; then
 else
   ${CMD} ${container} ${CMD_OPT}
 fi
-
-
-
-
-

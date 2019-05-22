@@ -16,6 +16,7 @@ services:
    - ./volumes/themes:/var/www/html/wp-content/themes/
    - ./volumes/plugins:/var/www/html/wp-content/plugins/
    - ./volumes/uploads:/var/www/html/wp-content/uploads/
+   - wp_root:/var/www/html
 
  db:
   image: mysql:5.7
@@ -30,3 +31,6 @@ services:
     MYSQL_PASSWORD: tainacan
   volumes:
   - ./data:/var/lib/mysql
+
+volumes:
+  wp_root:
