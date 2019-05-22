@@ -12,8 +12,8 @@ fi
 if $(${COMMAND} core is-installed); then  
   install-tainacan-plugin.sh
   install-tainacan-theme.sh
-  wp options set permalink_structure "/%year%/%monthnum%/%day%/%postname%/"
-  wp rewrite flush
+  ${COMMAND} option set permalink_structure "/%year%/%monthnum%/%day%/%postname%/"
+  ${COMMAND} rewrite flush
 else
   echo "WP Core is not prepared, creating cache to tainacan plugin!"
   if [ ! -d "${plugin_wp_path}/tainacan" ]; then
