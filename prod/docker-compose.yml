@@ -4,14 +4,14 @@ services:
   build:
     context: .
     dockerfile: ./Dockerfile
-  container_name: wordpress_tainacan
+  container_name: tainacan_${NAME_CONTAINER}
   ports:
-     - "80:80"
+     - "80"
   environment:
     WORDPRESS_DB_HOST: db:3306
-    WORDPRESS_DB_USER: tainacan
-    WORDPRESS_DB_PASSWORD: tainacan
-    WORDPRESS_DB_NAME: tainacan
+    WORDPRESS_DB_USER: ${WORDPRESS_DB_USER}
+    WORDPRESS_DB_PASSWORD: ${WORDPRESS_DB_PASSWORD}
+    WORDPRESS_DB_NAME: ${WORDPRESS_DB_NAME}
   volumes:
    - ./volumes/themes:/var/www/html/wp-content/themes/
    - ./volumes/plugins:/var/www/html/wp-content/plugins/
@@ -20,15 +20,14 @@ services:
 
  db:
   image: mysql:5.7
-  container_name: tainacan_db
   ports:
     - "3306"
   restart: always
   environment:
-    MYSQL_ROOT_PASSWORD: tainacan
-    MYSQL_DATABASE: tainacan
-    MYSQL_USER: tainacan
-    MYSQL_PASSWORD: tainacan
+    MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    MYSQL_DATABASE: ${MYSQL_DATABASE}
+    MYSQL_USER: ${MYSQL_USER}
+    MYSQL_PASSWORD: ${MYSQL_PASSWORD}
   volumes:
   - ./data:/var/lib/mysql
 

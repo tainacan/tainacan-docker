@@ -15,7 +15,26 @@ sudo docker-compose build
 sudo docker-compose up -d
 ```
 
+o arquivo `.env` contém as variaveis de ambientes que devem ser configuradas para o ambiente de produção:
+```Shell
+#container name tainacan_${NAME_CONTAINER}
+NAME_CONTAINER=name_container
+
+#ENV for the wordpress access the database
+WORDPRESS_DB_USER=tainacan
+WORDPRESS_DB_PASSWORD=tainacan
+WORDPRESS_DB_NAME=tainacan
+
+#ENV for create database in mysql
+MYSQL_ROOT_PASSWORD=tainacan
+MYSQL_DATABASE=tainacan
+MYSQL_USER=tainacan
+MYSQL_PASSWORD=tainacan
+```
+
 ## Básico instalando o tainacan:
 ```
-docker exec -it [cnt-tainacan] install-tainacan.sh
+./tainacan.sh --container=wordpress_tainacan --setup-init
+./tainacan.sh --container=wordpress_tainacan --install-language=pt_BR
+./tainacan.sh --help
 ```
