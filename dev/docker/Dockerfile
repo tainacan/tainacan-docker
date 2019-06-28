@@ -28,7 +28,8 @@ ENV TOOLS_DEPS \
         subversion \
         vim \
         libpng-dev \
-        inotify-tools
+        inotify-tools \
+        ghostscript
 #npm \
 #composer \
 

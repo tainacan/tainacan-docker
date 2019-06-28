@@ -6,7 +6,8 @@ ENV TOOLS_DEPS \
         nano \
         git \
         unzip \
-        cron
+        cron \
+        ghostscript
 
 COPY ./usr/conf.d/php.config.ini /usr/local/etc/php/conf.d/php.config.ini
 
