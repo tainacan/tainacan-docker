@@ -19,13 +19,13 @@ if $(${COMMAND} core is-installed); then
   ${COMMAND} rewrite flush
 else
   echo "WP Core is not prepared, install WP core!"
-  echo "what the ${bold}URL address${normal} of the new site?"
+  echo "what is the ${bold}URL address${normal} of the new site (with http)?"
   read var_site_url
-  echo "what the ${bold}title${normal} of the new site?"
+  echo "what is the ${bold}title${normal} of the new site?"
   read var_site_title
-  echo "what the ${bold}admin user${normal} of the new site?"
+  echo "what is the ${bold}admin username${normal} of the new site?"
   read var_site_admin_user
-  echo "what the admin user${bold}e-mail${normal}?"
+  echo "what is the admin user ${bold}e-mail${normal}?"
   read var_site_admin_email
   ${COMMAND} core install --url=$var_site_url --title=$var_site_title --admin_user=$var_site_admin_user --admin_email=$var_site_admin_email
 
