@@ -28,7 +28,7 @@ services:
     MYSQL_USER: ${MYSQL_USER}
     MYSQL_PASSWORD: ${MYSQL_PASSWORD}
   volumes:
-  - ./data:/var/lib/mysql
+  - ${CNT_BASE_PATH}/${NAME_CONTAINER}/data:/var/lib/mysql
 
 volumes:
   wp_root:
