@@ -12,9 +12,9 @@ services:
     WORDPRESS_DB_PASSWORD: ${WORDPRESS_DB_PASSWORD}
     WORDPRESS_DB_NAME: ${WORDPRESS_DB_NAME}
   volumes:
-   - ${CNT_BASE_PATH}/volumes/themes:/var/www/html/wp-content/themes/
-   - ${CNT_BASE_PATH}/volumes/plugins:/var/www/html/wp-content/plugins/
-   - ${CNT_BASE_PATH}/volumes/uploads:/var/www/html/wp-content/uploads/
+   - ${CNT_BASE_PATH}/${NAME_CONTAINER}/volumes/themes:/var/www/html/wp-content/themes/
+   - ${CNT_BASE_PATH}/${NAME_CONTAINER}/volumes/plugins:/var/www/html/wp-content/plugins/
+   - ${CNT_BASE_PATH}/${NAME_CONTAINER}/volumes/uploads:/var/www/html/wp-content/uploads/
    - wp_root:/var/www/html
 
  db:
