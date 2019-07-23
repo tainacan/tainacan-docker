@@ -29,6 +29,7 @@ ENV TOOLS_DEPS \
         vim \
         libpng-dev \
         inotify-tools \
+        cron \
         ghostscript
 #npm \
 #composer \
@@ -78,7 +79,7 @@ RUN curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash - \
     && echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list \
     && apt-get update && apt-get install yarn \
     && gem install sass
-    
+
 COPY ./repo/ /repo/
 COPY ./repo/confs_wp/wp-config.php /var/www/html/wp-config.php
 COPY ./repo/confs_plugin/bootstrap-config.php /repo/tainacan/tests/bootstrap-config.php

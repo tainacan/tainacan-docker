@@ -1,8 +1,12 @@
 dev/repo/tainacan/
 dev/repo/tainacan-theme
 dev/repo/tainacan-mhn
+dev/repo/plugins
 dev/data/
+
 benchmark/repo/tainacan/
 benchmark/repo/tainacan-theme
 benchmark/repo/tainacan-mhn
 benchmark/data/
+
+prod/data

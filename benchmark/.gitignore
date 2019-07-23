@@ -1,2 +1,9 @@
 bases/mysql_tainacan/*
 docker/mysql-entrypoint-initdb/*
+
+script/dspace/csv/*
+script/dspace/results/*
+
+script/tnc/bases/*
+script/tnc/results/*
+script/tnc/tainacan/*
