@@ -860,9 +860,9 @@
       {"name": "WORDPRESS_DB_USER",     "label": "Wordpress config, user Mysql",              "description":"Wordpress config, user Mysql"},
       {"name": "CNT_BASE_PATH",         "label": "Diretório raiz da instalação do container", "description":"Diretório raiz da instalação do container", "default":"/home/medialab/tainacan_docker", "preset":true},
       {"name": "NAME_CONTAINER",        "label": "Nome do container (tainacan_[valor])",      "description":"Nome do container (tainacan_[valor])"},
-      {"name": "PORT_HTTP",             "label": "Porta HTTP",                                "description":"Porta HTTP"},
-      {"name": "PORT_HTTPS",            "label": "Porta HTTPS",                               "description":"Porta HTTPS"},
-      {"name": "FTP_DIR",               "label": "Diretório FTP",                             "description":"Diretório FTP"}
+      {"name": "PORT_HTTP",             "label": "Porta HTTP",                                "description":"Porta HTTP 580X"},
+      {"name": "PORT_HTTPS",            "label": "Porta HTTPS",                               "description":"Porta HTTPS 5443X"},
+      {"name": "FTP_DIR",               "label": "Diretório FTP",                             "description":"Diretório FTP", "default":"/home/museus/ftp"}
     ]
   }
 ]
