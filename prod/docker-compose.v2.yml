@@ -33,4 +33,4 @@ services:
 
 volumes:
   wp_root:
-  "${FTP_DIR}:/ftp"
+  ${FTP_DIR}:/ftp
