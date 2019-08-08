@@ -5,7 +5,8 @@ services:
   image: tainacan/tainacan
   container_name: tainacan_${NAME_CONTAINER}
   ports:
-     - "80"
+     - "${PORT_HTTP}:80"
+     - "${PORT_HTTPS}:443"
   environment:
     WORDPRESS_DB_HOST: db:3306
     WORDPRESS_DB_USER: ${WORDPRESS_DB_USER}
@@ -32,3 +33,4 @@ services:
 
 volumes:
   wp_root:
+  "${FTP_DIR}:/ftp"
