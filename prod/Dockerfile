@@ -7,7 +7,6 @@ ENV TOOLS_DEPS \
         git \
         unzip \
         cron \
-        mysql-client \
         ghostscript
 
 COPY ./usr/conf.d/php.config.ini /usr/local/etc/php/conf.d/php.config.ini
