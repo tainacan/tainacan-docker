@@ -16,6 +16,7 @@ RUN apt-get update && apt-get install -y $TOOLS_DEPS
 RUN apt-get update && apt-get install -y libmagickwand-dev --no-install-recommends
 RUN yes | pecl install imagick 
 RUN docker-php-ext-enable imagick
+RUN docker-php-ext-install exif
 
 # Instalando o wp-cli
 RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar \

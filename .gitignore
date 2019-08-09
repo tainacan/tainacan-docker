@@ -9,4 +9,4 @@ benchmark/repo/tainacan-theme
 benchmark/repo/tainacan-mhn
 benchmark/data/
 
-prod/data
+prod/data/*
