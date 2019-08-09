@@ -16,7 +16,8 @@ services:
    - ${CNT_BASE_PATH}/${NAME_CONTAINER}/volumes/themes:/var/www/html/wp-content/themes/
    - ${CNT_BASE_PATH}/${NAME_CONTAINER}/volumes/plugins:/var/www/html/wp-content/plugins/
    - ${CNT_BASE_PATH}/${NAME_CONTAINER}/volumes/uploads:/var/www/html/wp-content/uploads/
-   - wp_root:/var/www/html
+   - ${CNT_BASE_PATH}/${NAME_CONTAINER}/volumes/uploads:/var/www/html/wp-content/uploads/
+   - ${FTP_DIR}:/var/www/html
 
  db:
   image: mysql:5.7
