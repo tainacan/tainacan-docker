@@ -11,6 +11,7 @@ echo "Tainacan installing themes"
 if $(${COMMAND} core is-installed); then  
   echo "Update Tainacan interface"
   ${COMMAND} language core install $1
+  ${COMMAND} language core activate $1
 else
   echo "The WP core not installed!!!!"
 fi

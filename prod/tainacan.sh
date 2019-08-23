@@ -14,7 +14,7 @@ help () {
   echo "--update-theme"
   echo "--upgrade-wp"
   echo "--install-theme"
-  echo "--install-language=pt_Br"
+  echo "--install-language=pt_BR"
   echo "exemple of use: ./tainacan.sh --container=wordpress_tainacan --install-plugin"
 }
 
@@ -39,11 +39,11 @@ while [ "$1" != "" ]; do
     ;;
     --update-plugin)
       echo "[UPDATE PLUGIN]"
-      CMD_OPT='update-tainacan-plugin.sh'
+      CMD_OPT='install-tainacan-plugin.sh'
     ;;
     --update-theme)
       echo "[UPDATE THEME]"
-      CMD_OPT='update-tainacan-theme.sh'
+      CMD_OPT='install-tainacan-theme.sh'
     ;;
     --upgrade-wp)
       echo "[UPGRADE WP]"
