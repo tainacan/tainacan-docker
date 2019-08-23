@@ -34,16 +34,12 @@ VOLUME /var/www/html/wp-content/uploads/
 
 COPY ./usr/bin/install-tainacan-plugin.sh /usr/local/bin/install-tainacan-plugin.sh
 COPY ./usr/bin/install-tainacan-theme.sh /usr/local/bin/install-tainacan-theme.sh
-COPY ./usr/bin/update-tainacan-plugin.sh /usr/local/bin/update-tainacan-plugin.sh
-COPY ./usr/bin/update-tainacan-theme.sh /usr/local/bin/update-tainacan-theme.sh
 COPY ./usr/bin/wp-install-language.sh /usr/local/bin/wp-install-language.sh
 COPY ./usr/bin/upgrade-wp.sh /usr/local/bin/upgrade-wp.sh
 COPY ./usr/bin/setup-init.sh /usr/local/bin/setup-init.sh
 
 RUN chmod +x /usr/local/bin/install-tainacan-plugin.sh
 RUN chmod +x /usr/local/bin/install-tainacan-theme.sh
-RUN chmod +x /usr/local/bin/update-tainacan-plugin.sh
-RUN chmod +x /usr/local/bin/update-tainacan-theme.sh
 RUN chmod +x /usr/local/bin/wp-install-language.sh
 RUN chmod +x /usr/local/bin/upgrade-wp.sh
 RUN chmod +x /usr/local/bin/setup-init.sh
