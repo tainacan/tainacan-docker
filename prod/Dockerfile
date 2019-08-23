@@ -6,7 +6,8 @@ ENV TOOLS_DEPS \
         nano \
         git \
         unzip \
-        cron \
+        libzip-dev \
+        zip \
         default-mysql-client \
         ghostscript
 
@@ -17,6 +18,9 @@ RUN apt-get update && apt-get install -y libmagickwand-dev --no-install-recommen
 RUN docker-php-ext-enable imagick
 RUN docker-php-ext-install exif
 RUN docker-php-ext-enable exif
+RUN docker-php-ext-configure zip --with-libzip
+RUN docker-php-ext-install zip
+RUN docker-php-ext-enable zip
 
 # Instalando o wp-cli
 RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar \
@@ -48,4 +52,3 @@ RUN chown -R  www-data:www-data /var/www/html/wp-content/uploads/
 
 EXPOSE 80
 
-#CMD ["setup-init.sh"]
