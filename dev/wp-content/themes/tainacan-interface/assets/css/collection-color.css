@@ -1,0 +1,61 @@
+.tainacan-collection--change-color-picker #colorpicker {
+    border: 0;
+    height: 40px;
+    margin: 0.5rem 0.1rem;
+    padding: 0;
+    width: 40px;
+}
+
+.tainacan-collection--change-color-picker #colorpicker:focus {
+    box-shadow: none;
+}
+
+.tainacan-collection--change-color-picker .custom-color {
+    width: 30px;
+    height: 30px;
+    border-radius: 0;
+    border: none;
+    -moz-appearance: none;
+}
+
+.tainacan-collection--change-color-picker .custom-color:checked:before {
+    content: none;
+}
+
+.tainacan-collection--change-color-picker .custom-color:checked {
+    border: 1px solid black;
+    border-width: 2px;
+}
+
+.tainacan-collection--change-text-color .control {
+    margin-top: 1rem;
+}
+
+.tainacan-collection--change-text-color input[type="radio"]::before {
+    background-color: #000;
+}
+
+.tainacan-collection--change-text-color input[type=radio]:focus {
+    border-color: #b4b9be;
+    box-shadow: none;
+}
+
+.tainacan-collection--change-text-color .color-text[for="white"] {
+    background-color: #000;
+    color: #fff;
+    margin-right: 1rem;
+    padding: 0.8rem;
+    border-radius: 3px;
+    padding: 0.7rem 1.25rem;
+    font-size: 0.875rem;
+}
+
+.tainacan-collection--change-text-color .color-text[for="black"] {
+    background-color: #fff;
+    color: #000;
+    margin-right: 1rem;
+    padding: 0.8rem;
+    border-radius: 3px;
+    padding: 0.7rem 1.25rem;
+    font-size: 0.875rem;
+}

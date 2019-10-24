@@ -1,0 +1,76 @@
+.sidebar-border {
+    @media only screen and (min-width: 768px) {
+        border-top: none !important;
+    }
+}
+#sidebar{
+    &.sidebar{
+        .widget{
+            .widget-title{
+                font-size: 0.875rem;
+                font-weight: bold;
+                color: #1d1d1b;
+            }
+            &.widget_recent_entries, &.widget_recent_comments{
+                ul{
+                    li{
+                        margin-bottom: 0.3rem;
+                    }
+                }
+            }
+            &.widget_media_gallery{
+                .gallery{
+                    display: grid;
+                    dl{
+                        margin-top: 0;
+                        dt{
+                            img{
+                                border: 0;
+                            }
+                        }
+                    }
+                    br{
+                        display: none;
+                    }
+                }
+            }
+            &.widget_text{
+                font-size: 0.75rem;
+            }
+            ul{
+                padding-left: 0;
+                li{
+                    display: block;
+                    margin-bottom: 0.3rem;
+                    a{
+                        font-weight: 400;
+                        font-size: 0.875rem;
+                    }
+                }
+            }
+            form{
+                .input-group-append{
+                    button{
+                        height: 30px;
+                        padding: 0 5px 0 0px;
+                        &:hover{
+                            color: inherit;
+                        }
+                        i{
+                            color: #01295c;
+                            font-size: 1.1875rem;
+                        }
+                    }
+                }
+            }
+            #tainacan-search{
+                font-size: 0.75rem;
+                color: #555758;
+                height: 30px;
+                &:focus{
+                    box-shadow: none;
+                }
+            }
+        }
+    }
+}

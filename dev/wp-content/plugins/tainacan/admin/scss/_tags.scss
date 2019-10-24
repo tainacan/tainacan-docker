@@ -1,0 +1,41 @@
+.tags {
+    border: solid 1px $gray2 !important;
+    border-radius: 20px;
+    flex-wrap: nowrap;
+    margin-bottom: 0.375rem !important;
+    margin-right: 0.375rem;
+    max-width: 100%;
+    overflow: hidden;
+    animation-name: appear;
+    animation-duration: 0.2s;
+
+    &:hover, &:hover .tag {
+        background-color: $gray2;
+    }
+
+    .tag {
+        background-color: white;
+        margin-bottom: 0 !important;
+        margin-right: 4px !important;
+        max-width: calc(100% - 21px);
+        justify-content: flex-start;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+
+        &.is-delete, 
+        &.is-delete:hover, 
+        &.is-delete:focus, 
+        &.is-delete:active {
+            border-radius: 50px !important;
+            border-radius: 50px !important;
+            color: $gray4;
+            background-color: transparent;
+
+            &:hover {
+                background-color: transparent;
+                color: $gray4;
+            }
+        }
+    }
+}

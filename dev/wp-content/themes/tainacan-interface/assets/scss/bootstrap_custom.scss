@@ -1,0 +1,36 @@
+$heavy-metal: #1d1d1b;
+$jelly-bean: #298596;
+$scooter: #2cb4c1;
+$jungle-green: #25a189;
+$haiti: #150e38;
+$oslo-gray: #898d8f;
+$dodger-blue: #04a5ff;
+$black: #000;
+$black-opacit: rgba(0, 0, 0, 0.01);
+$midnight-blue: #01295C;
+$silver: #cbcbcb;
+$mercury: #e5e5e5;
+$tundora: #4e4e4e;
+$white-title: rgba(255, 255, 255, 0.6);
+
+
+$theme-colors: (
+  "heavy-metal": $heavy-metal,
+  "jelly-bean": $jelly-bean,
+  "scooter": $scooter,
+  "jungle-green": $jungle-green,
+  "haiti": $haiti,
+  "oslo-gray": $oslo-gray,
+  "dodger-blue": $dodger-blue,
+  "black": $black,
+  "black-opacit": $black-opacit,
+  "midnight-blue": $midnight-blue,
+  "silver": $silver,
+  "mercury": $mercury,
+  "tundora": $tundora,
+  "white-title": $white-title
+);
+$font-family-base: 'Roboto';
+$headings-font-family: 'Roboto';
+$headings-font-weight: 400;
+@import "../vendor/bootstrap/scss/bootstrap";
