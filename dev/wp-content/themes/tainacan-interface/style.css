@@ -557,7 +557,7 @@ nav[aria-label='breadcrumb'] {
       display: block; }
 
 .navbar--border-bottom {
-  border-bottom: 2px solid #ededed !important; }
+  border-bottom: 1px solid #ededed !important; }
 
 .tainacan-search-form {
   width: 32px;
@@ -984,13 +984,6 @@ nav[aria-label='breadcrumb'] {
 #comments form#commentform .comment-notes {
   font-size: 0.75rem;
   color: #898d8f; }
-@media only screen and (min-width: 768px) {
-  #comments form#commentform .form-row .form-row--avartar {
-    flex: 0 0 5.333333%;
-    max-width: 5.333333%; }
-  #comments form#commentform .form-row .form-row--textarea {
-    flex: 0 0 94.666667%;
-    max-width: 94.666667%; } }
 #comments form#commentform .form-row img {
   width: 50px;
   height: 50px; }
