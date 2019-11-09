@@ -3292,6 +3292,19 @@ registerBlockType('tainacan/dynamic-items-list', {
       }), React.createElement("span", null, item.title ? item.title : '')));
     }
 
+    function prepareMosaicItem(mosaicGroup, mosaicGroupsLength) {
+      return React.createElement("div", {
+        style: {
+          width: 'calc((100% / ' + mosaicGroupsLength + ') - ' + gridMargin + 'px)',
+          height: 'calc(((2 * ' + gridMargin + 'px) + 40vh))',
+          gridTemplateColumns: 'repeat(3, calc((100% / 3) - (' + 2 * Number(gridMargin) + 'px/3)))',
+          margin: gridMargin + 'px',
+          gridGap: gridMargin + 'px'
+        },
+        className: 'mosaic-container mosaic-container--' + mosaicGroup.length
+      }, buildMosaic(mosaicGroup));
+    }
+
     function setContent() {
       items = [];
       isLoading = true;
@@ -3339,26 +3352,53 @@ registerBlockType('tainacan/dynamic-items-list', {
       _api_client_axios_js__WEBPACK_IMPORTED_MODULE_1__["default"].get(endpoint, {
         cancelToken: itemsRequestSource.token
       }).then(function (response) {
-        var _iteratorNormalCompletion = true;
-        var _didIteratorError = false;
-        var _iteratorError = undefined;
+        if (layout !== 'mosaic') {
+          var _iteratorNormalCompletion = true;
+          var _didIteratorError = false;
+          var _iteratorError = undefined;
 
-        try {
-          for (var _iterator = response.data.items[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-            var item = _step.value;
-            items.push(prepareItem(item));
-          }
-        } catch (err) {
-          _didIteratorError = true;
-          _iteratorError = err;
-        } finally {
           try {
-            if (!_iteratorNormalCompletion && _iterator.return != null) {
-              _iterator.return();
+            for (var _iterator = response.data.items[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+              var item = _step.value;
+              items.push(prepareItem(item));
             }
+          } catch (err) {
+            _didIteratorError = true;
+            _iteratorError = err;
           } finally {
-            if (_didIteratorError) {
-              throw _iteratorError;
+            try {
+              if (!_iteratorNormalCompletion && _iterator.return != null) {
+                _iterator.return();
+              }
+            } finally {
+              if (_didIteratorError) {
+                throw _iteratorError;
+              }
+            }
+          }
+        } else {
+          var mosaicGroups = mosaicPartition(response.data.items, 5);
+          var _iteratorNormalCompletion2 = true;
+          var _didIteratorError2 = false;
+          var _iteratorError2 = undefined;
+
+          try {
+            for (var _iterator2 = mosaicGroups[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+              var mosaicGroup = _step2.value;
+              items.push(prepareMosaicItem(mosaicGroup, mosaicGroups.length));
+            }
+          } catch (err) {
+            _didIteratorError2 = true;
+            _iteratorError2 = err;
+          } finally {
+            try {
+              if (!_iteratorNormalCompletion2 && _iterator2.return != null) {
+                _iterator2.return();
+              }
+            } finally {
+              if (_didIteratorError2) {
+                throw _iteratorError2;
+              }
             }
           }
         }
@@ -3427,6 +3467,43 @@ registerBlockType('tainacan/dynamic-items-list', {
         });
         setContent();
       }
+    }
+
+    function mosaicPartition(items, size) {
+      var partition = _.groupBy(items, function (item, i) {
+        if (i % 2 == 0) return Math.floor(i / size);else return Math.floor(i / (size + 1));
+      });
+
+      return _.values(partition);
+    }
+
+    function buildMosaic(mosaicGroup) {
+      var mosaic = [];
+      var _iteratorNormalCompletion3 = true;
+      var _didIteratorError3 = false;
+      var _iteratorError3 = undefined;
+
+      try {
+        for (var _iterator3 = mosaicGroup[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+          var item = _step3.value;
+          mosaic.push(prepareItem(item));
+        }
+      } catch (err) {
+        _didIteratorError3 = true;
+        _iteratorError3 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion3 && _iterator3.return != null) {
+            _iterator3.return();
+          }
+        } finally {
+          if (_didIteratorError3) {
+            throw _iteratorError3;
+          }
+        }
+      }
+
+      return mosaic;
     } // Executed only on the first load of page
 
 
@@ -3766,10 +3843,8 @@ registerBlockType('tainacan/dynamic-items-list', {
       class: "spinner-container"
     }, React.createElement(Spinner, null)) : React.createElement("div", null, React.createElement("ul", {
       style: {
-        gridTemplateColumns: layout == 'grid' ? 'repeat(auto-fill, ' + (gridMargin + (showName ? 220 : 185)) + 'px)' : 'inherit',
-        gridGap: layout == 'mosaic' ? gridMargin + 'px' : 'unset',
-        clipPath: layout == 'mosaic' ? 'inset(0px 0px ' + gridMargin + 'px 0px)' : 'unset',
-        marginTop: showSearchBar || showCollectionHeader ? '1.5rem' : '0px'
+        marginTop: showSearchBar || showCollectionHeader ? '-' + Number(gridMargin) / 2 : '0px',
+        padding: Number(gridMargin) / 4 + 'px'
       },
       className: 'items-list-edit items-layout-' + layout + (!showName ? ' items-list-without-margin' : '')
     }, items)));

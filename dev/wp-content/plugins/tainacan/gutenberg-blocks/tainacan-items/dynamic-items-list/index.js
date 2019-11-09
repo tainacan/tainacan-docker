@@ -173,6 +173,25 @@ registerBlockType('tainacan/dynamic-items-list', {
             );
         }
 
+        function prepareMosaicItem(mosaicGroup, mosaicGroupsLength) {
+            
+            return (
+                <div 
+                    style={
+                        { 
+                            width: 'calc((100% / ' + mosaicGroupsLength + ') - ' + gridMargin + 'px)',
+                            height: 'calc(((2 * ' + gridMargin + 'px) + 40vh))',
+                            gridTemplateColumns: 'repeat(3, calc((100% / 3) - (' + (2*Number(gridMargin)) + 'px/3)))',
+                            margin: gridMargin + 'px',
+                            gridGap: gridMargin + 'px',
+                        }
+                    }
+                    className={ 'mosaic-container mosaic-container--' + mosaicGroup.length }>
+                        { buildMosaic(mosaicGroup) }
+                    </div>
+            )
+        }
+
         function setContent(){
 
             items = [];
@@ -231,9 +250,15 @@ registerBlockType('tainacan/dynamic-items-list', {
             
             tainacan.get(endpoint, { cancelToken: itemsRequestSource.token })
                 .then(response => {
-
-                    for (let item of response.data.items)
-                        items.push(prepareItem(item));
+                    
+                    if (layout !== 'mosaic') {
+                        for (let item of response.data.items)
+                            items.push(prepareItem(item));
+                    } else {
+                        const mosaicGroups = mosaicPartition(response.data.items, 5);
+                        for (let mosaicGroup of mosaicGroups)
+                            items.push(prepareMosaicItem(mosaicGroup, mosaicGroups.length));
+                    }
 
                     setAttributes({
                         content: <div></div>,
@@ -325,6 +350,23 @@ registerBlockType('tainacan/dynamic-items-list', {
                 setAttributes({ searchString: searchString });
                 setContent();
             }
+        }
+
+        function mosaicPartition(items, size) {
+            const partition = _.groupBy(items, (item, i) => {
+                if (i % 2 == 0)
+                    return Math.floor(i/size)
+                else
+                    return Math.floor(i/(size + 1))
+            });
+            return _.values(partition);
+        }
+
+        function buildMosaic(mosaicGroup) {
+            let mosaic = []
+            for (let item of mosaicGroup) 
+                mosaic.push(prepareItem(item))
+            return mosaic;
         }
 
         // Executed only on the first load of page
@@ -728,11 +770,9 @@ registerBlockType('tainacan/dynamic-items-list', {
                     </div> :
                     <div>
                         <ul 
-                            style={{ 
-                                gridTemplateColumns: layout == 'grid' ? 'repeat(auto-fill, ' +  (gridMargin + (showName ? 220 : 185)) + 'px)' : 'inherit', 
-                                gridGap: layout == 'mosaic' ? gridMargin + 'px': 'unset',
-                                clipPath: layout == 'mosaic' ? 'inset(0px 0px ' + gridMargin + 'px 0px)': 'unset',
-                                marginTop: showSearchBar || showCollectionHeader ? '1.5rem' : '0px'
+                            style={{
+                                marginTop: showSearchBar || showCollectionHeader ? '-' + (Number(gridMargin)/2) : '0px',    
+                                padding: (Number(gridMargin)/4) + 'px'
                             }}
                             className={'items-list-edit items-layout-' + layout + (!showName ? ' items-list-without-margin' : '')}>
                             { items }
