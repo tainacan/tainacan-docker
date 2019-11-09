@@ -1450,7 +1450,7 @@ a.has-text-yellow2:hover, a.has-text-yellow2:focus {
   font-family: BlinkMacSystemFont, -apple-system, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", "Helvetica", "Arial", sans-serif !important; }
 
 .is-family-sans-serif {
-  font-family: "Roboto", sans-serif !important; }
+  font-family: "Roboto", "Source Sans", "Helvetica", sans-serif !important; }
 
 .is-family-monospace {
   font-family: monospace !important; }
@@ -17088,7 +17088,8 @@ MIT (https://github.com/Wikiki/bulma-steps/blob/master/LICENSE)
   .tainacan-form .input.is-danger, .tainacan-form .taginput .is-danger.taginput-container.is-focusable, .taginput .tainacan-form .is-danger.taginput-container.is-focusable, .tainacan-form .textarea.is-danger {
     background-color: #eadadc; }
   .tainacan-form .b-numberinput {
-    height: 30px; }
+    height: 30px;
+    padding: 0 !important; }
     .tainacan-form .b-numberinput .control {
       margin-right: 0 !important; }
     .tainacan-form .b-numberinput div.control {
@@ -17096,7 +17097,8 @@ MIT (https://github.com/Wikiki/bulma-steps/blob/master/LICENSE)
       order: -1; }
     .tainacan-form .b-numberinput button,
     .tainacan-form .b-numberinput input {
-      height: 30px !important; }
+      height: 30px !important;
+      text-align: start; }
     .tainacan-form .b-numberinput button.is-primary,
     .tainacan-form .b-numberinput button.is-primary:hover,
     .tainacan-form .b-numberinput button.is-primary:focus,
@@ -17412,12 +17414,16 @@ button.link-style:active {
   color: white; }
 .dropdown .dropdown-trigger .dropdown.is-disabled, .autocomplete .dropdown-trigger .dropdown.is-disabled {
   cursor: default; }
+.dropdown > .control.has-icons-left .icon, .autocomplete > .control.has-icons-left .icon {
+  height: 2.125rem;
+  width: 2.125rem; }
 .dropdown .dropdown-menu, .autocomplete .dropdown-menu {
   padding: 0px;
   margin-top: 0;
   border-radius: 0px;
   min-width: 6rem;
-  border: none; }
+  border: none;
+  z-index: 99; }
   .dropdown .dropdown-menu .dropdown-content, .autocomplete .dropdown-menu .dropdown-content {
     padding: 0px;
     border-radius: 0px !important;
@@ -17444,16 +17450,18 @@ button.link-style:active {
         color: #555758; }
       .dropdown .dropdown-menu .dropdown-content .dropdown-item.is-active, .dropdown .dropdown-menu .dropdown-content .has-link a.is-active, .dropdown .dropdown-menu .has-link .dropdown-content a.is-active, .autocomplete .dropdown-menu .dropdown-content .dropdown-item.is-active, .autocomplete .dropdown .dropdown-menu .dropdown-content .has-link a.is-active, .dropdown .autocomplete .dropdown-menu .dropdown-content .has-link a.is-active, .autocomplete .dropdown .dropdown-menu .has-link .dropdown-content a.is-active, .dropdown .autocomplete .dropdown-menu .has-link .dropdown-content a.is-active {
         background-color: #d9eced; }
-      .dropdown .dropdown-menu .dropdown-content .dropdown-item .media-left, .dropdown .dropdown-menu .dropdown-content .has-link a .media-left, .dropdown .dropdown-menu .has-link .dropdown-content a .media-left, .autocomplete .dropdown-menu .dropdown-content .dropdown-item .media-left, .autocomplete .dropdown .dropdown-menu .dropdown-content .has-link a .media-left, .dropdown .autocomplete .dropdown-menu .dropdown-content .has-link a .media-left, .autocomplete .dropdown .dropdown-menu .has-link .dropdown-content a .media-left, .dropdown .autocomplete .dropdown-menu .has-link .dropdown-content a .media-left {
-        margin-right: 0.5rem; }
-      .dropdown .dropdown-menu .dropdown-content .dropdown-item .media-content, .dropdown .dropdown-menu .dropdown-content .has-link a .media-content, .dropdown .dropdown-menu .has-link .dropdown-content a .media-content, .autocomplete .dropdown-menu .dropdown-content .dropdown-item .media-content, .autocomplete .dropdown .dropdown-menu .dropdown-content .has-link a .media-content, .dropdown .autocomplete .dropdown-menu .dropdown-content .has-link a .media-content, .autocomplete .dropdown .dropdown-menu .has-link .dropdown-content a .media-content, .dropdown .autocomplete .dropdown-menu .has-link .dropdown-content a .media-content {
-        display: flex;
-        width: 80%; }
-        .dropdown .dropdown-menu .dropdown-content .dropdown-item .media-content .ellipsed-text, .dropdown .dropdown-menu .dropdown-content .has-link a .media-content .ellipsed-text, .dropdown .dropdown-menu .has-link .dropdown-content a .media-content .ellipsed-text, .autocomplete .dropdown-menu .dropdown-content .dropdown-item .media-content .ellipsed-text, .autocomplete .dropdown .dropdown-menu .dropdown-content .has-link a .media-content .ellipsed-text, .dropdown .autocomplete .dropdown-menu .dropdown-content .has-link a .media-content .ellipsed-text, .autocomplete .dropdown .dropdown-menu .has-link .dropdown-content a .media-content .ellipsed-text, .dropdown .autocomplete .dropdown-menu .has-link .dropdown-content a .media-content .ellipsed-text {
-          overflow-x: hidden;
-          text-overflow: ellipsis;
-          white-space: nowrap;
-          margin-right: 3px; }
+      .dropdown .dropdown-menu .dropdown-content .dropdown-item .media, .dropdown .dropdown-menu .dropdown-content .has-link a .media, .dropdown .dropdown-menu .has-link .dropdown-content a .media, .autocomplete .dropdown-menu .dropdown-content .dropdown-item .media, .autocomplete .dropdown .dropdown-menu .dropdown-content .has-link a .media, .dropdown .autocomplete .dropdown-menu .dropdown-content .has-link a .media, .autocomplete .dropdown .dropdown-menu .has-link .dropdown-content a .media, .dropdown .autocomplete .dropdown-menu .has-link .dropdown-content a .media {
+        align-items: center; }
+        .dropdown .dropdown-menu .dropdown-content .dropdown-item .media .media-left, .dropdown .dropdown-menu .dropdown-content .has-link a .media .media-left, .dropdown .dropdown-menu .has-link .dropdown-content a .media .media-left, .autocomplete .dropdown-menu .dropdown-content .dropdown-item .media .media-left, .autocomplete .dropdown .dropdown-menu .dropdown-content .has-link a .media .media-left, .dropdown .autocomplete .dropdown-menu .dropdown-content .has-link a .media .media-left, .autocomplete .dropdown .dropdown-menu .has-link .dropdown-content a .media .media-left, .dropdown .autocomplete .dropdown-menu .has-link .dropdown-content a .media .media-left {
+          margin-right: 0.5rem; }
+        .dropdown .dropdown-menu .dropdown-content .dropdown-item .media .media-content, .dropdown .dropdown-menu .dropdown-content .has-link a .media .media-content, .dropdown .dropdown-menu .has-link .dropdown-content a .media .media-content, .autocomplete .dropdown-menu .dropdown-content .dropdown-item .media .media-content, .autocomplete .dropdown .dropdown-menu .dropdown-content .has-link a .media .media-content, .dropdown .autocomplete .dropdown-menu .dropdown-content .has-link a .media .media-content, .autocomplete .dropdown .dropdown-menu .has-link .dropdown-content a .media .media-content, .dropdown .autocomplete .dropdown-menu .has-link .dropdown-content a .media .media-content {
+          display: flex;
+          width: 80%; }
+          .dropdown .dropdown-menu .dropdown-content .dropdown-item .media .media-content .ellipsed-text, .dropdown .dropdown-menu .dropdown-content .has-link a .media .media-content .ellipsed-text, .dropdown .dropdown-menu .has-link .dropdown-content a .media .media-content .ellipsed-text, .autocomplete .dropdown-menu .dropdown-content .dropdown-item .media .media-content .ellipsed-text, .autocomplete .dropdown .dropdown-menu .dropdown-content .has-link a .media .media-content .ellipsed-text, .dropdown .autocomplete .dropdown-menu .dropdown-content .has-link a .media .media-content .ellipsed-text, .autocomplete .dropdown .dropdown-menu .has-link .dropdown-content a .media .media-content .ellipsed-text, .dropdown .autocomplete .dropdown-menu .has-link .dropdown-content a .media .media-content .ellipsed-text {
+            overflow-x: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            margin-right: 3px; }
 @media screen and (max-width: 768px) {
   .dropdown.is-mobile-modal .dropdown-content, .autocomplete.is-mobile-modal .dropdown-content {
     max-height: 100vh; }
@@ -17499,14 +17507,14 @@ button.link-style:active {
   .taginput-container .tag {
     background: white;
     padding-right: 0;
-    padding-left: 0.5em; }
+    padding-left: 0.6em; }
     .taginput-container .tag.is-delete {
       color: #555758; }
       .taginput-container .tag.is-delete::after {
-        height: 30% !important;
+        height: 47% !important;
         width: 1px !important; }
       .taginput-container .tag.is-delete::before {
-        width: 30% !important;
+        width: 47% !important;
         height: 1px !important; }
       .taginput-container .tag.is-delete:hover, .taginput-container .tag.is-delete:focus {
         background-color: white;
@@ -18243,10 +18251,9 @@ button.link-style:active {
   margin-right: 0.375rem;
   max-width: 100%;
   overflow: hidden;
+  transition: all 0.2s ease;
   animation-name: appear;
-  animation-duration: 0.2s; }
-  .tags:hover, .tags:hover .tag {
-    background-color: #dbdbdb; }
+  animation-duration: 0.3s; }
   .tags .tag {
     background-color: white;
     margin-bottom: 0 !important;
@@ -18255,15 +18262,26 @@ button.link-style:active {
     justify-content: flex-start;
     overflow: hidden;
     text-overflow: ellipsis;
-    white-space: nowrap; }
+    white-space: nowrap;
+    animation-name: appear;
+    animation-duration: 0.3s; }
     .tags .tag.is-delete, .tags .tag.is-delete:hover, .tags .tag.is-delete:focus, .tags .tag.is-delete:active {
       border-radius: 50px !important;
       border-radius: 50px !important;
+      margin-right: 0px !important;
       color: #555758;
-      background-color: transparent; }
-      .tags .tag.is-delete:hover, .tags .tag.is-delete:hover:hover, .tags .tag.is-delete:focus:hover, .tags .tag.is-delete:active:hover {
-        background-color: transparent;
-        color: #555758; }
+      background-color: white;
+      transition: border-width 0.15s linear, background-color 0.15s linear; }
+      .tags .tag.is-delete:after, .tags .tag.is-delete:before, .tags .tag.is-delete:hover:after, .tags .tag.is-delete:hover:before, .tags .tag.is-delete:focus:after, .tags .tag.is-delete:focus:before, .tags .tag.is-delete:active:after, .tags .tag.is-delete:active:before {
+        transition: transform 0.15s linear; }
+      .tags .tag.is-delete:hover, .tags .tag.is-delete:focus, .tags .tag.is-delete:hover:hover, .tags .tag.is-delete:hover:focus, .tags .tag.is-delete:focus:hover, .tags .tag.is-delete:focus:focus, .tags .tag.is-delete:active:hover, .tags .tag.is-delete:active:focus {
+        border: solid 1px #cbcbcb !important;
+        background-color: #dbdbdb;
+        color: #454647; }
+        .tags .tag.is-delete:hover:after, .tags .tag.is-delete:focus:after, .tags .tag.is-delete:hover:hover:after, .tags .tag.is-delete:hover:focus:after, .tags .tag.is-delete:focus:hover:after, .tags .tag.is-delete:focus:focus:after, .tags .tag.is-delete:active:hover:after, .tags .tag.is-delete:active:focus:after {
+          transform: translateX(-50%) translateY(-50%) rotate(45deg) scale(1.15); }
+        .tags .tag.is-delete:hover:before, .tags .tag.is-delete:focus:before, .tags .tag.is-delete:hover:hover:before, .tags .tag.is-delete:hover:focus:before, .tags .tag.is-delete:focus:hover:before, .tags .tag.is-delete:focus:focus:before, .tags .tag.is-delete:active:hover:before, .tags .tag.is-delete:active:focus:before {
+          transform: translateX(-50%) translateY(-50%) rotate(45deg) scale(1.15); }
 
 .notices {
   z-index: 99999999; }
@@ -18299,7 +18317,7 @@ button.link-style:active {
 
 .repository-level-page {
   margin-top: 94px;
-  height: calc(100% - 94px) !important; }
+  height: calc(100vh - 94px) !important; }
   @media screen and (max-width: 769px) {
     .repository-level-page {
       margin-top: 42px; } }
@@ -18463,7 +18481,7 @@ body.tainacan-admin-page #adminmenumain, body.tainacan-admin-page #wpfooter, bod
   z-index: 999999;
   overflow-y: auto;
   margin: 0px !important;
-  font-family: "Roboto", sans-serif; }
+  font-family: "Roboto", "Source Sans", "Helvetica", sans-serif; }
 
 #tainacan-admin-app * {
   scrollbar-color: #cbcbcb transparent;
@@ -18500,14 +18518,18 @@ a:hover {
   text-decoration: underline; }
 
 .add-link {
-  display: inline;
-  font-size: 0.75rem; }
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.75rem;
+  margin: 3px 0 6px 0; }
   .add-link.disabled {
     pointer-events: none;
     cursor: default;
     color: #dbdbdb !important; }
     .add-link.disabled .icon {
       color: #dbdbdb !important; }
+  .add-link .tainacan-icon::before {
+    font-size: 0.875rem; }
 
 .page-container {
   padding: 25px 4.166666667%;

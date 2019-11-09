@@ -2946,6 +2946,7 @@ registerBlockType('tainacan/carousel-terms-list', {
       itemsRequestSource = axios__WEBPACK_IMPORTED_MODULE_2___default.a.CancelToken.source();
       terms = [];
       var endpoint = '/taxonomy/' + taxonomyId + '/terms/?' + qs__WEBPACK_IMPORTED_MODULE_3___default.a.stringify({
+        hideempty: 0,
         include: selectedTerms
       }) + '&fetch_only=id,name,url,header_image';
       _api_client_axios_js__WEBPACK_IMPORTED_MODULE_1__["default"].get(endpoint, {
@@ -2991,7 +2992,6 @@ registerBlockType('tainacan/carousel-terms-list', {
           try {
             var _loop = function _loop() {
               var term = _step2.value;
-              console.log(term);
               promises.push(_api_client_axios_js__WEBPACK_IMPORTED_MODULE_1__["default"].get('/items/?perpage=3&fetch_only=name,url,thumbnail&taxquery[0][taxonomy]=tnc_tax_' + taxonomyId + '&taxquery[0][terms][0]=' + term.id + '&taxquery[0][compare]=IN').then(function (response) {
                 return {
                   term: term,

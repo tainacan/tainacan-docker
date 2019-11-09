@@ -3278,7 +3278,8 @@ registerBlockType('tainacan/dynamic-items-list', {
         key: item.id,
         className: "item-list-item",
         style: {
-          marginBottom: layout == 'grid' ? (showName ? gridMargin + 12 : gridMargin) + 'px' : ''
+          marginBottom: layout == 'grid' ? (showName ? gridMargin + 12 : gridMargin) + 'px' : '',
+          backgroundImage: layout == 'mosaic' ? "url(".concat(getItemThumbnail(item, 'tainacan-medium-full'), ")") : 'none'
         }
       }, React.createElement("a", {
         id: isNaN(item.id) ? item.id : 'item-id-' + item.id,
@@ -3286,7 +3287,7 @@ registerBlockType('tainacan/dynamic-items-list', {
         target: "_blank",
         className: (!showName ? 'item-without-title' : '') + ' ' + (!showImage ? 'item-without-image' : '')
       }, React.createElement("img", {
-        src: item.thumbnail && item.thumbnail['tainacan-medium'][0] && item.thumbnail['tainacan-medium'][0] ? item.thumbnail['tainacan-medium'][0] : item.thumbnail && item.thumbnail['thumbnail'][0] && item.thumbnail['thumbnail'][0] ? item.thumbnail['thumbnail'][0] : "".concat(tainacan_plugin.base_url, "/admin/images/placeholder_square.png"),
+        src: getItemThumbnail(item, 'tainacan-medium'),
         alt: item.title ? item.title : __('Thumbnail', 'tainacan')
       }), React.createElement("span", null, item.title ? item.title : '')));
     }
@@ -3393,6 +3394,10 @@ registerBlockType('tainacan/dynamic-items-list', {
       }
     }
 
+    function getItemThumbnail(item, size) {
+      return item.thumbnail && item.thumbnail[size][0] && item.thumbnail[size][0] ? item.thumbnail[size][0] : item.thumbnail && item.thumbnail['thumbnail'][0] && item.thumbnail['thumbnail'][0] ? item.thumbnail['thumbnail'][0] : "".concat(tainacan_plugin.base_url, "/admin/images/placeholder_square.png");
+    }
+
     function openDynamicItemsModal() {
       isModalOpen = true;
       setAttributes({
@@ -3402,7 +3407,7 @@ registerBlockType('tainacan/dynamic-items-list', {
 
     function updateLayout(newLayout) {
       layout = newLayout;
-      if (layout == 'grid' && showImage == false) showImage = true;
+      if ((layout == 'grid' || layout == 'mosaic') && showImage == false) showImage = true;
       if (layout == 'list' && showName == false) showName = true;
       setAttributes({
         layout: layout,
@@ -3440,6 +3445,13 @@ registerBlockType('tainacan/dynamic-items-list', {
         return updateLayout('list');
       },
       isActive: layout === 'list'
+    }, {
+      icon: 'layout',
+      title: __('Mosaic View'),
+      onClick: function onClick() {
+        return updateLayout('mosaic');
+      },
+      isActive: layout === 'mosaic'
     }];
     return React.createElement("div", {
       className: className
@@ -3542,7 +3554,7 @@ registerBlockType('tainacan/dynamic-items-list', {
         });
         setContent();
       }
-    }) : null, layout == 'grid' ? React.createElement("div", null, React.createElement(ToggleControl, {
+    }) : null, layout == 'grid' || layout == 'mosaic' ? React.createElement("div", null, React.createElement(ToggleControl, {
       label: __("Item's title", 'tainacan'),
       help: showName ? __("Toggle to show item's title", 'tainacan') : __("Do not show item's title", 'tainacan'),
       checked: showName,
@@ -3755,6 +3767,8 @@ registerBlockType('tainacan/dynamic-items-list', {
     }, React.createElement(Spinner, null)) : React.createElement("div", null, React.createElement("ul", {
       style: {
         gridTemplateColumns: layout == 'grid' ? 'repeat(auto-fill, ' + (gridMargin + (showName ? 220 : 185)) + 'px)' : 'inherit',
+        gridGap: layout == 'mosaic' ? gridMargin + 'px' : 'unset',
+        clipPath: layout == 'mosaic' ? 'inset(0px 0px ' + gridMargin + 'px 0px)' : 'unset',
         marginTop: showSearchBar || showCollectionHeader ? '1.5rem' : '0px'
       },
       className: 'items-list-edit items-layout-' + layout + (!showName ? ' items-list-without-margin' : '')
