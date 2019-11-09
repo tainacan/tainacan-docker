@@ -3236,6 +3236,10 @@ registerBlockType('tainacan/dynamic-items-list', {
     collectionTextColor: {
       type: String,
       default: "#ffffff"
+    },
+    mosaicHeight: {
+      type: Number,
+      value: 40
     }
   },
   supports: {
@@ -3267,7 +3271,8 @@ registerBlockType('tainacan/dynamic-items-list', {
         showCollectionLabel = attributes.showCollectionLabel,
         isLoadingCollection = attributes.isLoadingCollection,
         collectionBackgroundColor = attributes.collectionBackgroundColor,
-        collectionTextColor = attributes.collectionTextColor; // Obtains block's client id to render it on save function
+        collectionTextColor = attributes.collectionTextColor,
+        mosaicHeight = attributes.mosaicHeight; // Obtains block's client id to render it on save function
 
     setAttributes({
       blockId: clientId
@@ -3296,7 +3301,7 @@ registerBlockType('tainacan/dynamic-items-list', {
       return React.createElement("div", {
         style: {
           width: 'calc((100% / ' + mosaicGroupsLength + ') - ' + gridMargin + 'px)',
-          height: 'calc(((2 * ' + gridMargin + 'px) + 40vh))',
+          height: 'calc(((2 * ' + gridMargin + 'px) + ' + mosaicHeight + 'vh))',
           gridTemplateColumns: 'repeat(3, calc((100% / 3) - (' + 2 * Number(gridMargin) + 'px/3)))',
           margin: gridMargin + 'px',
           gridGap: gridMargin + 'px'
@@ -3648,7 +3653,7 @@ registerBlockType('tainacan/dynamic-items-list', {
       }
     }, React.createElement(RangeControl, {
       label: __('Margin between items in pixels', 'tainacan'),
-      value: gridMargin,
+      value: gridMargin ? gridMargin : 0,
       onChange: function onChange(margin) {
         gridMargin = margin;
         setAttributes({
@@ -3658,7 +3663,23 @@ registerBlockType('tainacan/dynamic-items-list', {
       },
       min: 0,
       max: 48
-    }))) : null)))), isSelected ? React.createElement("div", null, isModalOpen ? React.createElement(_dynamic_items_modal_js__WEBPACK_IMPORTED_MODULE_0__["default"], {
+    })), layout == 'mosaic' ? React.createElement("div", {
+      style: {
+        marginTop: '16px'
+      }
+    }, React.createElement(RangeControl, {
+      label: __('Mosaic container height', 'tainacan'),
+      value: mosaicHeight ? mosaicHeight : 40,
+      onChange: function onChange(height) {
+        mosaicHeight = height;
+        setAttributes({
+          mosaicHeight: height
+        });
+        setContent();
+      },
+      min: 10,
+      max: 100
+    })) : null) : null)))), isSelected ? React.createElement("div", null, isModalOpen ? React.createElement(_dynamic_items_modal_js__WEBPACK_IMPORTED_MODULE_0__["default"], {
       existingCollectionId: collectionId,
       existingSearchURL: searchURL,
       onSelectCollection: function onSelectCollection(selectedCollectionId) {
@@ -3844,7 +3865,8 @@ registerBlockType('tainacan/dynamic-items-list', {
     }, React.createElement(Spinner, null)) : React.createElement("div", null, React.createElement("ul", {
       style: {
         marginTop: showSearchBar || showCollectionHeader ? '-' + Number(gridMargin) / 2 : '0px',
-        padding: Number(gridMargin) / 4 + 'px'
+        padding: Number(gridMargin) / 4 + 'px',
+        minHeight: layout === 'mosaic' ? mosaicHeight + 'vh' : ''
       },
       className: 'items-list-edit items-layout-' + layout + (!showName ? ' items-list-without-margin' : '')
     }, items)));
@@ -3866,7 +3888,8 @@ registerBlockType('tainacan/dynamic-items-list', {
         showCollectionHeader = attributes.showCollectionHeader,
         showCollectionLabel = attributes.showCollectionLabel,
         collectionBackgroundColor = attributes.collectionBackgroundColor,
-        collectionTextColor = attributes.collectionTextColor;
+        collectionTextColor = attributes.collectionTextColor,
+        mosaicHeight = attributes.mosaicHeight;
     return React.createElement("div", {
       "search-url": searchURL,
       className: className,
@@ -3877,6 +3900,7 @@ registerBlockType('tainacan/dynamic-items-list', {
       "show-collection-header": '' + showCollectionHeader,
       "show-collection-label": '' + showCollectionLabel,
       layout: layout,
+      "mosaic-height": mosaicHeight,
       "collection-background-color": collectionBackgroundColor,
       "collection-text-color": collectionTextColor,
       "grid-margin": gridMargin,
@@ -3886,7 +3910,138 @@ registerBlockType('tainacan/dynamic-items-list', {
       "tainacan-base-url": tainacan_plugin.base_url,
       id: 'wp-block-tainacan-dynamic-items-list_' + blockId
     }, content);
-  }
+  },
+  deprecated: [{
+    attributes: {
+      content: {
+        type: 'array',
+        source: 'children',
+        selector: 'div'
+      },
+      collectionId: {
+        type: String,
+        default: undefined
+      },
+      items: {
+        type: Array,
+        default: []
+      },
+      showImage: {
+        type: Boolean,
+        default: true
+      },
+      showName: {
+        type: Boolean,
+        default: true
+      },
+      layout: {
+        type: String,
+        default: 'grid'
+      },
+      isModalOpen: {
+        type: Boolean,
+        default: false
+      },
+      gridMargin: {
+        type: Number,
+        default: 0
+      },
+      searchURL: {
+        type: String,
+        default: undefined
+      },
+      itemsRequestSource: {
+        type: String,
+        default: undefined
+      },
+      maxItemsNumber: {
+        type: Number,
+        value: undefined
+      },
+      isLoading: {
+        type: Boolean,
+        value: false
+      },
+      isLoadingCollection: {
+        type: Boolean,
+        value: false
+      },
+      showSearchBar: {
+        type: Boolean,
+        value: false
+      },
+      showCollectionHeader: {
+        type: Boolean,
+        value: false
+      },
+      showCollectionLabel: {
+        type: Boolean,
+        value: false
+      },
+      collection: {
+        type: Object,
+        value: undefined
+      },
+      searchString: {
+        type: String,
+        default: undefined
+      },
+      order: {
+        type: String,
+        default: undefined
+      },
+      blockId: {
+        type: String,
+        default: undefined
+      },
+      collectionBackgroundColor: {
+        type: String,
+        default: "#454647"
+      },
+      collectionTextColor: {
+        type: String,
+        default: "#ffffff"
+      }
+    },
+    save: function save(_ref3) {
+      var attributes = _ref3.attributes,
+          className = _ref3.className;
+      var content = attributes.content,
+          blockId = attributes.blockId,
+          collectionId = attributes.collectionId,
+          showImage = attributes.showImage,
+          showName = attributes.showName,
+          layout = attributes.layout,
+          gridMargin = attributes.gridMargin,
+          searchURL = attributes.searchURL,
+          maxItemsNumber = attributes.maxItemsNumber,
+          order = attributes.order,
+          showSearchBar = attributes.showSearchBar,
+          showCollectionHeader = attributes.showCollectionHeader,
+          showCollectionLabel = attributes.showCollectionLabel,
+          collectionBackgroundColor = attributes.collectionBackgroundColor,
+          collectionTextColor = attributes.collectionTextColor;
+      return React.createElement("div", {
+        "search-url": searchURL,
+        className: className,
+        "collection-id": collectionId,
+        "show-image": '' + showImage,
+        "show-name": '' + showName,
+        "show-search-bar": '' + showSearchBar,
+        "show-collection-header": '' + showCollectionHeader,
+        "show-collection-label": '' + showCollectionLabel,
+        layout: layout,
+        "collection-background-color": collectionBackgroundColor,
+        "collection-text-color": collectionTextColor,
+        "grid-margin": gridMargin,
+        "max-items-number": maxItemsNumber,
+        order: order,
+        "tainacan-api-root": tainacan_plugin.root,
+        "tainacan-base-url": tainacan_plugin.base_url,
+        id: 'wp-block-tainacan-dynamic-items-list_' + blockId
+      }, content);
+    }
+  }]
 });
 
 /***/ })

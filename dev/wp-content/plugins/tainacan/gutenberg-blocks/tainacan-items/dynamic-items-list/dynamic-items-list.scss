@@ -442,6 +442,7 @@
                     bottom: 0;
                     opacity: 0;
                     padding: 8px 12px;
+                    word-break: break-word;
                     transition: opacity 0.5s ease;
                 }
                 &:hover a span {
@@ -457,11 +458,20 @@
                     text-decoration: none;
                 }                
             }
-            &.mosaic-container--1,
-            &.mosaic-container--2 {
+            &.mosaic-container--1 {
                 li.item-list-item {
+                    grid-row: span 3;
+                    grid-column: span 3;
+                }
+            }
+            &.mosaic-container--2 {
+                li.item-list-item:first-of-type {
                     grid-row: span 1;
-                    grid-column: span 1;
+                    grid-column: span 3;
+                }
+                li.item-list-item:last-of-type {
+                    grid-row: span 2;
+                    grid-column: span 3;
                 }
             }
             &.mosaic-container--3 li.item-list-item {
