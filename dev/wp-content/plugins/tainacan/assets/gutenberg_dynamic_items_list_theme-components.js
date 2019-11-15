@@ -2107,6 +2107,30 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -2136,7 +2160,12 @@ __webpack_require__.r(__webpack_exports__);
     gridMargin: Number,
     searchURL: String,
     maxItemsNumber: Number,
+    mosaicDensity: Number,
     mosaicHeight: Number,
+    mosaicGridRows: Number,
+    mosaicGridColumns: Number,
+    mosaicItemFocalPointX: Number,
+    mosaicItemFocalPointY: Number,
     order: String,
     showSearchBar: Boolean,
     showCollectionHeader: Boolean,
@@ -2238,11 +2267,13 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     getItemThumbnail: function getItemThumbnail(item, size) {
-      return item.thumbnail && item.thumbnail[size][0] && item.thumbnail[size][0] ? item.thumbnail[size][0] : item.thumbnail && item.thumbnail['thumbnail'][0] && item.thumbnail['thumbnail'][0] ? item.thumbnail['thumbnail'][0] : "".concat(this.tainacanBaseUrl, "/admin/images/placeholder_square.png");
+      return item.thumbnail && item.thumbnail[size][0] && item.thumbnail[size][0] ? item.thumbnail[size][0] : item.thumbnail && item.thumbnail['large'][0] && item.thumbnail['large'][0] ? item.thumbnail['large'][0] : "".concat(this.tainacanBaseUrl, "/admin/images/placeholder_square.png");
     },
-    mosaicPartition: function mosaicPartition(items, size) {
+    mosaicPartition: function mosaicPartition(items) {
+      var _this3 = this;
+
       var partition = _.groupBy(items, function (item, i) {
-        if (i % 2 == 0) return Math.floor(i / size);else return Math.floor(i / (size + 1));
+        if (i % 2 == 0) return Math.floor(i / _this3.mosaicDensity);else return Math.floor(i / (_this3.mosaicDensity + 1));
       });
 
       return _.values(partition);
@@ -2272,7 +2303,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n[data-align='full'] .block-control {\n  width: calc(100% + 14px);\n}\n.block-control {\n  display: flex;\n  flex-direction: row;\n  justify-content: center;\n  align-items: center;\n  padding: 5px;\n  position: relative;\n  top: -14px;\n  left: -14px;\n  width: calc(100% + 28px);\n  background: #f2f2f2;\n}\n.block-control p {\n    font-size: 0.875rem !important;\n    margin: 12px 1.5rem 16px 0;\n    fill: #555758;\n}\n.block-control p svg {\n      top: 4px;\n      margin-right: 0.75rem;\n      position: relative;\n      fill: #555758;\n}\n.components-placeholder__fieldset p {\n  font-size: 0.875rem !important;\n  margin-top: -2px;\n  fill: #555758;\n}\n.components-placeholder__fieldset p svg {\n    margin-right: 1rem;\n    top: 4px;\n    position: relative;\n    fill: #555758;\n}\n.wp-block-tainacan-modal {\n  width: 50%;\n}\n@media only screen and (max-width: 1024px) {\n.wp-block-tainacan-modal {\n      width: 75%;\n}\n}\n@media only screen and (max-width: 768px) {\n.wp-block-tainacan-modal {\n      width: 100%;\n}\n}\n.wp-block-tainacan-modal.dynamic-modal {\n    width: 90%;\n    height: 90%;\n    width: 80vw;\n    height: 80vh;\n}\n.wp-block-tainacan-modal.dynamic-modal iframe {\n      width: calc(100% + 32px);\n      height: calc(100% - 128px);\n      margin-left: -16px;\n}\n.wp-block-tainacan-modal.dynamic-modal .modal-footer-area {\n      height: 68px;\n      width: calc(100% + 32px);\n      margin-left: -16px !important;\n      padding: 1.2rem 1.2rem !important;\n      border-top: 1px solid #cbcbcb;\n}\n.wp-block-tainacan-modal .spinner-container {\n    min-height: 56px;\n    padding: 1rem;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    color: #555758;\n}\n.wp-block-tainacan-modal .spinner-container .components-spineer {\n      margin: 8px;\n}\n.wp-block-tainacan-modal .components-modal__header .components-icon-button {\n    padding-right: 0;\n}\n.wp-block-tainacan-modal hr {\n    margin: 5px 0.75rem;\n}\n.wp-block-tainacan-modal .modal-search-area {\n    display: flex;\n    justify-content: center;\n    margin-bottom: 14px;\n}\n.wp-block-tainacan-modal .modal-search-area .components-base-control {\n      width: 60%;\n}\n@media only screen and (max-width: 1024px) {\n.wp-block-tainacan-modal .modal-search-area .components-base-control {\n          width: 95%;\n}\n}\n.wp-block-tainacan-modal .modal-search-area .components-base-control:nth-child(2) {\n        flex-shrink: 2;\n}\n.wp-block-tainacan-modal .modal-search-area .components-base-control .components-base-control__field {\n        flex-wrap: wrap;\n}\n.wp-block-tainacan-modal .modal-search-area .components-base-control label.components-base-control__label {\n        font-weight: 500;\n        color: #454647;\n        font-size: 0.875rem;\n        text-align: center;\n}\n.wp-block-tainacan-modal .modal-search-area .components-base-control input.components-text-control__input {\n        padding: 5px 8px;\n        height: 28px;\n}\n.wp-block-tainacan-modal .modal-radio-area-label {\n    font-weight: 500;\n    margin-left: 1.75rem;\n}\n.wp-block-tainacan-modal .modal-checkbox-list,\n  .wp-block-tainacan-modal .modal-radio-list .components-base-control__field {\n    padding: 0;\n    flex-wrap: wrap;\n    display: flex;\n    display: -ms-grid;\n    display: grid;\n    -ms-grid-columns: 250px 250px;\n    grid-template-columns: repeat(auto-fill, 250px);\n    grid-gap: 0px;\n    justify-content: space-evenly;\n    list-style-type: none;\n    margin: 12px;\n    max-height: 50vh;\n    overflow-y: auto;\n    overflow-x: hidden;\n}\n.wp-block-tainacan-modal .modal-checkbox-list .components-base-control,\n    .wp-block-tainacan-modal .modal-radio-list .components-base-control__field .components-base-control {\n      overflow: hidden;\n}\n.wp-block-tainacan-modal .modal-checkbox-list .modal-checkbox-list-item,\n    .wp-block-tainacan-modal .modal-checkbox-list .components-radio-control__option,\n    .wp-block-tainacan-modal .modal-radio-list .components-base-control__field .modal-checkbox-list-item,\n    .wp-block-tainacan-modal .modal-radio-list .components-base-control__field .components-radio-control__option {\n      display: flex;\n      justify-content: flex-start;\n}\n.wp-block-tainacan-modal .modal-checkbox-list .modal-checkbox-list-item img,\n      .wp-block-tainacan-modal .modal-checkbox-list .components-radio-control__option img,\n      .wp-block-tainacan-modal .modal-radio-list .components-base-control__field .modal-checkbox-list-item img,\n      .wp-block-tainacan-modal .modal-radio-list .components-base-control__field .components-radio-control__option img {\n        width: 24px;\n        height: 24px;\n        margin-right: 10px;\n}\n.wp-block-tainacan-modal .modal-checkbox-list .modal-checkbox-list-item label,\n      .wp-block-tainacan-modal .modal-checkbox-list .components-radio-control__option label,\n      .wp-block-tainacan-modal .modal-radio-list .components-base-control__field .modal-checkbox-list-item label,\n      .wp-block-tainacan-modal .modal-radio-list .components-base-control__field .components-radio-control__option label {\n        white-space: nowrap;\n        text-overflow: ellipsis;\n        overflow: hidden;\n        display: inline-block;\n        max-width: 85%;\n}\n@media only screen and (max-width: 768px) {\n.wp-block-tainacan-modal .modal-checkbox-list .modal-checkbox-list-item label,\n          .wp-block-tainacan-modal .modal-checkbox-list .components-radio-control__option label,\n          .wp-block-tainacan-modal .modal-radio-list .components-base-control__field .modal-checkbox-list-item label,\n          .wp-block-tainacan-modal .modal-radio-list .components-base-control__field .components-radio-control__option label {\n            max-width: 80%;\n}\n}\n.wp-block-tainacan-modal .modal-loadmore-section {\n    display: flex;\n    align-items: baseline;\n    justify-content: center;\n}\n.wp-block-tainacan-modal .modal-loadmore-section p {\n      color: #555758;\n      margin-right: 12px;\n      margin-top: 2px;\n}\n.wp-block-tainacan-modal .modal-footer-area {\n    border-top: 1px solid #e2e4e7;\n    display: flex;\n    align-items: baseline;\n    justify-content: space-between;\n    padding: 16px 16px 0 16px;\n    margin: 0 -16px;\n}\n.wp-block-tainacan-modal .modal-footer-area p {\n      padding: 0 12px;\n      color: #454647;\n}\n.wp-block-tainacan-dynamic-items-list {\n  margin: 2rem 0px;\n}\n.wp-block-tainacan-dynamic-items-list .spinner-container {\n    min-height: 56px;\n    padding: 1rem;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    color: #555758;\n}\n@-webkit-keyframes skeleton-animation {\n0% {\n    opacity: 1.0;\n}\n50% {\n    opacity: 0.2;\n}\n100% {\n    opacity: 1.0;\n}\n}\n@-moz-keyframes skeleton-animation {\n0% {\n    opacity: 1.0;\n}\n50% {\n    opacity: 0.2;\n}\n100% {\n    opacity: 1.0;\n}\n}\n@-o-keyframes skeleton-animation {\n0% {\n    opacity: 1.0;\n}\n50% {\n    opacity: 0.2;\n}\n100% {\n    opacity: 1.0;\n}\n}\n@keyframes skeleton-animation {\n0% {\n    opacity: 1.0;\n}\n50% {\n    opacity: 0.2;\n}\n100% {\n    opacity: 1.0;\n}\n}\n.wp-block-tainacan-dynamic-items-list .skeleton {\n    border-radius: 2px;\n    background: #f2f2f2;\n    -webkit-animation: skeleton-animation 1.8s ease infinite;\n    -moz-animation: skeleton-animation 1.8s ease infinite;\n    -o-animation: skeleton-animation 1.8s ease infinite;\n    animation: skeleton-animation 1.8s ease infinite;\n}\n.wp-block-tainacan-dynamic-items-list .dynamic-items-collection-header {\n    display: flex;\n    width: 100%;\n    align-items: stretch;\n    text-decoration: none !important;\n}\n.wp-block-tainacan-dynamic-items-list .dynamic-items-collection-header:hover {\n      text-decoration: none;\n}\n.wp-block-tainacan-dynamic-items-list .dynamic-items-collection-header .collection-name {\n      width: auto;\n      min-width: 350px;\n      flex-grow: 1;\n      padding: 1rem 100px 1rem 1rem;\n      text-align: right;\n      line-height: 1.5rem;\n      min-height: 165px;\n      display: flex;\n      justify-content: flex-end;\n      align-items: center;\n      background-color: #454647;\n}\n.wp-block-tainacan-dynamic-items-list .dynamic-items-collection-header .collection-name h3 {\n        color: white;\n        text-decoration: none;\n        font-size: 1.3rem;\n}\n.wp-block-tainacan-dynamic-items-list .dynamic-items-collection-header .collection-name h3:hover {\n          text-decoration: none;\n}\n.wp-block-tainacan-dynamic-items-list .dynamic-items-collection-header .collection-name span.label {\n        font-weight: normal;\n        font-size: 1rem;\n}\n.wp-block-tainacan-dynamic-items-list .dynamic-items-collection-header .collection-name.only-collection-name {\n        justify-content: center;\n        padding: 1rem;\n}\n.wp-block-tainacan-dynamic-items-list .dynamic-items-collection-header .collection-name.only-collection-name h3 {\n          text-align: center;\n          font-size: 1.75rem;\n}\n.wp-block-tainacan-dynamic-items-list .dynamic-items-collection-header .collection-thumbnail {\n      height: 145px;\n      width: 145px;\n      background-size: cover;\n      background-position: center;\n      border-radius: 80px;\n      border: 4px solid white;\n      margin: 10px;\n      flex-shrink: 0;\n      position: relative;\n      margin-left: -155px;\n      left: 82px;\n      background-color: #dbdbdb;\n}\n.wp-block-tainacan-dynamic-items-list .dynamic-items-collection-header .collection-header-image {\n      width: auto;\n      min-width: 150px;\n      min-height: 165px;\n      flex-grow: 2;\n      background-size: cover;\n      background-position: center;\n      background-color: #dbdbdb;\n}\n@media only screen and (max-width: 1024px) {\n.wp-block-tainacan-dynamic-items-list .dynamic-items-collection-header {\n        flex-wrap: wrap-reverse;\n}\n.wp-block-tainacan-dynamic-items-list .dynamic-items-collection-header .collection-name {\n          width: 100% !important;\n          min-width: 100% !important;\n          justify-content: center !important;\n          text-align: center !important;\n          padding: 64px 1rem 0rem 1rem;\n}\n.wp-block-tainacan-dynamic-items-list .dynamic-items-collection-header .collection-name h3 {\n            margin-bottom: 1rem;\n}\n.wp-block-tainacan-dynamic-items-list .dynamic-items-collection-header .collection-thumbnail {\n          left: calc(-50% + 78px) !important;\n          top: -78px !important;\n}\n.wp-block-tainacan-dynamic-items-list .dynamic-items-collection-header .collection-header-image {\n          background-color: transparent;\n}\n}\n.wp-block-tainacan-dynamic-items-list .dynamic-items-search-bar {\n    width: 100%;\n    display: flex;\n    align-items: center;\n    border-bottom: 1px solid #cbcbcb;\n    padding: 1.00rem 0.5rem 0.75rem 0.5rem;\n}\n@media only screen and (max-width: 768px) {\n.wp-block-tainacan-dynamic-items-list .dynamic-items-search-bar {\n        flex-wrap: wrap;\n}\n.wp-block-tainacan-dynamic-items-list .dynamic-items-search-bar .search-button {\n          order: 4;\n          position: absolute;\n          margin-top: 37px;\n}\n.wp-block-tainacan-dynamic-items-list .dynamic-items-search-bar input {\n          width: 100% !important;\n          order: 5;\n          margin-top: 8px;\n          margin-left: 0px !important;\n          padding-left: 4px !important;\n          border-color: #dbdbdb !important;\n}\n}\n.wp-block-tainacan-dynamic-items-list .dynamic-items-search-bar button {\n      margin-right: 0.75rem;\n      padding: 0 0.35rem;\n      min-height: 28px;\n      z-index: 2;\n      border: none;\n      background: transparent;\n      cursor: pointer;\n}\n.wp-block-tainacan-dynamic-items-list .dynamic-items-search-bar button svg {\n        fill: #cbcbcb;\n        transition: fill 0.4s ease;\n}\n.wp-block-tainacan-dynamic-items-list .dynamic-items-search-bar button:hover svg {\n        fill: #545758;\n}\n.wp-block-tainacan-dynamic-items-list .dynamic-items-search-bar button:focus, .wp-block-tainacan-dynamic-items-list .dynamic-items-search-bar button:active {\n        border: none;\n        box-shadow: none;\n}\n.wp-block-tainacan-dynamic-items-list .dynamic-items-search-bar button.sorting-button-selected svg {\n        fill: #545758;\n}\n.wp-block-tainacan-dynamic-items-list .dynamic-items-search-bar button.next-button {\n        margin-right: 0rem;\n        padding: 0;\n}\n.wp-block-tainacan-dynamic-items-list .dynamic-items-search-bar button.next-button svg {\n          fill: #298596;\n}\n.wp-block-tainacan-dynamic-items-list .dynamic-items-search-bar button.previous-button {\n        margin-left: auto;\n        margin-right: 1rem;\n        padding: 0;\n}\n.wp-block-tainacan-dynamic-items-list .dynamic-items-search-bar button.previous-button svg {\n          fill: #298596;\n}\n.wp-block-tainacan-dynamic-items-list .dynamic-items-search-bar button[disabled] svg {\n        fill: #f2f2f2;\n        cursor: not-allowed;\n}\n.wp-block-tainacan-dynamic-items-list .dynamic-items-search-bar input {\n      height: 32px;\n      width: 20%;\n      border-radius: 0;\n      margin-left: -52px;\n      padding-left: 52px;\n      border: 1px solid white;\n      transition: border-color 0.7s ease, width 0.5s ease-in;\n}\n.wp-block-tainacan-dynamic-items-list .dynamic-items-search-bar input:focus, .wp-block-tainacan-dynamic-items-list .dynamic-items-search-bar input:active, .wp-block-tainacan-dynamic-items-list .dynamic-items-search-bar input:hover {\n        width: 100%;\n        border: 1px solid #cbcbcb;\n        box-shadow: none;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-list-without-margin,\n  .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-list-without-margin {\n    grid-template-columns: repeat(auto-fill, 185px);\n    justify-content: center !important;\n    grid-template-rows: auto !important;\n    list-style: none;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-list-without-margin li,\n    .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-list-without-margin li {\n      margin-top: 0 !important;\n      margin-right: 0 !important;\n      margin-left: 0 !important;\n      height: 185px !important;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-list-without-margin li img,\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-list-without-margin li img {\n        height: 185px !important;\n        margin-bottom: 0px !important;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list-edit li.item-list-item {\n    display: flex;\n    align-items: flex-start;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list-edit li.item-list-item button {\n      position: absolute !important;\n      background-color: rgba(255, 255, 255, 0.75);\n      color: #454647;\n      padding: 2px;\n      margin-left: 5px;\n      min-width: 14px;\n      visibility: hidden;\n      position: relative;\n      opacity: 0;\n      right: -14px;\n      top: 0px;\n      justify-content: center;\n      z-index: 999;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list-edit li.item-list-item:hover button {\n      visibility: visible;\n      background-color: white !important;\n      opacity: 1;\n      right: -8px;\n      top: -8px;\n      border: 1px solid #cbcbcb;\n      border-radius: 12px;\n      transition: opacity linear 0.15s, right linear 0.15s;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list-edit li.item-list-item:hover button:hover {\n      background-color: white !important;\n      border: 1px solid #cbcbcb !important;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-grid,\n  .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-grid {\n    padding: 0;\n    flex-wrap: wrap;\n    display: flex;\n    display: -ms-grid;\n    display: grid;\n    -ms-grid-columns: 220px 220px 220px 220px 220px;\n    grid-template-columns: repeat(auto-fill, 220px);\n    grid-gap: 0px;\n    justify-content: space-evenly;\n    list-style-type: none;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-grid li.item-list-item,\n    .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-grid li.item-list-item {\n      position: relative;\n      display: block;\n      margin: 12px 12px 24px 12px;\n      margin-bottom: 12px;\n      width: 185px;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-grid li.item-list-item a,\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-grid li.item-list-item a {\n        color: #454647;\n        font-weight: bold;\n        line-height: normal;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-grid li.item-list-item img,\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-grid li.item-list-item img {\n        height: auto;\n        width: 185px;\n        min-width: 185px;\n        padding: 0px;\n        margin-bottom: 0.5rem;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-grid li.item-list-item a.item-without-title span,\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-grid li.item-list-item a.item-without-title span {\n        display: none;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-grid li.item-list-item:hover a,\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-grid li.item-list-item:hover a {\n        color: #454647;\n        text-decoration: none;\n}\n@media only screen and (max-width: 498px) {\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-grid,\n    .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-grid {\n      grid-template-columns: repeat(auto-fill, 100%);\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-grid li.item-list-item,\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-grid li.item-list-item {\n        width: 100%;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-grid li.item-list-item img,\n        .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-grid li.item-list-item img {\n          width: 100%;\n}\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-list,\n  .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-list {\n    padding: 0;\n    display: flex;\n    flex-wrap: wrap;\n    align-items: center;\n    list-style-type: none;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-list li.item-list-item,\n    .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-list li.item-list-item {\n      position: relative;\n      margin: 12px 12px 24px 12px;\n      margin-bottom: 12px;\n      min-height: 54px;\n      min-width: calc(20% - 24px);\n      width: calc(20% - 24px);\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-list li.item-list-item a,\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-list li.item-list-item a {\n        color: #454647;\n        height: auto;\n        display: flex;\n        align-items: center;\n        word-break: break-all;\n        word-break: break-word;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-list li.item-list-item img,\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-list li.item-list-item img {\n        height: auto;\n        width: 54px;\n        min-width: 54px;\n        padding: 0px;\n        margin-right: 20px;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-list li.item-list-item a.item-without-image img,\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-list li.item-list-item a.item-without-image img {\n        display: none;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-list li.item-list-item:hover a,\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-list li.item-list-item:hover a {\n        color: #454647;\n        text-decoration: none;\n}\n@media only screen and (max-width: 1600px) {\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-list li.item-list-item,\n        .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-list li.item-list-item {\n          min-width: calc(25% - 24px);\n          width: calc(25% - 24px);\n}\n}\n@media only screen and (max-width: 1024px) {\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-list li.item-list-item,\n        .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-list li.item-list-item {\n          min-width: calc(33.333% - 24px);\n          width: calc(33.333% - 24px);\n}\n}\n@media only screen and (max-width: 768px) {\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-list li.item-list-item,\n        .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-list li.item-list-item {\n          min-width: calc(50% - 24px);\n          width: calc(50% - 24px);\n}\n}\n@media only screen and (max-width: 498px) {\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-list li.item-list-item,\n        .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-list li.item-list-item {\n          min-width: calc(100% - 24px);\n          width: calc(100% - 24px);\n}\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic,\n  .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic {\n    width: auto;\n    display: flex;\n    list-style: none;\n    min-height: 40vh;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container,\n    .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container {\n      padding: 0;\n      justify-content: stretch;\n      flex-wrap: wrap;\n      display: flex;\n      display: -ms-grid;\n      display: grid;\n      -ms-grid-columns: 20vh 20vh 20vh;\n      grid-template-columns: repeat(3, 20vh);\n      grid-auto-flow: dense;\n      width: 100%;\n      list-style-type: none;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container:not(:first-of-type),\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container:not(:first-of-type) {\n        margin-left: 0 !important;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container li.item-list-item,\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container li.item-list-item {\n        flex-grow: 1;\n        justify-self: stretch;\n        position: relative;\n        background-size: cover;\n        background-position: center;\n        min-width: 100%;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container li.item-list-item a,\n        .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container li.item-list-item a {\n          width: 100%;\n          height: 100%;\n          display: block;\n          color: #454647;\n          font-weight: bold;\n          line-height: normal;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container li.item-list-item img,\n        .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container li.item-list-item img {\n          display: none;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container li.item-list-item a span,\n        .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container li.item-list-item a span {\n          display: block;\n          position: absolute;\n          background: rgba(255, 255, 255, 0.75);\n          bottom: 0;\n          opacity: 0;\n          padding: 8px 12px;\n          word-break: break-word;\n          transition: opacity 0.5s ease;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container li.item-list-item:hover a span,\n        .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container li.item-list-item:hover a span {\n          opacity: 1;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container li.item-list-item a.item-without-title span,\n        .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container li.item-list-item a.item-without-title span {\n          display: none;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container li.item-list-item:hover a,\n        .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container li.item-list-item:hover a {\n          color: #454647;\n          text-decoration: none;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container.mosaic-container--1 li.item-list-item,\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container.mosaic-container--1 li.item-list-item {\n        grid-row: span 3;\n        grid-column: span 3;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container.mosaic-container--2 li.item-list-item:first-of-type,\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container.mosaic-container--2 li.item-list-item:first-of-type {\n        grid-row: span 1;\n        grid-column: span 3;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container.mosaic-container--2 li.item-list-item:last-of-type,\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container.mosaic-container--2 li.item-list-item:last-of-type {\n        grid-row: span 2;\n        grid-column: span 3;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container.mosaic-container--3 li.item-list-item:nth-of-type(1),\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container.mosaic-container--3 li.item-list-item:nth-of-type(1) {\n        grid-row: span 2;\n        grid-column: span 3;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container.mosaic-container--3 li.item-list-item:nth-of-type(3),\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container.mosaic-container--3 li.item-list-item:nth-of-type(3) {\n        grid-column: span 2;\n        grid-row: span 1;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container.mosaic-container--4 li.item-list-item:nth-of-type(1),\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container.mosaic-container--4 li.item-list-item:nth-of-type(1) {\n        grid-row: span 2;\n        grid-column: span 1;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container.mosaic-container--4 li.item-list-item:nth-of-type(2),\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container.mosaic-container--4 li.item-list-item:nth-of-type(2) {\n        grid-column: span 2;\n        grid-row: span 2;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container.mosaic-container--4 li.item-list-item:nth-of-type(3),\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container.mosaic-container--4 li.item-list-item:nth-of-type(3) {\n        grid-column: span 2;\n        grid-row: span 1;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container.mosaic-container--5 li.item-list-item:nth-of-type(1),\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container.mosaic-container--5 li.item-list-item:nth-of-type(1) {\n        grid-column: span 2;\n        grid-row: span 1;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container.mosaic-container--5 li.item-list-item:nth-of-type(4),\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container.mosaic-container--5 li.item-list-item:nth-of-type(4) {\n        grid-column: span 2;\n        grid-row: span 2;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container.mosaic-container--6 li.item-list-item:nth-of-type(3),\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container.mosaic-container--6 li.item-list-item:nth-of-type(3) {\n        grid-column: span 1;\n        grid-row: span 2;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container.mosaic-container--6 li.item-list-item:nth-of-type(4), .wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container.mosaic-container--6 li.item-list-item:nth-of-type(6),\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container.mosaic-container--6 li.item-list-item:nth-of-type(4),\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container.mosaic-container--6 li.item-list-item:nth-of-type(6) {\n        grid-column: span 2;\n        grid-row: span 1;\n}\n@media only screen and (max-width: 1024px) {\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic,\n    .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic {\n      overflow-x: auto;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container,\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container {\n        min-width: 240px;\n}\n}\n", ""]);
+exports.push([module.i, "\n[data-align='full'] .block-control {\n  width: calc(100% + 14px);\n}\n.block-control {\n  display: flex;\n  flex-direction: row;\n  justify-content: center;\n  align-items: center;\n  padding: 5px;\n  position: relative;\n  top: -14px;\n  left: -14px;\n  width: calc(100% + 28px);\n  background: #f2f2f2;\n}\n.block-control p {\n    font-size: 0.875rem !important;\n    margin: 12px 1.5rem 16px 0;\n    fill: #555758;\n}\n.block-control p svg {\n      top: 4px;\n      margin-right: 0.75rem;\n      position: relative;\n      fill: #555758;\n}\n.components-placeholder__fieldset p {\n  font-size: 0.875rem !important;\n  margin-top: -2px;\n  fill: #555758;\n}\n.components-placeholder__fieldset p svg {\n    margin-right: 1rem;\n    top: 4px;\n    position: relative;\n    fill: #555758;\n}\n.wp-block-tainacan-modal {\n  width: 50%;\n}\n@media only screen and (max-width: 1024px) {\n.wp-block-tainacan-modal {\n      width: 75%;\n}\n}\n@media only screen and (max-width: 768px) {\n.wp-block-tainacan-modal {\n      width: 100%;\n}\n}\n.wp-block-tainacan-modal.dynamic-modal {\n    width: 90%;\n    height: 90%;\n    width: 80vw;\n    height: 80vh;\n}\n.wp-block-tainacan-modal.dynamic-modal iframe {\n      width: calc(100% + 32px);\n      height: calc(100% - 128px);\n      margin-left: -16px;\n}\n.wp-block-tainacan-modal.dynamic-modal .modal-footer-area {\n      height: 68px;\n      width: calc(100% + 32px);\n      margin-left: -16px !important;\n      padding: 1.2rem 1.2rem !important;\n      border-top: 1px solid #cbcbcb;\n}\n.wp-block-tainacan-modal .spinner-container {\n    min-height: 56px;\n    padding: 1rem;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    color: #555758;\n}\n.wp-block-tainacan-modal .spinner-container .components-spineer {\n      margin: 8px;\n}\n.wp-block-tainacan-modal .components-modal__header .components-icon-button {\n    padding-right: 0;\n}\n.wp-block-tainacan-modal hr {\n    margin: 5px 0.75rem;\n}\n.wp-block-tainacan-modal .modal-search-area {\n    display: flex;\n    justify-content: center;\n    margin-bottom: 14px;\n}\n.wp-block-tainacan-modal .modal-search-area .components-base-control {\n      width: 60%;\n}\n@media only screen and (max-width: 1024px) {\n.wp-block-tainacan-modal .modal-search-area .components-base-control {\n          width: 95%;\n}\n}\n.wp-block-tainacan-modal .modal-search-area .components-base-control:nth-child(2) {\n        flex-shrink: 2;\n}\n.wp-block-tainacan-modal .modal-search-area .components-base-control .components-base-control__field {\n        flex-wrap: wrap;\n}\n.wp-block-tainacan-modal .modal-search-area .components-base-control label.components-base-control__label {\n        font-weight: 500;\n        color: #454647;\n        font-size: 0.875rem;\n        text-align: center;\n}\n.wp-block-tainacan-modal .modal-search-area .components-base-control input.components-text-control__input {\n        padding: 5px 8px;\n        height: 28px;\n}\n.wp-block-tainacan-modal .modal-radio-area-label {\n    font-weight: 500;\n    margin-left: 1.75rem;\n}\n.wp-block-tainacan-modal .modal-checkbox-list,\n  .wp-block-tainacan-modal .modal-radio-list .components-base-control__field {\n    padding: 0;\n    flex-wrap: wrap;\n    display: flex;\n    display: -ms-grid;\n    display: grid;\n    -ms-grid-columns: 250px 250px;\n    grid-template-columns: repeat(auto-fill, 250px);\n    grid-gap: 0px;\n    justify-content: space-evenly;\n    list-style-type: none;\n    margin: 12px;\n    max-height: 50vh;\n    overflow-y: auto;\n    overflow-x: hidden;\n}\n.wp-block-tainacan-modal .modal-checkbox-list .components-base-control,\n    .wp-block-tainacan-modal .modal-radio-list .components-base-control__field .components-base-control {\n      overflow: hidden;\n}\n.wp-block-tainacan-modal .modal-checkbox-list .modal-checkbox-list-item,\n    .wp-block-tainacan-modal .modal-checkbox-list .components-radio-control__option,\n    .wp-block-tainacan-modal .modal-radio-list .components-base-control__field .modal-checkbox-list-item,\n    .wp-block-tainacan-modal .modal-radio-list .components-base-control__field .components-radio-control__option {\n      display: flex;\n      justify-content: flex-start;\n}\n.wp-block-tainacan-modal .modal-checkbox-list .modal-checkbox-list-item img,\n      .wp-block-tainacan-modal .modal-checkbox-list .components-radio-control__option img,\n      .wp-block-tainacan-modal .modal-radio-list .components-base-control__field .modal-checkbox-list-item img,\n      .wp-block-tainacan-modal .modal-radio-list .components-base-control__field .components-radio-control__option img {\n        width: 24px;\n        height: 24px;\n        margin-right: 10px;\n}\n.wp-block-tainacan-modal .modal-checkbox-list .modal-checkbox-list-item label,\n      .wp-block-tainacan-modal .modal-checkbox-list .components-radio-control__option label,\n      .wp-block-tainacan-modal .modal-radio-list .components-base-control__field .modal-checkbox-list-item label,\n      .wp-block-tainacan-modal .modal-radio-list .components-base-control__field .components-radio-control__option label {\n        white-space: nowrap;\n        text-overflow: ellipsis;\n        overflow: hidden;\n        display: inline-block;\n        max-width: 85%;\n}\n@media only screen and (max-width: 768px) {\n.wp-block-tainacan-modal .modal-checkbox-list .modal-checkbox-list-item label,\n          .wp-block-tainacan-modal .modal-checkbox-list .components-radio-control__option label,\n          .wp-block-tainacan-modal .modal-radio-list .components-base-control__field .modal-checkbox-list-item label,\n          .wp-block-tainacan-modal .modal-radio-list .components-base-control__field .components-radio-control__option label {\n            max-width: 80%;\n}\n}\n.wp-block-tainacan-modal .modal-loadmore-section {\n    display: flex;\n    align-items: baseline;\n    justify-content: center;\n}\n.wp-block-tainacan-modal .modal-loadmore-section p {\n      color: #555758;\n      margin-right: 12px;\n      margin-top: 2px;\n}\n.wp-block-tainacan-modal .modal-footer-area {\n    border-top: 1px solid #e2e4e7;\n    display: flex;\n    align-items: baseline;\n    justify-content: space-between;\n    padding: 16px 16px 0 16px;\n    margin: 0 -16px;\n}\n.wp-block-tainacan-modal .modal-footer-area p {\n      padding: 0 12px;\n      color: #454647;\n}\n.wp-block-tainacan-dynamic-items-list {\n  margin: 2rem auto;\n}\n.wp-block-tainacan-dynamic-items-list .spinner-container {\n    min-height: 56px;\n    padding: 1rem;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    color: #555758;\n}\n.wp-block-tainacan-dynamic-items-list:hover .components-resizable-box__handle {\n    display: block;\n}\n@-webkit-keyframes skeleton-animation {\n0% {\n    opacity: 1.0;\n}\n50% {\n    opacity: 0.2;\n}\n100% {\n    opacity: 1.0;\n}\n}\n@-moz-keyframes skeleton-animation {\n0% {\n    opacity: 1.0;\n}\n50% {\n    opacity: 0.2;\n}\n100% {\n    opacity: 1.0;\n}\n}\n@-o-keyframes skeleton-animation {\n0% {\n    opacity: 1.0;\n}\n50% {\n    opacity: 0.2;\n}\n100% {\n    opacity: 1.0;\n}\n}\n@keyframes skeleton-animation {\n0% {\n    opacity: 1.0;\n}\n50% {\n    opacity: 0.2;\n}\n100% {\n    opacity: 1.0;\n}\n}\n.wp-block-tainacan-dynamic-items-list .skeleton {\n    border-radius: 2px;\n    background: #f2f2f2;\n    -webkit-animation: skeleton-animation 1.8s ease infinite;\n    -moz-animation: skeleton-animation 1.8s ease infinite;\n    -o-animation: skeleton-animation 1.8s ease infinite;\n    animation: skeleton-animation 1.8s ease infinite;\n}\n.wp-block-tainacan-dynamic-items-list .dynamic-items-collection-header {\n    display: flex;\n    width: 100%;\n    align-items: stretch;\n    text-decoration: none !important;\n}\n.wp-block-tainacan-dynamic-items-list .dynamic-items-collection-header:hover {\n      text-decoration: none;\n}\n.wp-block-tainacan-dynamic-items-list .dynamic-items-collection-header .collection-name {\n      width: auto;\n      min-width: 350px;\n      flex-grow: 1;\n      padding: 1rem 100px 1rem 1rem;\n      text-align: right;\n      line-height: 1.5rem;\n      min-height: 165px;\n      display: flex;\n      justify-content: flex-end;\n      align-items: center;\n      background-color: #454647;\n}\n.wp-block-tainacan-dynamic-items-list .dynamic-items-collection-header .collection-name h3 {\n        color: white;\n        text-decoration: none;\n        font-size: 1.3em;\n        margin: 0;\n}\n.wp-block-tainacan-dynamic-items-list .dynamic-items-collection-header .collection-name h3:hover {\n          text-decoration: none;\n}\n.wp-block-tainacan-dynamic-items-list .dynamic-items-collection-header .collection-name span.label {\n        font-weight: normal;\n        font-size: 0.75em;\n}\n.wp-block-tainacan-dynamic-items-list .dynamic-items-collection-header .collection-name.only-collection-name {\n        justify-content: center;\n        padding: 1rem;\n}\n.wp-block-tainacan-dynamic-items-list .dynamic-items-collection-header .collection-name.only-collection-name h3 {\n          text-align: center;\n          font-size: 1.75rem;\n}\n.wp-block-tainacan-dynamic-items-list .dynamic-items-collection-header .collection-thumbnail {\n      height: 145px;\n      width: 145px;\n      background-size: cover;\n      background-position: center;\n      border-radius: 80px;\n      border: 4px solid white;\n      margin: 10px;\n      flex-shrink: 0;\n      position: relative;\n      margin-left: -155px;\n      left: 82px;\n      background-color: #dbdbdb;\n}\n.wp-block-tainacan-dynamic-items-list .dynamic-items-collection-header .collection-header-image {\n      width: auto;\n      min-width: 150px;\n      min-height: 165px;\n      flex-grow: 2;\n      background-size: cover;\n      background-position: center;\n      background-color: #dbdbdb;\n}\n@media only screen and (max-width: 1024px) {\n.wp-block-tainacan-dynamic-items-list .dynamic-items-collection-header {\n        flex-wrap: wrap-reverse;\n}\n.wp-block-tainacan-dynamic-items-list .dynamic-items-collection-header .collection-name {\n          width: 100% !important;\n          min-width: 100% !important;\n          justify-content: center !important;\n          text-align: center !important;\n          padding: 64px 1rem 0rem 1rem;\n}\n.wp-block-tainacan-dynamic-items-list .dynamic-items-collection-header .collection-name h3 {\n            margin-bottom: 1rem;\n}\n.wp-block-tainacan-dynamic-items-list .dynamic-items-collection-header .collection-thumbnail {\n          left: calc(-50% + 78px) !important;\n          top: -78px !important;\n}\n.wp-block-tainacan-dynamic-items-list .dynamic-items-collection-header .collection-header-image {\n          background-color: transparent;\n}\n}\n.wp-block-tainacan-dynamic-items-list .dynamic-items-search-bar {\n    width: 100%;\n    display: flex;\n    align-items: center;\n    border-bottom: 1px solid #cbcbcb;\n    padding: 1.00rem 0.5rem 0.75rem 0.5rem;\n}\n@media only screen and (max-width: 768px) {\n.wp-block-tainacan-dynamic-items-list .dynamic-items-search-bar {\n        flex-wrap: wrap;\n}\n.wp-block-tainacan-dynamic-items-list .dynamic-items-search-bar .search-button {\n          order: 4;\n          position: absolute;\n          margin-top: 37px;\n}\n.wp-block-tainacan-dynamic-items-list .dynamic-items-search-bar input {\n          width: 100% !important;\n          order: 5;\n          margin-top: 8px;\n          margin-left: 0px !important;\n          padding-left: 4px !important;\n          border-color: #dbdbdb !important;\n}\n}\n.wp-block-tainacan-dynamic-items-list .dynamic-items-search-bar button {\n      margin-right: 0.75rem;\n      padding: 0 0.35rem;\n      min-height: 28px;\n      z-index: 2;\n      border: none;\n      background: transparent;\n      cursor: pointer;\n}\n.wp-block-tainacan-dynamic-items-list .dynamic-items-search-bar button svg {\n        fill: #cbcbcb;\n        transition: fill 0.4s ease;\n}\n.wp-block-tainacan-dynamic-items-list .dynamic-items-search-bar button:hover svg {\n        fill: #545758;\n}\n.wp-block-tainacan-dynamic-items-list .dynamic-items-search-bar button:focus, .wp-block-tainacan-dynamic-items-list .dynamic-items-search-bar button:active {\n        border: none;\n        box-shadow: none;\n}\n.wp-block-tainacan-dynamic-items-list .dynamic-items-search-bar button.sorting-button-selected svg {\n        fill: #545758;\n}\n.wp-block-tainacan-dynamic-items-list .dynamic-items-search-bar button.next-button {\n        margin-right: 0rem;\n        padding: 0;\n}\n.wp-block-tainacan-dynamic-items-list .dynamic-items-search-bar button.next-button svg {\n          fill: #298596;\n}\n.wp-block-tainacan-dynamic-items-list .dynamic-items-search-bar button.previous-button {\n        margin-left: auto;\n        margin-right: 1rem;\n        padding: 0;\n}\n.wp-block-tainacan-dynamic-items-list .dynamic-items-search-bar button.previous-button svg {\n          fill: #298596;\n}\n.wp-block-tainacan-dynamic-items-list .dynamic-items-search-bar button[disabled] svg {\n        fill: #f2f2f2;\n        cursor: not-allowed;\n}\n.wp-block-tainacan-dynamic-items-list .dynamic-items-search-bar input {\n      height: 32px;\n      width: 20%;\n      border-radius: 0;\n      margin-left: -52px;\n      padding-left: 52px;\n      border: 1px solid white;\n      transition: border-color 0.7s ease, width 0.5s ease-in;\n}\n.wp-block-tainacan-dynamic-items-list .dynamic-items-search-bar input:focus, .wp-block-tainacan-dynamic-items-list .dynamic-items-search-bar input:active, .wp-block-tainacan-dynamic-items-list .dynamic-items-search-bar input:hover {\n        width: 100%;\n        border: 1px solid #cbcbcb;\n        box-shadow: none;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-list.items-list-without-margin,\n  .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-list.items-list-without-margin,\n  .wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-grid.items-list-without-margin,\n  .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-grid.items-list-without-margin {\n    grid-template-columns: repeat(auto-fill, 185px);\n    justify-content: center !important;\n    grid-template-rows: auto !important;\n    list-style: none;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-list.items-list-without-margin li,\n    .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-list.items-list-without-margin li,\n    .wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-grid.items-list-without-margin li,\n    .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-grid.items-list-without-margin li {\n      margin-top: 0 !important;\n      margin-right: 0 !important;\n      margin-left: 0 !important;\n      height: 185px !important;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-list.items-list-without-margin li img,\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-list.items-list-without-margin li img,\n      .wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-grid.items-list-without-margin li img,\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-grid.items-list-without-margin li img {\n        height: 185px !important;\n        margin-bottom: 0px !important;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list-edit li.item-list-item {\n    display: flex;\n    align-items: flex-start;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list-edit li.item-list-item button {\n      position: absolute !important;\n      background-color: rgba(255, 255, 255, 0.75);\n      color: #454647;\n      padding: 2px;\n      margin-left: 5px;\n      min-width: 14px;\n      visibility: hidden;\n      position: relative;\n      opacity: 0;\n      right: -14px;\n      top: 0px;\n      justify-content: center;\n      z-index: 999;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list-edit li.item-list-item:hover button {\n      visibility: visible;\n      background-color: white !important;\n      opacity: 1;\n      right: -8px;\n      top: -8px;\n      border: 1px solid #cbcbcb;\n      border-radius: 12px;\n      transition: opacity linear 0.15s, right linear 0.15s;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list-edit li.item-list-item:hover button:hover {\n      background-color: white !important;\n      border: 1px solid #cbcbcb !important;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-grid,\n  .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-grid {\n    padding: 0;\n    flex-wrap: wrap;\n    display: flex;\n    display: -ms-grid;\n    display: grid;\n    -ms-grid-columns: 220px 220px 220px 220px 220px;\n    grid-template-columns: repeat(auto-fill, 220px);\n    grid-gap: 0px;\n    justify-content: space-evenly;\n    list-style-type: none;\n    margin: 0;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-grid li.item-list-item,\n    .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-grid li.item-list-item {\n      position: relative;\n      display: block;\n      margin: 12px 12px 24px 12px;\n      margin-bottom: 12px;\n      width: 185px;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-grid li.item-list-item a,\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-grid li.item-list-item a {\n        color: #454647;\n        font-weight: bold;\n        line-height: normal;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-grid li.item-list-item img,\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-grid li.item-list-item img {\n        height: auto;\n        width: 185px;\n        min-width: 185px;\n        padding: 0px;\n        margin-bottom: 0.5rem;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-grid li.item-list-item a.item-without-title span,\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-grid li.item-list-item a.item-without-title span {\n        display: none;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-grid li.item-list-item:hover a,\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-grid li.item-list-item:hover a {\n        color: #454647;\n        text-decoration: none;\n}\n@media only screen and (max-width: 498px) {\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-grid,\n    .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-grid {\n      grid-template-columns: repeat(auto-fill, 100%);\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-grid li.item-list-item,\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-grid li.item-list-item {\n        width: 100%;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-grid li.item-list-item img,\n        .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-grid li.item-list-item img {\n          width: 100%;\n}\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-list,\n  .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-list {\n    padding: 0;\n    display: flex;\n    flex-wrap: wrap;\n    align-items: center;\n    list-style-type: none;\n    margin: 0;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-list li.item-list-item,\n    .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-list li.item-list-item {\n      position: relative;\n      margin: 12px 12px 24px 12px;\n      margin-bottom: 12px;\n      min-height: 54px;\n      min-width: calc(20% - 24px);\n      width: calc(20% - 24px);\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-list li.item-list-item a,\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-list li.item-list-item a {\n        color: #454647;\n        height: auto;\n        display: flex;\n        align-items: center;\n        word-break: break-all;\n        word-break: break-word;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-list li.item-list-item img,\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-list li.item-list-item img {\n        height: auto;\n        width: 54px;\n        min-width: 54px;\n        padding: 0px;\n        margin-right: 20px;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-list li.item-list-item a.item-without-image img,\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-list li.item-list-item a.item-without-image img {\n        display: none;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-list li.item-list-item:hover a,\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-list li.item-list-item:hover a {\n        color: #454647;\n        text-decoration: none;\n}\n@media only screen and (max-width: 1600px) {\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-list li.item-list-item,\n        .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-list li.item-list-item {\n          min-width: calc(25% - 24px);\n          width: calc(25% - 24px);\n}\n}\n@media only screen and (max-width: 1024px) {\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-list li.item-list-item,\n        .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-list li.item-list-item {\n          min-width: calc(33.333% - 24px);\n          width: calc(33.333% - 24px);\n}\n}\n@media only screen and (max-width: 768px) {\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-list li.item-list-item,\n        .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-list li.item-list-item {\n          min-width: calc(50% - 24px);\n          width: calc(50% - 24px);\n}\n}\n@media only screen and (max-width: 498px) {\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-list li.item-list-item,\n        .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-list li.item-list-item {\n          min-width: calc(100% - 24px);\n          width: calc(100% - 24px);\n}\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic,\n  .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic {\n    width: auto;\n    display: flex;\n    list-style: none;\n    min-height: 280px;\n    margin: 0;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container,\n    .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container {\n      padding: 0;\n      justify-content: stretch;\n      flex-wrap: wrap;\n      display: flex;\n      display: -ms-grid;\n      display: grid;\n      -ms-grid-columns: 150px 150px 150px;\n      grid-template-columns: repeat(3, 150px);\n      grid-auto-flow: dense;\n      width: 100%;\n      list-style-type: none;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container:not(:first-of-type),\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container:not(:first-of-type) {\n        margin-left: 0 !important;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container li.item-list-item,\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container li.item-list-item {\n        flex-grow: 1;\n        justify-self: stretch;\n        position: relative;\n        min-width: 100%;\n        background-size: cover;\n        background-position: center;\n        margin: 0;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container li.item-list-item a,\n        .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container li.item-list-item a {\n          width: 100%;\n          height: 100%;\n          display: block;\n          color: #454647;\n          font-weight: bold;\n          line-height: normal;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container li.item-list-item img,\n        .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container li.item-list-item img {\n          display: none;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container li.item-list-item a span,\n        .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container li.item-list-item a span {\n          display: block;\n          position: absolute;\n          background: rgba(255, 255, 255, 0.75);\n          bottom: 0;\n          opacity: 0;\n          padding: 8px 12px;\n          word-break: break-word;\n          transition: opacity 0.5s ease;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container li.item-list-item:hover a span,\n        .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container li.item-list-item:hover a span {\n          opacity: 1;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container li.item-list-item a.item-without-title span,\n        .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container li.item-list-item a.item-without-title span {\n          display: none;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container li.item-list-item:hover a,\n        .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container li.item-list-item:hover a {\n          color: #454647;\n          text-decoration: none;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container.mosaic-container--1-2x3 li.item-list-item,\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container.mosaic-container--1-2x3 li.item-list-item {\n        grid-row: span 2;\n        grid-column: span 3;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container.mosaic-container--2-2x3 li.item-list-item,\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container.mosaic-container--2-2x3 li.item-list-item {\n        grid-row: span 1;\n        grid-column: span 3;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container.mosaic-container--3-2x3 li.item-list-item:nth-of-type(1),\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container.mosaic-container--3-2x3 li.item-list-item:nth-of-type(1) {\n        grid-row: span 1;\n        grid-column: span 2;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container.mosaic-container--4-2x3 li.item-list-item:nth-of-type(1), .wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container.mosaic-container--4-2x3 li.item-list-item:nth-of-type(3),\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container.mosaic-container--4-2x3 li.item-list-item:nth-of-type(1),\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container.mosaic-container--4-2x3 li.item-list-item:nth-of-type(3) {\n        grid-row: span 1;\n        grid-column: span 2;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container.mosaic-container--5-2x3 li.item-list-item:nth-of-type(2),\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container.mosaic-container--5-2x3 li.item-list-item:nth-of-type(2) {\n        grid-row: span 2;\n        grid-column: span 1;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container.mosaic-container--1-3x2 li.item-list-item,\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container.mosaic-container--1-3x2 li.item-list-item {\n        grid-row: span 3;\n        grid-column: span 2;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container.mosaic-container--2-3x2 li.item-list-item,\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container.mosaic-container--2-3x2 li.item-list-item {\n        grid-row: span 3;\n        grid-column: span 1;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container.mosaic-container--3-3x2 li.item-list-item:nth-of-type(1),\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container.mosaic-container--3-3x2 li.item-list-item:nth-of-type(1) {\n        grid-row: span 2;\n        grid-column: span 2;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container.mosaic-container--4-3x2 li.item-list-item:nth-of-type(1), .wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container.mosaic-container--4-3x2 li.item-list-item:nth-of-type(3),\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container.mosaic-container--4-3x2 li.item-list-item:nth-of-type(1),\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container.mosaic-container--4-3x2 li.item-list-item:nth-of-type(3) {\n        grid-row: span 2;\n        grid-column: span 1;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container.mosaic-container--5-3x2 li.item-list-item:nth-of-type(3),\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container.mosaic-container--5-3x2 li.item-list-item:nth-of-type(3) {\n        grid-row: span 1;\n        grid-column: span 2;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container.mosaic-container--1-3x3 li.item-list-item,\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container.mosaic-container--1-3x3 li.item-list-item {\n        grid-row: span 3;\n        grid-column: span 3;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container.mosaic-container--2-3x3 li.item-list-item:first-of-type,\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container.mosaic-container--2-3x3 li.item-list-item:first-of-type {\n        grid-row: span 1;\n        grid-column: span 3;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container.mosaic-container--2-3x3 li.item-list-item:last-of-type,\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container.mosaic-container--2-3x3 li.item-list-item:last-of-type {\n        grid-row: span 2;\n        grid-column: span 3;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container.mosaic-container--3-3x3 li.item-list-item:nth-of-type(1),\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container.mosaic-container--3-3x3 li.item-list-item:nth-of-type(1) {\n        grid-row: span 2;\n        grid-column: span 3;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container.mosaic-container--3-3x3 li.item-list-item:nth-of-type(3),\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container.mosaic-container--3-3x3 li.item-list-item:nth-of-type(3) {\n        grid-row: span 1;\n        grid-column: span 2;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container.mosaic-container--4-3x3 li.item-list-item:nth-of-type(1),\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container.mosaic-container--4-3x3 li.item-list-item:nth-of-type(1) {\n        grid-row: span 2;\n        grid-column: span 1;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container.mosaic-container--4-3x3 li.item-list-item:nth-of-type(2),\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container.mosaic-container--4-3x3 li.item-list-item:nth-of-type(2) {\n        grid-row: span 2;\n        grid-column: span 2;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container.mosaic-container--4-3x3 li.item-list-item:nth-of-type(3),\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container.mosaic-container--4-3x3 li.item-list-item:nth-of-type(3) {\n        grid-row: span 1;\n        grid-column: span 2;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container.mosaic-container--5-3x3 li.item-list-item:nth-of-type(1),\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container.mosaic-container--5-3x3 li.item-list-item:nth-of-type(1) {\n        grid-row: span 1;\n        grid-column: span 2;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container.mosaic-container--5-3x3 li.item-list-item:nth-of-type(4),\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container.mosaic-container--5-3x3 li.item-list-item:nth-of-type(4) {\n        grid-row: span 2;\n        grid-column: span 2;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container.mosaic-container--6-3x3 li.item-list-item:nth-of-type(3),\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container.mosaic-container--6-3x3 li.item-list-item:nth-of-type(3) {\n        grid-row: span 2;\n        grid-column: span 1;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container.mosaic-container--6-3x3 li.item-list-item:nth-of-type(4), .wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container.mosaic-container--6-3x3 li.item-list-item:nth-of-type(6),\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container.mosaic-container--6-3x3 li.item-list-item:nth-of-type(4),\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container.mosaic-container--6-3x3 li.item-list-item:nth-of-type(6) {\n        grid-row: span 1;\n        grid-column: span 2;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container.mosaic-container--1-3x4 li.item-list-item,\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container.mosaic-container--1-3x4 li.item-list-item {\n        grid-row: span 3;\n        grid-column: span 4;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container.mosaic-container--2-3x4 li.item-list-item,\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container.mosaic-container--2-3x4 li.item-list-item {\n        grid-row: span 3;\n        grid-column: span 2;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container.mosaic-container--3-3x4 li.item-list-item:nth-of-type(1),\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container.mosaic-container--3-3x4 li.item-list-item:nth-of-type(1) {\n        grid-row: span 3;\n        grid-column: span 2;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container.mosaic-container--3-3x4 li.item-list-item:nth-of-type(2),\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container.mosaic-container--3-3x4 li.item-list-item:nth-of-type(2) {\n        grid-row: span 2;\n        grid-column: span 2;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container.mosaic-container--3-3x4 li.item-list-item:nth-of-type(3),\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container.mosaic-container--3-3x4 li.item-list-item:nth-of-type(3) {\n        grid-row: span 1;\n        grid-column: span 2;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container.mosaic-container--4-3x4 li.item-list-item:nth-of-type(1), .wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container.mosaic-container--4-3x4 li.item-list-item:nth-of-type(4),\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container.mosaic-container--4-3x4 li.item-list-item:nth-of-type(1),\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container.mosaic-container--4-3x4 li.item-list-item:nth-of-type(4) {\n        grid-row: span 2;\n        grid-column: span 2;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container.mosaic-container--4-3x4 li.item-list-item:nth-of-type(2), .wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container.mosaic-container--4-3x4 li.item-list-item:nth-of-type(3),\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container.mosaic-container--4-3x4 li.item-list-item:nth-of-type(2),\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container.mosaic-container--4-3x4 li.item-list-item:nth-of-type(3) {\n        grid-row: span 1;\n        grid-column: span 2;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container.mosaic-container--5-3x4 li.item-list-item:nth-of-type(1), .wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container.mosaic-container--5-3x4 li.item-list-item:nth-of-type(3),\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container.mosaic-container--5-3x4 li.item-list-item:nth-of-type(1),\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container.mosaic-container--5-3x4 li.item-list-item:nth-of-type(3) {\n        grid-row: span 2;\n        grid-column: span 2;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container.mosaic-container--5-3x4 li.item-list-item:nth-of-type(2),\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container.mosaic-container--5-3x4 li.item-list-item:nth-of-type(2) {\n        grid-row: span 1;\n        grid-column: span 2;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container.mosaic-container--6-3x4 li.item-list-item:nth-of-type(2), .wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container.mosaic-container--6-3x4 li.item-list-item:nth-of-type(6),\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container.mosaic-container--6-3x4 li.item-list-item:nth-of-type(2),\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container.mosaic-container--6-3x4 li.item-list-item:nth-of-type(6) {\n        grid-row: span 1;\n        grid-column: span 2;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container.mosaic-container--6-3x4 li.item-list-item:nth-of-type(3),\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container.mosaic-container--6-3x4 li.item-list-item:nth-of-type(3) {\n        grid-row: span 2;\n        grid-column: span 1;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container.mosaic-container--6-3x4 li.item-list-item:nth-of-type(4),\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container.mosaic-container--6-3x4 li.item-list-item:nth-of-type(4) {\n        grid-row: span 2;\n        grid-column: span 2;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container.mosaic-container--1-4x3 li.item-list-item,\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container.mosaic-container--1-4x3 li.item-list-item {\n        grid-row: span 4;\n        grid-column: span 3;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container.mosaic-container--2-4x3 li.item-list-item,\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container.mosaic-container--2-4x3 li.item-list-item {\n        grid-row: span 2;\n        grid-column: span 3;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container.mosaic-container--3-4x3 li.item-list-item:nth-of-type(1),\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container.mosaic-container--3-4x3 li.item-list-item:nth-of-type(1) {\n        grid-row: span 2;\n        grid-column: span 3;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container.mosaic-container--3-4x3 li.item-list-item:nth-of-type(2),\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container.mosaic-container--3-4x3 li.item-list-item:nth-of-type(2) {\n        grid-row: span 2;\n        grid-column: span 1;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container.mosaic-container--3-4x3 li.item-list-item:nth-of-type(3),\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container.mosaic-container--3-4x3 li.item-list-item:nth-of-type(3) {\n        grid-row: span 2;\n        grid-column: span 2;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container.mosaic-container--4-4x3 li.item-list-item:nth-of-type(1),\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container.mosaic-container--4-4x3 li.item-list-item:nth-of-type(1) {\n        grid-row: span 2;\n        grid-column: span 1;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container.mosaic-container--4-4x3 li.item-list-item:nth-of-type(2),\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container.mosaic-container--4-4x3 li.item-list-item:nth-of-type(2) {\n        grid-row: span 1;\n        grid-column: span 2;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container.mosaic-container--4-4x3 li.item-list-item:nth-of-type(4),\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container.mosaic-container--4-4x3 li.item-list-item:nth-of-type(4) {\n        grid-row: span 2;\n        grid-column: span 2;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container.mosaic-container--5-4x3 li.item-list-item:nth-of-type(2), .wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container.mosaic-container--5-4x3 li.item-list-item:nth-of-type(4),\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container.mosaic-container--5-4x3 li.item-list-item:nth-of-type(2),\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container.mosaic-container--5-4x3 li.item-list-item:nth-of-type(4) {\n        grid-row: span 2;\n        grid-column: span 2;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container.mosaic-container--5-4x3 li.item-list-item:nth-of-type(5),\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container.mosaic-container--5-4x3 li.item-list-item:nth-of-type(5) {\n        grid-row: span 2;\n        grid-column: span 1;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container.mosaic-container--6-4x3 li.item-list-item:nth-of-type(2),\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container.mosaic-container--6-4x3 li.item-list-item:nth-of-type(2) {\n        grid-row: span 2;\n        grid-column: span 2;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container.mosaic-container--6-4x3 li.item-list-item:nth-of-type(3), .wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container.mosaic-container--6-4x3 li.item-list-item:nth-of-type(6),\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container.mosaic-container--6-4x3 li.item-list-item:nth-of-type(3),\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container.mosaic-container--6-4x3 li.item-list-item:nth-of-type(6) {\n        grid-row: span 2;\n        grid-column: span 1;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container.mosaic-container--6-4x3 li.item-list-item:nth-of-type(5),\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container.mosaic-container--6-4x3 li.item-list-item:nth-of-type(5) {\n        grid-row: span 1;\n        grid-column: span 2;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container.mosaic-container--1-4x5 li.item-list-item,\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container.mosaic-container--1-4x5 li.item-list-item {\n        grid-row: span 4;\n        grid-column: span 5;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container.mosaic-container--2-4x5 li.item-list-item,\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container.mosaic-container--2-4x5 li.item-list-item {\n        grid-row: span 2;\n        grid-column: span 5;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container.mosaic-container--3-4x5 li.item-list-item:nth-of-type(1),\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container.mosaic-container--3-4x5 li.item-list-item:nth-of-type(1) {\n        grid-row: span 2;\n        grid-column: span 5;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container.mosaic-container--3-4x5 li.item-list-item:nth-of-type(2),\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container.mosaic-container--3-4x5 li.item-list-item:nth-of-type(2) {\n        grid-row: span 2;\n        grid-column: span 3;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container.mosaic-container--3-4x5 li.item-list-item:nth-of-type(3),\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container.mosaic-container--3-4x5 li.item-list-item:nth-of-type(3) {\n        grid-row: span 2;\n        grid-column: span 2;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container.mosaic-container--4-4x5 li.item-list-item:nth-of-type(1), .wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container.mosaic-container--4-4x5 li.item-list-item:nth-of-type(4),\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container.mosaic-container--4-4x5 li.item-list-item:nth-of-type(1),\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container.mosaic-container--4-4x5 li.item-list-item:nth-of-type(4) {\n        grid-row: span 2;\n        grid-column: span 3;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container.mosaic-container--4-4x5 li.item-list-item:nth-of-type(2), .wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container.mosaic-container--4-4x5 li.item-list-item:nth-of-type(3),\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container.mosaic-container--4-4x5 li.item-list-item:nth-of-type(2),\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container.mosaic-container--4-4x5 li.item-list-item:nth-of-type(3) {\n        grid-row: span 2;\n        grid-column: span 2;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container.mosaic-container--5-4x5 li.item-list-item:nth-of-type(3), .wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container.mosaic-container--5-4x5 li.item-list-item:nth-of-type(5),\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container.mosaic-container--5-4x5 li.item-list-item:nth-of-type(3),\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container.mosaic-container--5-4x5 li.item-list-item:nth-of-type(5) {\n        grid-row: span 2;\n        grid-column: span 3;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container.mosaic-container--5-4x5 li.item-list-item:nth-of-type(4),\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container.mosaic-container--5-4x5 li.item-list-item:nth-of-type(4) {\n        grid-row: span 3;\n        grid-column: span 2;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container.mosaic-container--6-4x5 li.item-list-item:nth-of-type(1),\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container.mosaic-container--6-4x5 li.item-list-item:nth-of-type(1) {\n        grid-row: span 2;\n        grid-column: span 2;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container.mosaic-container--6-4x5 li.item-list-item:nth-of-type(3),\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container.mosaic-container--6-4x5 li.item-list-item:nth-of-type(3) {\n        grid-row: span 3;\n        grid-column: span 2;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container.mosaic-container--6-4x5 li.item-list-item:nth-of-type(5),\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container.mosaic-container--6-4x5 li.item-list-item:nth-of-type(5) {\n        grid-row: span 2;\n        grid-column: span 3;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container.mosaic-container--6-4x5 li.item-list-item:nth-of-type(6),\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container.mosaic-container--6-4x5 li.item-list-item:nth-of-type(6) {\n        grid-row: span 1;\n        grid-column: span 2;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container.mosaic-container--1-5x4 li.item-list-item,\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container.mosaic-container--1-5x4 li.item-list-item {\n        grid-row: span 5;\n        grid-column: span 4;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container.mosaic-container--2-5x4 li.item-list-item,\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container.mosaic-container--2-5x4 li.item-list-item {\n        grid-row: span 5;\n        grid-column: span 2;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container.mosaic-container--3-5x4 li.item-list-item:nth-of-type(1),\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container.mosaic-container--3-5x4 li.item-list-item:nth-of-type(1) {\n        grid-row: span 3;\n        grid-column: span 2;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container.mosaic-container--3-5x4 li.item-list-item:nth-of-type(2),\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container.mosaic-container--3-5x4 li.item-list-item:nth-of-type(2) {\n        grid-row: span 5;\n        grid-column: span 2;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container.mosaic-container--3-5x4 li.item-list-item:nth-of-type(3),\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container.mosaic-container--3-5x4 li.item-list-item:nth-of-type(3) {\n        grid-row: span 2;\n        grid-column: span 2;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container.mosaic-container--4-5x4 li.item-list-item:nth-of-type(1), .wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container.mosaic-container--4-5x4 li.item-list-item:nth-of-type(3),\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container.mosaic-container--4-5x4 li.item-list-item:nth-of-type(1),\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container.mosaic-container--4-5x4 li.item-list-item:nth-of-type(3) {\n        grid-row: span 3;\n        grid-column: span 2;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container.mosaic-container--4-5x4 li.item-list-item:nth-of-type(2), .wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container.mosaic-container--4-5x4 li.item-list-item:nth-of-type(4),\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container.mosaic-container--4-5x4 li.item-list-item:nth-of-type(2),\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container.mosaic-container--4-5x4 li.item-list-item:nth-of-type(4) {\n        grid-row: span 2;\n        grid-column: span 2;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container.mosaic-container--5-5x4 li.item-list-item:nth-of-type(1), .wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container.mosaic-container--5-5x4 li.item-list-item:nth-of-type(3), .wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container.mosaic-container--5-5x4 li.item-list-item:nth-of-type(5),\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container.mosaic-container--5-5x4 li.item-list-item:nth-of-type(1),\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container.mosaic-container--5-5x4 li.item-list-item:nth-of-type(3),\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container.mosaic-container--5-5x4 li.item-list-item:nth-of-type(5) {\n        grid-row: span 2;\n        grid-column: span 2;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container.mosaic-container--5-5x4 li.item-list-item:nth-of-type(2),\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container.mosaic-container--5-5x4 li.item-list-item:nth-of-type(2) {\n        grid-row: span 1;\n        grid-column: span 2;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container.mosaic-container--5-5x4 li.item-list-item:nth-of-type(4),\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container.mosaic-container--5-5x4 li.item-list-item:nth-of-type(4) {\n        grid-row: span 3;\n        grid-column: span 2;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container.mosaic-container--6-5x4 li.item-list-item:nth-of-type(1), .wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container.mosaic-container--6-5x4 li.item-list-item:nth-of-type(5),\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container.mosaic-container--6-5x4 li.item-list-item:nth-of-type(1),\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container.mosaic-container--6-5x4 li.item-list-item:nth-of-type(5) {\n        grid-row: span 2;\n        grid-column: span 2;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container.mosaic-container--6-5x4 li.item-list-item:nth-of-type(2),\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container.mosaic-container--6-5x4 li.item-list-item:nth-of-type(2) {\n        grid-row: span 3;\n        grid-column: span 2;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container.mosaic-container--6-5x4 li.item-list-item:nth-of-type(3),\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container.mosaic-container--6-5x4 li.item-list-item:nth-of-type(3) {\n        grid-row: span 1;\n        grid-column: span 2;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container.mosaic-container--6-5x4 li.item-list-item:nth-of-type(4), .wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container.mosaic-container--6-5x4 li.item-list-item:nth-of-type(6),\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container.mosaic-container--6-5x4 li.item-list-item:nth-of-type(4),\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container.mosaic-container--6-5x4 li.item-list-item:nth-of-type(6) {\n        grid-row: span 2;\n        grid-column: span 1;\n}\n@media only screen and (max-width: 1024px) {\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic,\n    .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic {\n      overflow-x: auto;\n}\n.wp-block-tainacan-dynamic-items-list ul.items-list.items-layout-mosaic .mosaic-container,\n      .wp-block-tainacan-dynamic-items-list ul.items-list-edit.items-layout-mosaic .mosaic-container {\n        min-width: 240px;\n}\n}\n", ""]);
 
 // exports
 
@@ -4691,589 +4722,672 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { class: _vm.className }, [
-    _vm.showCollectionHeader
-      ? _c("div", [
-          _vm.isLoadingCollection
-            ? _c("div", {
-                staticClass: "dynamic-items-collection-header skeleton",
-                style: { height: "165px" }
-              })
-            : _c(
-                "a",
-                {
-                  staticClass: "dynamic-items-collection-header",
-                  attrs: {
-                    target: "_blank",
-                    href: _vm.collection.url ? _vm.collection.url : ""
-                  }
-                },
-                [
-                  _c(
-                    "div",
-                    {
-                      class:
-                        "collection-name " +
-                        ((!_vm.collection ||
-                          !_vm.collection.thumbnail ||
-                          (!_vm.collection.thumbnail["tainacan-medium"] &&
-                            !_vm.collection.thumbnail["medium"])) &&
-                        (!_vm.collection || !_vm.collection.header_image)
-                          ? "only-collection-name"
-                          : ""),
+  return _c(
+    "div",
+    { class: _vm.className },
+    [
+      _vm.showCollectionHeader
+        ? _c("div", [
+            _vm.isLoadingCollection
+              ? _c("div", {
+                  staticClass: "dynamic-items-collection-header skeleton",
+                  style: { height: "165px" }
+                })
+              : _c(
+                  "a",
+                  {
+                    staticClass: "dynamic-items-collection-header",
+                    attrs: {
+                      target: "_blank",
+                      href: _vm.collection.url ? _vm.collection.url : ""
+                    }
+                  },
+                  [
+                    _c(
+                      "div",
+                      {
+                        class:
+                          "collection-name " +
+                          ((!_vm.collection ||
+                            !_vm.collection.thumbnail ||
+                            (!_vm.collection.thumbnail["tainacan-medium"] &&
+                              !_vm.collection.thumbnail["medium"])) &&
+                          (!_vm.collection || !_vm.collection.header_image)
+                            ? "only-collection-name"
+                            : ""),
+                        style: {
+                          backgroundColor: _vm.collectionBackgroundColor
+                            ? _vm.collectionBackgroundColor
+                            : "",
+                          paddingRight:
+                            _vm.collection &&
+                            _vm.collection.thumbnail &&
+                            (_vm.collection.thumbnail["tainacan-medium"] ||
+                              _vm.collection.thumbnail["medium"])
+                              ? ""
+                              : "20px",
+                          paddingTop:
+                            !_vm.collection ||
+                            !_vm.collection.thumbnail ||
+                            (!_vm.collection.thumbnail["tainacan-medium"] &&
+                              !_vm.collection.thumbnail["medium"])
+                              ? "1rem"
+                              : "",
+                          width:
+                            _vm.collection && _vm.collection.header_image
+                              ? ""
+                              : "100%"
+                        }
+                      },
+                      [
+                        _c(
+                          "h3",
+                          {
+                            style: {
+                              color: _vm.collectionTextColor
+                                ? _vm.collectionTextColor
+                                : ""
+                            }
+                          },
+                          [
+                            _vm.showCollectionLabel
+                              ? _c("span", { staticClass: "label" }, [
+                                  _vm._v(
+                                    "\n                        " +
+                                      _vm._s(
+                                        _vm.$root.__("Collection", "tainacan")
+                                      ) +
+                                      "\n                        "
+                                  ),
+                                  _c("br")
+                                ])
+                              : _vm._e(),
+                            _vm._v(
+                              "\n                    " +
+                                _vm._s(
+                                  _vm.collection && _vm.collection.name
+                                    ? _vm.collection.name
+                                    : ""
+                                ) +
+                                "\n                "
+                            )
+                          ]
+                        )
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _vm.collection &&
+                    _vm.collection.thumbnail &&
+                    (_vm.collection.thumbnail["tainacan-medium"] ||
+                      _vm.collection.thumbnail["medium"])
+                      ? _c("div", {
+                          staticClass: "collection-thumbnail",
+                          style: {
+                            backgroundImage:
+                              "url(" +
+                              (_vm.collection.thumbnail["tainacan-medium"] !=
+                              undefined
+                                ? _vm.collection.thumbnail["tainacan-medium"][0]
+                                : _vm.collection.thumbnail["medium"][0]) +
+                              ")"
+                          }
+                        })
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _c("div", {
+                      staticClass: "collection-header-image",
                       style: {
-                        backgroundColor: _vm.collectionBackgroundColor
-                          ? _vm.collectionBackgroundColor
+                        backgroundImage: _vm.collection.header_image
+                          ? "url(" + _vm.collection.header_image + ")"
                           : "",
-                        paddingRight:
+                        minHeight:
+                          _vm.collection && _vm.collection.header_image
+                            ? ""
+                            : "80px",
+                        display: !(
                           _vm.collection &&
                           _vm.collection.thumbnail &&
                           (_vm.collection.thumbnail["tainacan-medium"] ||
                             _vm.collection.thumbnail["medium"])
+                        )
+                          ? _vm.collection && _vm.collection.header_image
                             ? ""
-                            : "20px",
-                        paddingTop:
-                          !_vm.collection ||
-                          !_vm.collection.thumbnail ||
-                          (!_vm.collection.thumbnail["tainacan-medium"] &&
-                            !_vm.collection.thumbnail["medium"])
-                            ? "1rem"
-                            : "",
-                        width:
-                          _vm.collection && _vm.collection.header_image
-                            ? ""
-                            : "100%"
+                            : "none"
+                          : ""
                       }
-                    },
-                    [
-                      _c(
-                        "h3",
-                        {
-                          style: {
-                            color: _vm.collectionTextColor
-                              ? _vm.collectionTextColor
-                              : ""
-                          }
-                        },
-                        [
-                          _vm.showCollectionLabel
-                            ? _c("span", { staticClass: "label" }, [
-                                _vm._v(
-                                  "\n                        " +
-                                    _vm._s(
-                                      _vm.$root.__("Collection", "tainacan")
-                                    ) +
-                                    "\n                        "
-                                ),
-                                _c("br")
-                              ])
-                            : _vm._e(),
-                          _vm._v(
-                            "\n                    " +
-                              _vm._s(
-                                _vm.collection && _vm.collection.name
-                                  ? _vm.collection.name
-                                  : ""
-                              ) +
-                              "\n                "
-                          )
-                        ]
-                      )
-                    ]
-                  ),
-                  _vm._v(" "),
-                  _vm.collection &&
-                  _vm.collection.thumbnail &&
-                  (_vm.collection.thumbnail["tainacan-medium"] ||
-                    _vm.collection.thumbnail["medium"])
-                    ? _c("div", {
-                        staticClass: "collection-thumbnail",
-                        style: {
-                          backgroundImage:
-                            "url(" +
-                            (_vm.collection.thumbnail["tainacan-medium"] !=
-                            undefined
-                              ? _vm.collection.thumbnail["tainacan-medium"][0]
-                              : _vm.collection.thumbnail["medium"][0]) +
-                            ")"
+                    })
+                  ]
+                )
+          ])
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.showSearchBar
+        ? _c("div", { staticClass: "dynamic-items-search-bar" }, [
+            _c(
+              "button",
+              {
+                class: _vm.localOrder == "asc" ? "sorting-button-selected" : "",
+                attrs: { label: _vm.$root.__("Sort ascending", "tainacan") },
+                on: {
+                  click: function($event) {
+                    _vm.localOrder = "asc"
+                    _vm.fetchItems()
+                  }
+                }
+              },
+              [
+                _c("span", { staticClass: "icon" }, [
+                  _c("i", [
+                    _c(
+                      "svg",
+                      {
+                        attrs: {
+                          width: "24",
+                          height: "24",
+                          viewBox: "-2 -2 20 20"
                         }
-                      })
-                    : _vm._e(),
-                  _vm._v(" "),
-                  _c("div", {
-                    staticClass: "collection-header-image",
+                      },
+                      [
+                        _c("path", {
+                          attrs: {
+                            d:
+                              "M6.7,10.8l-3.3,3.3L0,10.8h2.5V0h1.7v10.8H6.7z M11.7,0.8H8.3v1.7h3.3V0.8z M14.2,5.8H8.3v1.7h5.8V5.8z M16.7,10.8H8.3v1.7\th8.3V10.8z"
+                          }
+                        })
+                      ]
+                    )
+                  ])
+                ])
+              ]
+            ),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                class:
+                  _vm.localOrder == "desc" ? "sorting-button-selected" : "",
+                attrs: { label: _vm.$root.__("Sort descending", "tainacan") },
+                on: {
+                  click: function($event) {
+                    _vm.localOrder = "desc"
+                    _vm.fetchItems()
+                  }
+                }
+              },
+              [
+                _c("span", { staticClass: "icon" }, [
+                  _c("i", [
+                    _c(
+                      "svg",
+                      {
+                        attrs: {
+                          width: "24",
+                          height: "24",
+                          viewBox: "-2 -2 20 20"
+                        }
+                      },
+                      [
+                        _c("path", {
+                          attrs: {
+                            d:
+                              "M6.7,3.3H4.2v10.8H2.5V3.3H0L3.3,0L6.7,3.3z M11.6,2.5H8.3v1.7h3.3V2.5z M14.1,7.5H8.3v1.7h5.8V7.5z M16.6,12.5H8.3v1.7 h8.3V12.5z"
+                          }
+                        })
+                      ]
+                    )
+                  ])
+                ])
+              ]
+            ),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "search-button",
+                attrs: { label: _vm.$root.__("Search", "tainacan") },
+                on: {
+                  click: function($event) {
+                    _vm.fetchItems()
+                  }
+                }
+              },
+              [
+                _c("span", { staticClass: "icon" }, [
+                  _c("i", [
+                    _c(
+                      "svg",
+                      {
+                        attrs: {
+                          width: "24",
+                          height: "24",
+                          viewBox: "-2 -2 20 20"
+                        }
+                      },
+                      [
+                        _c("path", {
+                          staticClass: "st0",
+                          attrs: {
+                            d:
+                              "M0,5.8C0,5,0.2,4.2,0.5,3.5s0.7-1.3,1.2-1.8s1.1-0.9,1.8-1.2C4.2,0.1,5,0,5.8,0S7.3,0.1,8,0.5\n                                c0.7,0.3,1.3,0.7,1.8,1.2s0.9,1.1,1.2,1.8c0.5,1.2,0.5,2.5,0.2,3.7c0,0.2-0.1,0.4-0.2,0.6c0,0.1-0.2,0.6-0.2,0.6\n                                c0.6,0.6,1.3,1.3,1.9,1.9c0.7,0.7,1.3,1.3,2,2c0,0,0.3,0.2,0.3,0.3c0,0.3-0.1,0.7-0.3,1c-0.2,0.6-0.8,1-1.4,1.2\n                                c-0.1,0-0.6,0.2-0.6,0.1c0,0-4.2-4.2-4.2-4.2c0,0-0.8,0.3-0.8,0.4c-1.3,0.4-2.8,0.5-4.1-0.1c-0.7-0.3-1.3-0.7-1.8-1.2\n                                C1.2,9.3,0.8,8.7,0.5,8S0,6.6,0,5.8z M1.6,5.8c0,0.4,0.1,0.9,0.2,1.3C2.1,8.2,3,9.2,4.1,9.6c0.5,0.2,1,0.3,1.6,0.3\n                                c0.6,0,1.1-0.1,1.6-0.3C8.7,9,9.7,7.6,9.8,6c0.1-1.5-0.6-3.1-2-3.9c-0.9-0.5-2-0.6-3-0.4C4.6,1.8,4.4,1.9,4.1,2\n                                c-0.5,0.2-1,0.5-1.4,0.9C2,3.7,1.6,4.7,1.6,5.8z"
+                          }
+                        })
+                      ]
+                    )
+                  ])
+                ])
+              ]
+            ),
+            _vm._v(" "),
+            _c("input", {
+              attrs: { type: "text" },
+              domProps: { value: _vm.searchString },
+              on: {
+                input: function(value) {
+                  return _vm.applySearchString(value)
+                }
+              }
+            }),
+            _vm._v(" "),
+            _vm.paged > 1
+              ? _c(
+                  "button",
+                  {
+                    staticClass: "previous-button",
+                    attrs: { label: _vm.$root.__("Previous page", "tainacan") },
+                    on: {
+                      click: function($event) {
+                        _vm.paged--
+                        _vm.fetchItems()
+                      }
+                    }
+                  },
+                  [
+                    _c("span", { staticClass: "icon" }, [
+                      _c("i", [
+                        _c(
+                          "svg",
+                          {
+                            attrs: {
+                              width: "30",
+                              height: "30",
+                              viewBox: "0 2 20 20"
+                            }
+                          },
+                          [
+                            _c("path", {
+                              attrs: {
+                                d:
+                                  "M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("path", {
+                              attrs: { d: "M0 0h24v24H0z", fill: "none" }
+                            })
+                          ]
+                        )
+                      ])
+                    ])
+                  ]
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.paged < _vm.totalItems / _vm.maxItemsNumber &&
+            _vm.items.length < _vm.totalItems
+              ? _c(
+                  "button",
+                  {
+                    staticClass: "next-button",
+                    style: { marginLeft: _vm.paged <= 1 ? "auto" : "0" },
+                    attrs: { label: _vm.$root.__("Next page", "tainacan") },
+                    on: {
+                      click: function($event) {
+                        _vm.paged++
+                        _vm.fetchItems()
+                      }
+                    }
+                  },
+                  [
+                    _c("span", { staticClass: "icon" }, [
+                      _c("i", [
+                        _c(
+                          "svg",
+                          {
+                            attrs: {
+                              width: "30",
+                              height: "30",
+                              viewBox: "0 2 20 20"
+                            }
+                          },
+                          [
+                            _c("path", {
+                              attrs: {
+                                d:
+                                  "M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("path", {
+                              attrs: { d: "M0 0h24v24H0z", fill: "none" }
+                            })
+                          ]
+                        )
+                      ])
+                    ])
+                  ]
+                )
+              : _vm._e()
+          ])
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.isLoading
+        ? [
+            _vm.layout !== "mosaic"
+              ? _c(
+                  "ul",
+                  {
+                    staticClass: "items-list",
+                    class:
+                      "items-layout-" +
+                      _vm.layout +
+                      (!_vm.showName ? " items-list-without-margin" : ""),
                     style: {
-                      backgroundImage: _vm.collection.header_image
-                        ? "url(" + _vm.collection.header_image + ")"
-                        : "",
-                      minHeight:
-                        _vm.collection && _vm.collection.header_image
-                          ? ""
-                          : "80px",
-                      display: !(
-                        _vm.collection &&
-                        _vm.collection.thumbnail &&
-                        (_vm.collection.thumbnail["tainacan-medium"] ||
-                          _vm.collection.thumbnail["medium"])
-                      )
-                        ? _vm.collection && _vm.collection.header_image
-                          ? ""
-                          : "none"
-                        : ""
+                      gridTemplateColumns:
+                        _vm.layout == "grid"
+                          ? "repeat(auto-fill, " +
+                            (_vm.gridMargin + (_vm.showName ? 220 : 185)) +
+                            "px)"
+                          : "inherit",
+                      marginTop:
+                        _vm.showSearchBar || _vm.showCollectionHeader
+                          ? "1.34rem"
+                          : "0px"
                     }
-                  })
-                ]
-              )
-        ])
-      : _vm._e(),
-    _vm._v(" "),
-    _vm.showSearchBar
-      ? _c("div", { staticClass: "dynamic-items-search-bar" }, [
-          _c(
-            "button",
-            {
-              class: _vm.localOrder == "asc" ? "sorting-button-selected" : "",
-              attrs: { label: _vm.$root.__("Sort ascending", "tainacan") },
-              on: {
-                click: function($event) {
-                  _vm.localOrder = "asc"
-                  _vm.fetchItems()
-                }
-              }
-            },
-            [
-              _c("span", { staticClass: "icon" }, [
-                _c("i", [
-                  _c(
-                    "svg",
-                    {
-                      attrs: {
-                        width: "24",
-                        height: "24",
-                        viewBox: "-2 -2 20 20"
-                      }
-                    },
-                    [
-                      _c("path", {
-                        attrs: {
-                          d:
-                            "M6.7,10.8l-3.3,3.3L0,10.8h2.5V0h1.7v10.8H6.7z M11.7,0.8H8.3v1.7h3.3V0.8z M14.2,5.8H8.3v1.7h5.8V5.8z M16.7,10.8H8.3v1.7\th8.3V10.8z"
-                        }
-                      })
-                    ]
-                  )
-                ])
-              ])
-            ]
-          ),
-          _vm._v(" "),
-          _c(
-            "button",
-            {
-              class: _vm.localOrder == "desc" ? "sorting-button-selected" : "",
-              attrs: { label: _vm.$root.__("Sort descending", "tainacan") },
-              on: {
-                click: function($event) {
-                  _vm.localOrder = "desc"
-                  _vm.fetchItems()
-                }
-              }
-            },
-            [
-              _c("span", { staticClass: "icon" }, [
-                _c("i", [
-                  _c(
-                    "svg",
-                    {
-                      attrs: {
-                        width: "24",
-                        height: "24",
-                        viewBox: "-2 -2 20 20"
-                      }
-                    },
-                    [
-                      _c("path", {
-                        attrs: {
-                          d:
-                            "M6.7,3.3H4.2v10.8H2.5V3.3H0L3.3,0L6.7,3.3z M11.6,2.5H8.3v1.7h3.3V2.5z M14.1,7.5H8.3v1.7h5.8V7.5z M16.6,12.5H8.3v1.7 h8.3V12.5z"
-                        }
-                      })
-                    ]
-                  )
-                ])
-              ])
-            ]
-          ),
-          _vm._v(" "),
-          _c(
-            "button",
-            {
-              staticClass: "search-button",
-              attrs: { label: _vm.$root.__("Search", "tainacan") },
-              on: {
-                click: function($event) {
-                  _vm.fetchItems()
-                }
-              }
-            },
-            [
-              _c("span", { staticClass: "icon" }, [
-                _c("i", [
-                  _c(
-                    "svg",
-                    {
-                      attrs: {
-                        width: "24",
-                        height: "24",
-                        viewBox: "-2 -2 20 20"
-                      }
-                    },
-                    [
-                      _c("path", {
-                        staticClass: "st0",
-                        attrs: {
-                          d:
-                            "M0,5.8C0,5,0.2,4.2,0.5,3.5s0.7-1.3,1.2-1.8s1.1-0.9,1.8-1.2C4.2,0.1,5,0,5.8,0S7.3,0.1,8,0.5\n                                c0.7,0.3,1.3,0.7,1.8,1.2s0.9,1.1,1.2,1.8c0.5,1.2,0.5,2.5,0.2,3.7c0,0.2-0.1,0.4-0.2,0.6c0,0.1-0.2,0.6-0.2,0.6\n                                c0.6,0.6,1.3,1.3,1.9,1.9c0.7,0.7,1.3,1.3,2,2c0,0,0.3,0.2,0.3,0.3c0,0.3-0.1,0.7-0.3,1c-0.2,0.6-0.8,1-1.4,1.2\n                                c-0.1,0-0.6,0.2-0.6,0.1c0,0-4.2-4.2-4.2-4.2c0,0-0.8,0.3-0.8,0.4c-1.3,0.4-2.8,0.5-4.1-0.1c-0.7-0.3-1.3-0.7-1.8-1.2\n                                C1.2,9.3,0.8,8.7,0.5,8S0,6.6,0,5.8z M1.6,5.8c0,0.4,0.1,0.9,0.2,1.3C2.1,8.2,3,9.2,4.1,9.6c0.5,0.2,1,0.3,1.6,0.3\n                                c0.6,0,1.1-0.1,1.6-0.3C8.7,9,9.7,7.6,9.8,6c0.1-1.5-0.6-3.1-2-3.9c-0.9-0.5-2-0.6-3-0.4C4.6,1.8,4.4,1.9,4.1,2\n                                c-0.5,0.2-1,0.5-1.4,0.9C2,3.7,1.6,4.7,1.6,5.8z"
-                        }
-                      })
-                    ]
-                  )
-                ])
-              ])
-            ]
-          ),
-          _vm._v(" "),
-          _c("input", {
-            attrs: { type: "text" },
-            domProps: { value: _vm.searchString },
-            on: {
-              input: function(value) {
-                return _vm.applySearchString(value)
-              }
-            }
-          }),
-          _vm._v(" "),
-          _vm.paged > 1
-            ? _c(
-                "button",
-                {
-                  staticClass: "previous-button",
-                  attrs: { label: _vm.$root.__("Previous page", "tainacan") },
-                  on: {
-                    click: function($event) {
-                      _vm.paged--
-                      _vm.fetchItems()
-                    }
-                  }
-                },
-                [
-                  _c("span", { staticClass: "icon" }, [
-                    _c("i", [
-                      _c(
-                        "svg",
-                        {
-                          attrs: {
-                            width: "30",
-                            height: "30",
-                            viewBox: "0 2 20 20"
-                          }
-                        },
-                        [
-                          _c("path", {
-                            attrs: {
-                              d: "M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"
-                            }
-                          }),
-                          _vm._v(" "),
-                          _c("path", {
-                            attrs: { d: "M0 0h24v24H0z", fill: "none" }
-                          })
-                        ]
-                      )
-                    ])
-                  ])
-                ]
-              )
-            : _vm._e(),
-          _vm._v(" "),
-          _vm.paged < _vm.totalItems / _vm.maxItemsNumber &&
-          _vm.items.length < _vm.totalItems
-            ? _c(
-                "button",
-                {
-                  staticClass: "next-button",
-                  style: { marginLeft: _vm.paged <= 1 ? "auto" : "0" },
-                  attrs: { label: _vm.$root.__("Next page", "tainacan") },
-                  on: {
-                    click: function($event) {
-                      _vm.paged++
-                      _vm.fetchItems()
-                    }
-                  }
-                },
-                [
-                  _c("span", { staticClass: "icon" }, [
-                    _c("i", [
-                      _c(
-                        "svg",
-                        {
-                          attrs: {
-                            width: "30",
-                            height: "30",
-                            viewBox: "0 2 20 20"
-                          }
-                        },
-                        [
-                          _c("path", {
-                            attrs: {
-                              d:
-                                "M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"
-                            }
-                          }),
-                          _vm._v(" "),
-                          _c("path", {
-                            attrs: { d: "M0 0h24v24H0z", fill: "none" }
-                          })
-                        ]
-                      )
-                    ])
-                  ])
-                ]
-              )
-            : _vm._e()
-        ])
-      : _vm._e(),
-    _vm._v(" "),
-    _vm.isLoading
-      ? _c(
-          "ul",
-          {
-            staticClass: "items-list",
-            class:
-              "items-layout-" +
-              _vm.layout +
-              (!_vm.showName ? " items-list-without-margin" : ""),
-            style: {
-              gridTemplateColumns:
-                _vm.layout == "grid"
-                  ? "repeat(auto-fill, " +
-                    (_vm.gridMargin + (_vm.showName ? 220 : 185)) +
-                    "px)"
-                  : "inherit",
-              marginTop:
-                _vm.showSearchBar || _vm.showCollectionHeader
-                  ? "1.34rem"
-                  : "0px"
-            }
-          },
-          _vm._l(Number(_vm.maxItemsNumber), function(item) {
-            return _c("li", {
-              key: item,
-              staticClass: "item-list-item skeleton",
-              style: {
-                marginBottom:
-                  _vm.layout == "grid"
-                    ? (_vm.showName ? _vm.gridMargin + 12 : _vm.gridMargin) +
-                      "px"
-                    : "",
-                height: _vm.layout == "grid" ? "230px" : "54px"
-              }
-            })
-          })
-        )
-      : _c("div", [
-          _vm.items.length > 0 && _vm.layout !== "mosaic"
-            ? _c(
-                "ul",
-                {
-                  staticClass: "items-list",
-                  class:
-                    "items-layout-" +
-                    _vm.layout +
-                    (!_vm.showName ? " items-list-without-margin" : ""),
-                  style: {
-                    gridTemplateColumns:
-                      _vm.layout == "grid"
-                        ? "repeat(auto-fill, " +
-                          (_vm.gridMargin + (_vm.showName ? 220 : 185)) +
-                          "px)"
-                        : "inherit",
-                    marginTop:
-                      _vm.showSearchBar || _vm.showCollectionHeader
-                        ? "1.35rem"
-                        : "0px"
-                  }
-                },
-                _vm._l(_vm.items, function(item, index) {
-                  return _c(
-                    "li",
-                    {
-                      key: index,
-                      staticClass: "item-list-item",
+                  },
+                  _vm._l(Number(_vm.maxItemsNumber), function(item) {
+                    return _c("li", {
+                      key: item,
+                      staticClass: "item-list-item skeleton",
                       style: {
                         marginBottom:
                           _vm.layout == "grid"
                             ? (_vm.showName
                                 ? _vm.gridMargin + 12
                                 : _vm.gridMargin) + "px"
-                            : ""
+                            : "",
+                        height: _vm.layout == "grid" ? "230px" : "54px"
                       }
-                    },
-                    [
-                      _c(
-                        "a",
-                        {
-                          class:
-                            (!_vm.showName ? "item-without-title" : "") +
-                            " " +
-                            (!_vm.showImage ? "item-without-image" : ""),
-                          attrs: {
-                            id: isNaN(item.id) ? item.id : "item-id-" + item.id,
-                            href: item.url,
-                            target: "_blank"
-                          }
-                        },
-                        [
-                          _c("img", {
-                            attrs: {
-                              src: _vm.getItemThumbnail(
-                                item,
-                                "tainacan-medium"
-                              ),
-                              alt: item.title
-                                ? item.title
-                                : _vm.$root.__("Thumbnail", "tainacan")
-                            }
-                          }),
-                          _vm._v(" "),
-                          _c("span", [
-                            _vm._v(_vm._s(item.title ? item.title : ""))
-                          ])
-                        ]
-                      )
-                    ]
-                  )
-                })
-              )
-            : _vm._e(),
-          _vm._v(" "),
-          _vm.items.length > 0 && _vm.layout === "mosaic"
-            ? _c(
-                "ul",
-                {
-                  staticClass: "items-list",
-                  class:
-                    "items-layout-" +
-                    _vm.layout +
-                    (!_vm.showName ? " items-list-without-margin" : ""),
-                  style: {
-                    marginTop:
-                      _vm.showSearchBar || _vm.showCollectionHeader
-                        ? "-" + Number(_vm.gridMargin) / 2
-                        : "0px",
-                    padding: "0 " + Number(_vm.gridMargin) / 4 + "px",
-                    minHeight:
-                      _vm.layout === "mosaic" ? _vm.mosaicHeight + "vh" : ""
-                  }
-                },
-                _vm._l(_vm.mosaicPartition(_vm.items, 5), function(
-                  mosaicGroup,
-                  mosaicIndex
-                ) {
-                  return _c(
-                    "div",
-                    {
+                    })
+                  })
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.layout === "mosaic"
+              ? _c(
+                  "ul",
+                  {
+                    staticClass: "items-list",
+                    class:
+                      "items-layout-" +
+                      _vm.layout +
+                      (!_vm.showName ? " items-list-without-margin" : ""),
+                    style: {
+                      marginTop:
+                        _vm.showSearchBar || _vm.showCollectionHeader
+                          ? "-" + Number(_vm.gridMargin) / 2
+                          : "0px",
+                      padding: "0 " + Number(_vm.gridMargin) / 4 + "px",
+                      minHeight:
+                        _vm.layout === "mosaic" ? _vm.mosaicHeight + "px" : ""
+                    }
+                  },
+                  _vm._l(_vm.mosaicPartition(_vm.items), function(
+                    mosaicGroup,
+                    mosaicIndex
+                  ) {
+                    return _c("div", {
                       key: mosaicIndex,
-                      staticClass: "mosaic-container",
-                      class: "mosaic-container--" + mosaicGroup.length,
+                      staticClass: "mosaic-container skeleton",
                       style: {
                         width:
                           "calc((100% / " +
-                          _vm.mosaicPartition(_vm.items, 5).length +
+                          _vm.mosaicPartition(_vm.items).length +
                           ") - " +
                           _vm.gridMargin +
                           "px)",
                         height:
-                          "calc(((2 * " +
+                          "calc(((" +
+                          (_vm.mosaicGridRows - 1) +
+                          " * " +
                           _vm.gridMargin +
                           "px) + " +
                           _vm.mosaicHeight +
-                          "vh))",
-                        gridTemplateColumns:
-                          "repeat(3, calc((100% / 3) - (" +
-                          2 * Number(_vm.gridMargin) +
-                          "px/3)))",
-                        margin: _vm.gridMargin + "px",
-                        gridGap: _vm.gridMargin + "px"
+                          "px))",
+                        margin: _vm.gridMargin + "px"
                       }
-                    },
-                    _vm._l(mosaicGroup, function(item, index) {
-                      return _c(
-                        "li",
-                        {
-                          key: index,
-                          staticClass: "item-list-item",
-                          style: {
-                            backgroundImage:
-                              _vm.layout == "mosaic"
-                                ? "url(" +
-                                  _vm.getItemThumbnail(
-                                    item,
-                                    "tainacan-medium-full"
-                                  ) +
-                                  ")"
-                                : "none"
-                          }
-                        },
-                        [
-                          _c(
-                            "a",
-                            {
-                              class:
-                                (!_vm.showName ? "item-without-title" : "") +
-                                " " +
-                                (!_vm.showImage ? "item-without-image" : ""),
-                              attrs: {
-                                id: isNaN(item.id)
-                                  ? item.id
-                                  : "item-id-" + item.id,
-                                href: item.url,
-                                target: "_blank"
-                              }
-                            },
-                            [
-                              _c("img", {
-                                attrs: {
-                                  src: _vm.getItemThumbnail(
-                                    item,
-                                    "tainacan-medium"
-                                  ),
-                                  alt: item.title
-                                    ? item.title
-                                    : _vm.$root.__("Thumbnail", "tainacan")
-                                }
-                              }),
-                              _vm._v(" "),
-                              _c("span", [
-                                _vm._v(_vm._s(item.title ? item.title : ""))
-                              ])
-                            ]
-                          )
-                        ]
-                      )
                     })
-                  )
-                })
-              )
-            : _c("div", { staticClass: "spinner-container" }, [
-                _vm._v(
-                  "\n            " +
-                    _vm._s(_vm.$root.__(_vm.errorMessage, "tainacan")) +
-                    "\n        "
+                  })
                 )
-              ])
-        ])
-  ])
+              : _vm._e()
+          ]
+        : _c("div", [
+            _vm.items.length > 0 && _vm.layout !== "mosaic"
+              ? _c(
+                  "ul",
+                  {
+                    staticClass: "items-list",
+                    class:
+                      "items-layout-" +
+                      _vm.layout +
+                      (!_vm.showName ? " items-list-without-margin" : ""),
+                    style: {
+                      gridTemplateColumns:
+                        _vm.layout == "grid"
+                          ? "repeat(auto-fill, " +
+                            (_vm.gridMargin + (_vm.showName ? 220 : 185)) +
+                            "px)"
+                          : "inherit",
+                      marginTop:
+                        _vm.showSearchBar || _vm.showCollectionHeader
+                          ? "1.35rem"
+                          : "0px"
+                    }
+                  },
+                  _vm._l(_vm.items, function(item, index) {
+                    return _c(
+                      "li",
+                      {
+                        key: index,
+                        staticClass: "item-list-item",
+                        style: {
+                          marginBottom:
+                            _vm.layout == "grid"
+                              ? (_vm.showName
+                                  ? _vm.gridMargin + 12
+                                  : _vm.gridMargin) + "px"
+                              : ""
+                        }
+                      },
+                      [
+                        _c(
+                          "a",
+                          {
+                            class:
+                              (!_vm.showName ? "item-without-title" : "") +
+                              " " +
+                              (!_vm.showImage ? "item-without-image" : ""),
+                            attrs: {
+                              id: isNaN(item.id)
+                                ? item.id
+                                : "item-id-" + item.id,
+                              href: item.url,
+                              target: "_blank"
+                            }
+                          },
+                          [
+                            _c("img", {
+                              attrs: {
+                                src: _vm.getItemThumbnail(
+                                  item,
+                                  "tainacan-medium"
+                                ),
+                                alt: item.title
+                                  ? item.title
+                                  : _vm.$root.__("Thumbnail", "tainacan")
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("span", [
+                              _vm._v(_vm._s(item.title ? item.title : ""))
+                            ])
+                          ]
+                        )
+                      ]
+                    )
+                  })
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.items.length > 0 && _vm.layout === "mosaic"
+              ? _c(
+                  "ul",
+                  {
+                    staticClass: "items-list",
+                    class:
+                      "items-layout-" +
+                      _vm.layout +
+                      (!_vm.showName ? " items-list-without-margin" : ""),
+                    style: {
+                      marginTop:
+                        _vm.showSearchBar || _vm.showCollectionHeader
+                          ? "-" + Number(_vm.gridMargin) / 2
+                          : "0px",
+                      padding: "0 " + Number(_vm.gridMargin) / 4 + "px",
+                      minHeight:
+                        _vm.layout === "mosaic" ? _vm.mosaicHeight + "px" : ""
+                    }
+                  },
+                  _vm._l(_vm.mosaicPartition(_vm.items), function(
+                    mosaicGroup,
+                    mosaicIndex
+                  ) {
+                    return _c(
+                      "div",
+                      {
+                        key: mosaicIndex,
+                        staticClass: "mosaic-container",
+                        class:
+                          "mosaic-container--" +
+                          mosaicGroup.length +
+                          "-" +
+                          _vm.mosaicGridRows +
+                          "x" +
+                          _vm.mosaicGridColumns,
+                        style: {
+                          width:
+                            "calc((100% / " +
+                            _vm.mosaicPartition(_vm.items).length +
+                            ") - " +
+                            _vm.gridMargin +
+                            "px)",
+                          height:
+                            "calc(((" +
+                            (_vm.mosaicGridRows - 1) +
+                            " * " +
+                            _vm.gridMargin +
+                            "px) + " +
+                            _vm.mosaicHeight +
+                            "px))",
+                          gridTemplateColumns:
+                            "repeat(" +
+                            _vm.mosaicGridColumns +
+                            ", calc((100% / " +
+                            _vm.mosaicGridColumns +
+                            ") - (" +
+                            (_vm.mosaicGridColumns - 1) *
+                              Number(_vm.gridMargin) +
+                            "px/" +
+                            _vm.mosaicGridColumns +
+                            ")))",
+                          margin: _vm.gridMargin + "px",
+                          gridGap: _vm.gridMargin + "px"
+                        }
+                      },
+                      _vm._l(mosaicGroup, function(item, index) {
+                        return _c(
+                          "li",
+                          {
+                            key: index,
+                            staticClass: "item-list-item",
+                            style: {
+                              backgroundImage:
+                                _vm.layout == "mosaic"
+                                  ? "url(" +
+                                    _vm.getItemThumbnail(item, "medium_large") +
+                                    ")"
+                                  : "none",
+                              backgroundPosition:
+                                _vm.layout == "mosaic"
+                                  ? _vm.mosaicItemFocalPointX * 100 +
+                                    "% " +
+                                    _vm.mosaicItemFocalPointY * 100 +
+                                    "%"
+                                  : "none"
+                            }
+                          },
+                          [
+                            _c(
+                              "a",
+                              {
+                                class:
+                                  (!_vm.showName ? "item-without-title" : "") +
+                                  " " +
+                                  (!_vm.showImage ? "item-without-image" : ""),
+                                attrs: {
+                                  id: isNaN(item.id)
+                                    ? item.id
+                                    : "item-id-" + item.id,
+                                  href: item.url,
+                                  target: "_blank"
+                                }
+                              },
+                              [
+                                _c("img", {
+                                  attrs: {
+                                    src: _vm.getItemThumbnail(
+                                      item,
+                                      "tainacan-medium"
+                                    ),
+                                    alt: item.title
+                                      ? item.title
+                                      : _vm.$root.__("Thumbnail", "tainacan")
+                                  }
+                                }),
+                                _vm._v(" "),
+                                _c("span", [
+                                  _vm._v(_vm._s(item.title ? item.title : ""))
+                                ])
+                              ]
+                            )
+                          ]
+                        )
+                      })
+                    )
+                  })
+                )
+              : !_vm.isLoading && _vm.items.length <= 0
+                ? _c("div", { staticClass: "spinner-container" }, [
+                    _vm._v(
+                      "\n            " +
+                        _vm._s(_vm.$root.__(_vm.errorMessage, "tainacan")) +
+                        "\n        "
+                    )
+                  ])
+                : _vm._e()
+          ])
+    ],
+    2
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -5464,6 +5578,11 @@ document.addEventListener("DOMContentLoaded", function () {
       searchURL: '',
       maxItemsNumber: 12,
       mosaicHeight: 40,
+      mosaicDensity: 5,
+      mosaicGridRows: 3,
+      mosaicGridColumns: 3,
+      mosaicItemFocalPointX: 0.5,
+      mosaicItemFocalPointY: 0.5,
       order: 'asc',
       showSearchBar: false,
       showCollectionHeader: false,
@@ -5482,7 +5601,12 @@ document.addEventListener("DOMContentLoaded", function () {
           showName: this.showName,
           layout: this.layout,
           gridMargin: this.gridMargin,
+          mosaicDensity: this.mosaicDensity,
           mosaicHeight: this.mosaicHeight,
+          mosaicGridRows: this.mosaicGridRows,
+          mosaicGridColumns: this.mosaicGridColumns,
+          mosaicItemFocalPointX: this.mosaicItemFocalPointX,
+          mosaicItemFocalPointY: this.mosaicItemFocalPointY,
           searchURL: this.searchURL,
           maxItemsNumber: this.maxItemsNumber,
           order: this.order,
@@ -5505,7 +5629,12 @@ document.addEventListener("DOMContentLoaded", function () {
       this.showName = this.$el.attributes['show-name'] != undefined ? this.$el.attributes['show-name'].value == 'true' : true;
       this.layout = this.$el.attributes['layout'] != undefined ? this.$el.attributes['layout'].value : undefined;
       this.gridMargin = this.$el.attributes['grid-margin'] != undefined ? Number(this.$el.attributes['grid-margin'].value) : undefined;
+      this.mosaicDensity = this.$el.attributes['mosaic-density'] != undefined ? Number(this.$el.attributes['mosaic-density'].value) : undefined;
       this.mosaicHeight = this.$el.attributes['mosaic-height'] != undefined ? Number(this.$el.attributes['mosaic-height'].value) : undefined;
+      this.mosaicGridRows = this.$el.attributes['mosaic-grid-rows'] != undefined ? Number(this.$el.attributes['mosaic-grid-rows'].value) : undefined;
+      this.mosaicGridColumns = this.$el.attributes['mosaic-grid-columns'] != undefined ? Number(this.$el.attributes['mosaic-grid-columns'].value) : undefined;
+      this.mosaicItemFocalPointX = this.$el.attributes['mosaic-item-focal-point-x'] != undefined ? Number(this.$el.attributes['mosaic-item-focal-point-x'].value) : undefined;
+      this.mosaicItemFocalPointY = this.$el.attributes['mosaic-item-focal-point-y'] != undefined ? Number(this.$el.attributes['mosaic-item-focal-point-y'].value) : undefined;
       this.maxItemsNumber = this.$el.attributes['max-items-number'] != undefined ? this.$el.attributes['max-items-number'].value : undefined;
       this.order = this.$el.attributes['order'] != undefined ? this.$el.attributes['order'].value : undefined;
       this.showSearchBar = this.$el.attributes['show-search-bar'] != undefined ? this.$el.attributes['show-search-bar'].value == 'true' : false;
@@ -5539,7 +5668,7 @@ document.addEventListener("DOMContentLoaded", function () {
         var blockId = _step.value;
         new vue__WEBPACK_IMPORTED_MODULE_0___default.a(Object.assign({
           el: '#' + blockId
-        }, jQuery.extend(true, {}, vueOptions)));
+        }, vueOptions));
       }
     } catch (err) {
       _didIteratorError = true;

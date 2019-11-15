@@ -3296,7 +3296,8 @@ registerBlockType('tainacan/carousel-collections-list', {
       itemsRequestSource = axios__WEBPACK_IMPORTED_MODULE_2___default.a.CancelToken.source();
       collections = [];
       var endpoint = '/collections?' + qs__WEBPACK_IMPORTED_MODULE_3___default.a.stringify({
-        postin: selectedCollections
+        postin: selectedCollections,
+        perpage: selectedCollections.length
       }) + '&fetch_only=name,url,thumbnail';
       _api_client_axios_js__WEBPACK_IMPORTED_MODULE_1__["default"].get(endpoint, {
         cancelToken: itemsRequestSource.token

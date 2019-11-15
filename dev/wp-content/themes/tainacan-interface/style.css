@@ -3,7 +3,7 @@ Theme Name: Tainacan Interface
 Author: MediaLab UFG
 Author URI: https://tainacan.org
 Description: This is the default theme for the Tainacan project. Use this in conjunction with Tainacan plugin to easily manage and publish you digital collectinons with a beautiful faceted search interface. Ideal for museums, galleries, libraries and anyone who have a digital repository. 
-Version: 1.4
+Version: 1.5
 License: GNU General Public License v3
 License URI: https://www.gnu.org/licenses/gpl-3.0.en.html
 Tags: two-columns, right-sidebar, grid-layout, flexible-header, custom-colors, custom-header, custom-menu, custom-logo, featured-images, footer-widgets, theme-options, threaded-comments, translation-ready, photography, portfolio 
@@ -415,18 +415,20 @@ nav.menu-shadow {
       nav.menu-shadow .max-large .btn-group button.active-button {
         background-color: #c1dae0; }
     nav.menu-shadow .max-large .tainacan-logo {
-      padding: 8px 0; }
+      padding: 8px 0;
+      width: auto; }
       nav.menu-shadow .max-large .tainacan-logo h1 {
         font-size: 1.5rem;
-        margin: 0; }
+        margin: 0.36rem 0; }
       nav.menu-shadow .max-large .tainacan-logo .logo {
         width: auto;
         height: auto;
-        max-width: 220px;
-        max-height: 125px; }
+        max-width: 225px;
+        max-height: 120px; }
       @media only screen and (max-width: 576px) {
         nav.menu-shadow .max-large .tainacan-logo h1 {
-          font-size: 1.125rem; }
+          font-size: 1.125rem;
+          margin: 0.36rem 0; }
         nav.menu-shadow .max-large .tainacan-logo .logo {
           max-width: 175px; } }
 nav .tainacan-search-form .form-control {
@@ -519,7 +521,7 @@ nav.menu-belowheader #menubelowHeader > ul {
     right: 0;
     border: 1px solid #dbdbdb;
     background-color: #fff;
-    z-index: 2; }
+    z-index: 3; }
     nav.menu-belowheader #menubelowHeader > ul > li.menu-item a {
       margin: 0;
       padding: 0.625rem 1.5rem !important; }
@@ -545,10 +547,13 @@ nav[aria-label='breadcrumb'] {
     color: #298596; }
 
 .navbar {
-  border: none; }
+  border: none;
+  padding: 0.6rem 1rem; }
   .navbar .navbar-brand {
     padding: 0;
     margin-right: 0; }
+  .navbar > .container-fluid {
+    align-items: flex-end; }
 
 @media only screen and (max-width: 768px) {
   .navbar.navbar--border-bottom {
@@ -788,6 +793,10 @@ nav[aria-label='breadcrumb'] {
 .page-header.page-header--image-full {
   height: auto;
   display: block; }
+
+.page-template-landing article section.tainacan-content > div,
+.page-template-landing-breadcrumb article section.tainacan-content > div {
+  margin-top: 0; }
 
 .tainacan-title .tainacan-title-page .title-page {
   font-size: 1.25rem;
@@ -1418,21 +1427,40 @@ nav[aria-label='breadcrumb'] {
         font-size: 1.375rem; }
     .tainacan-single-post article .tainacan-content .wp-block-separator {
       border-color: #cbcbcb;
-      width: 50%; }
+      width: 50%;
+      max-width: 300px; }
       .tainacan-single-post article .tainacan-content .wp-block-separator.is-style-wide {
         width: 100%; }
       .tainacan-single-post article .tainacan-content .wp-block-separator.is-style-dots::before {
         color: #cbcbcb;
         font-weight: 600; }
+    .tainacan-single-post article .tainacan-content .tainacan-group-heading h1 {
+      font-size: 1.5rem; }
+    .tainacan-single-post article .tainacan-content .tainacan-group-heading h2 {
+      font-size: 1.5rem; }
+    .tainacan-single-post article .tainacan-content .tainacan-group-heading h3 {
+      font-size: 1.25rem; }
+    .tainacan-single-post article .tainacan-content .tainacan-group-heading h4 {
+      font-size: 1.125rem; }
+    .tainacan-single-post article .tainacan-content .tainacan-group-heading p {
+      font-style: italic;
+      color: #898d8f; }
+    .tainacan-single-post article .tainacan-content .tainacan-group-heading hr.wp-block-separator:not(.is-style-wide) {
+      margin-left: 0;
+      max-width: 200px; }
+    .tainacan-single-post article .tainacan-content .tainacan-group-heading hr.wp-block-separator:not(.is-style-wide):not(.is-style-dots) {
+      border-width: 4px;
+      height: 4px; }
     .tainacan-single-post article .tainacan-content ul {
       font-size: 1rem;
       font-weight: 400;
       color: #000; }
     .tainacan-single-post article .tainacan-content .table thead {
       border-bottom: 1px solid #cbcbcb;
-      color: #555758;
-      font-weight: 400;
-      font-size: 0.75rem; }
+      color: #555758; }
+      .tainacan-single-post article .tainacan-content .table thead th {
+        font-weight: normal;
+        font-size: 0.75rem; }
     .tainacan-single-post article .tainacan-content .table tbody {
       font-size: 0.875rem;
       font-weight: 400;
@@ -1442,13 +1470,16 @@ nav[aria-label='breadcrumb'] {
     .tainacan-single-post article .tainacan-content address {
       font-size: 0.875rem;
       font-style: italic; }
-    .tainacan-single-post article .tainacan-content p code {
-      border-radius: 5px;
-      -moz-border-radius: 5px;
-      -webkit-border-radius: 5px;
-      border: 1px solid #BCBEC0;
-      padding: 2px;
-      font-size: 12px; }
+    .tainacan-single-post article .tainacan-content p {
+      margin-top: 0.5rem;
+      margin-bottom: 1rem; }
+      .tainacan-single-post article .tainacan-content p code {
+        border-radius: 5px;
+        -moz-border-radius: 5px;
+        -webkit-border-radius: 5px;
+        border: 1px solid #BCBEC0;
+        padding: 2px;
+        font-size: 12px; }
     .tainacan-single-post article .tainacan-content img[class*="align"] .gallery-icon img,
     .tainacan-single-post article .tainacan-content img[class*="wp-image-"] .gallery-icon img,
     .tainacan-single-post article .tainacan-content .gallery .gallery-icon img {
@@ -1464,23 +1495,20 @@ nav[aria-label='breadcrumb'] {
         clear: both;
         content: ""; }
     .tainacan-single-post article .tainacan-content .wp-block-columns {
-      display: flex; }
-      @media only screen and (max-width: 781px) {
-        .tainacan-single-post article .tainacan-content .wp-block-columns .wp-block-column {
-          margin-left: 0 !important;
-          margin-right: 0 !important; } }
+      display: flex;
+      margin: 0; }
       .tainacan-single-post article .tainacan-content .wp-block-columns .wp-block-column {
         flex-basis: 100%; }
       .tainacan-single-post article .tainacan-content .wp-block-columns .wp-block-column:not(:last-child) {
-        margin-right: 4.16666667%; }
+        margin-right: 2.0833333%; }
       .tainacan-single-post article .tainacan-content .wp-block-columns .wp-block-column:not(:first-child) {
-        margin-left: 4.16666667%; }
+        margin-left: 2.0833333%; }
     .tainacan-single-post article .tainacan-content .alignleft {
       float: left;
-      margin: 0 1em 1em 0; }
+      margin: 1rem 1rem 1rem 0; }
     .tainacan-single-post article .tainacan-content .alignright {
       float: right;
-      margin: 0 0 1em 1em; }
+      margin: 1rem 0 1rem 1rem; }
     @media only screen and (max-width: 576px) {
       .tainacan-single-post article .tainacan-content .alignleft, .tainacan-single-post article .tainacan-content .alignright {
         float: none;
@@ -2240,7 +2268,6 @@ footer.tainacan-footer {
       height: 329px; } }
   .page-header-taxonomy > .container-fluid > .page-header-image {
     background-repeat: no-repeat;
-    background-position: center;
     background-size: cover; }
     @media only screen and (max-width: 576px) {
       .page-header-taxonomy > .container-fluid > .page-header-image {
@@ -2339,37 +2366,68 @@ footer.tainacan-footer {
   background-color: rgba(10, 10, 10, 0.85); }
 
 .ekko-lightbox .modal-dialog {
-  margin: 3.75rem auto; }
+  margin: 3.75rem auto;
+  max-width: calc(1400px - 16.667vw) !important; }
 .ekko-lightbox .modal-content {
   border: none; }
   .ekko-lightbox .modal-content .modal-body {
     padding: 0; }
-    .ekko-lightbox .modal-content .modal-body .ekko-lightbox-nav-overlay a {
-      opacity: 1; }
-      .ekko-lightbox .modal-content .modal-body .ekko-lightbox-nav-overlay a span {
-        padding: 0;
-        color: white;
-        font-size: 0; }
-      .ekko-lightbox .modal-content .modal-body .ekko-lightbox-nav-overlay a span::before {
-        display: inline-block;
-        font: normal normal normal 64px/1 "TainacanIcons";
-        font-size: 64px !important;
-        line-height: 1;
-        font-size: inherit;
-        text-rendering: auto;
-        vertical-align: middle;
-        line-height: inherit; }
-      .ekko-lightbox .modal-content .modal-body .ekko-lightbox-nav-overlay a:hover {
-        color: white; }
-      .ekko-lightbox .modal-content .modal-body .ekko-lightbox-nav-overlay a:first-child {
-        left: -64px;
-        position: relative; }
-        .ekko-lightbox .modal-content .modal-body .ekko-lightbox-nav-overlay a:first-child span:before {
-          content: "arrowleft"; }
-      .ekko-lightbox .modal-content .modal-body .ekko-lightbox-nav-overlay a:last-child {
-        right: -64px;
-        position: relative; }
-        .ekko-lightbox .modal-content .modal-body .ekko-lightbox-nav-overlay a:last-child span:before {
-          content: "arrowright"; }
+    .ekko-lightbox .modal-content .modal-body .ekko-lightbox-container {
+      height: auto !important;
+      max-height: 100%;
+      max-height: 85vh; }
+    .ekko-lightbox .modal-content .modal-body .ekko-lightbox-item {
+      display: -ms-flexbox;
+      display: flex;
+      justify-content: center;
+      align-items: center; }
+      .ekko-lightbox .modal-content .modal-body .ekko-lightbox-item > * {
+        width: 100%;
+        max-width: calc(100% - 98px);
+        height: auto;
+        max-height: 85vh; }
+      .ekko-lightbox .modal-content .modal-body .ekko-lightbox-item > img {
+        width: auto; }
+      .ekko-lightbox .modal-content .modal-body .ekko-lightbox-item > iframe {
+        min-height: 80vh;
+        border: none; }
+      .ekko-lightbox .modal-content .modal-body .ekko-lightbox-item > audio {
+        min-height: 54px;
+        padding: 12px; }
+      .ekko-lightbox .modal-content .modal-body .ekko-lightbox-item > a, .ekko-lightbox .modal-content .modal-body .ekko-lightbox-item > p {
+        padding: 1rem 4.33337vw;
+        background: white;
+        border-radius: 3px;
+        word-wrap: break-word; }
+    .ekko-lightbox .modal-content .modal-body .ekko-lightbox-nav-overlay {
+      display: -ms-flexbox !important;
+      display: flex !important; }
+      .ekko-lightbox .modal-content .modal-body .ekko-lightbox-nav-overlay a {
+        opacity: 1; }
+        .ekko-lightbox .modal-content .modal-body .ekko-lightbox-nav-overlay a span {
+          padding: 0;
+          color: white;
+          font-size: 0; }
+        .ekko-lightbox .modal-content .modal-body .ekko-lightbox-nav-overlay a span::before {
+          display: inline-block;
+          font: normal normal normal 56px/1 "TainacanIcons";
+          font-size: 56px !important;
+          line-height: 1;
+          font-size: inherit;
+          text-rendering: auto;
+          vertical-align: middle;
+          line-height: inherit; }
+        .ekko-lightbox .modal-content .modal-body .ekko-lightbox-nav-overlay a:hover {
+          color: white; }
+        .ekko-lightbox .modal-content .modal-body .ekko-lightbox-nav-overlay a:first-child {
+          left: -6px;
+          position: relative; }
+          .ekko-lightbox .modal-content .modal-body .ekko-lightbox-nav-overlay a:first-child span:before {
+            content: "arrowleft"; }
+        .ekko-lightbox .modal-content .modal-body .ekko-lightbox-nav-overlay a:last-child {
+          right: -6px;
+          position: relative; }
+          .ekko-lightbox .modal-content .modal-body .ekko-lightbox-nav-overlay a:last-child span:before {
+            content: "arrowright"; }
 
 /*# sourceMappingURL=style.css.map */

@@ -2,7 +2,7 @@ const { registerBlockType } = wp.blocks;
 
 const { __ } = wp.i18n;
 
-const { RangeControl, Spinner, Button, ToggleControl, Tooltip, Placeholder, Toolbar, ColorPicker, ColorPalette, BaseControl, PanelBody } = wp.components;
+const { ResizableBox, FocalPointPicker, SelectControl, RangeControl, Spinner, Button, ToggleControl, Tooltip, Placeholder, Toolbar, ColorPicker, ColorPalette, BaseControl, PanelBody } = wp.components;
 
 const { InspectorControls, BlockControls } = wp.editor;
 
@@ -118,7 +118,30 @@ registerBlockType('tainacan/dynamic-items-list', {
         },
         mosaicHeight: {
             type: Number,
-            value: 40
+            value: 280
+        },
+        mosaicGridColumns: {
+            type: Number,
+            value: 3
+        },
+        mosaicGridRows: {
+            type: Number,
+            value: 3
+        },
+        sampleBackgroundImage: {
+            type: String,
+            default: ''
+        },
+        mosaicItemFocalPoint: {
+            type: Object,
+            default: {
+                x: 0.5,
+                y: 0.5
+            }
+        },
+        mosaicDensity: {
+            type: Number,
+            default: 5
         }
     },
     supports: {
@@ -129,6 +152,7 @@ registerBlockType('tainacan/dynamic-items-list', {
         let {
             items, 
             content, 
+            collection,
             collectionId,  
             showImage,
             showName,
@@ -147,7 +171,12 @@ registerBlockType('tainacan/dynamic-items-list', {
             isLoadingCollection,
             collectionBackgroundColor,
             collectionTextColor,
-            mosaicHeight
+            mosaicHeight,
+            mosaicGridColumns,
+            mosaicGridRows,
+            mosaicItemFocalPoint,
+            sampleBackgroundImage,
+            mosaicDensity
         } = attributes;
 
         // Obtains block's client id to render it on save function
@@ -158,16 +187,19 @@ registerBlockType('tainacan/dynamic-items-list', {
                 <li 
                     key={ item.id }
                     className="item-list-item"
-                    style={
-                        { 
-                            marginBottom: layout == 'grid' ? (showName ? gridMargin + 12 : gridMargin) + 'px' : '',
-                            backgroundImage: layout == 'mosaic' ? `url(${getItemThumbnail(item, 'tainacan-medium-full')})` : 'none'
-                        }
-                    }>      
+                    style={ {
+                        marginBottom: layout == 'grid' ? (showName ? gridMargin + 12 : gridMargin) + 'px' : '', 
+                        backgroundImage: layout == 'mosaic' ? `url(${getItemThumbnail(item, 'medium_large')})` : 'none',
+                        backgroundPosition: layout == 'mosaic' ? `${ mosaicItemFocalPoint.x * 100 }% ${ mosaicItemFocalPoint.y * 100 }%` : 'none'
+                    }}
+                >      
                     <a 
                         id={ isNaN(item.id) ? item.id : 'item-id-' + item.id }
                         href={ item.url } 
                         target="_blank"
+                        style={ {
+                            
+                        } }
                         className={ (!showName ? 'item-without-title' : '') + ' ' + (!showImage ? 'item-without-image' : '') }>
                         <img
                             src={ getItemThumbnail(item, 'tainacan-medium') }
@@ -185,13 +217,13 @@ registerBlockType('tainacan/dynamic-items-list', {
                     style={
                         { 
                             width: 'calc((100% / ' + mosaicGroupsLength + ') - ' + gridMargin + 'px)',
-                            height: 'calc(((2 * ' + gridMargin + 'px) + ' + mosaicHeight + 'vh))',
-                            gridTemplateColumns: 'repeat(3, calc((100% / 3) - (' + (2*Number(gridMargin)) + 'px/3)))',
+                            height: 'calc(((' + (mosaicGridRows - 1) + ' * ' + gridMargin + 'px) + ' + mosaicHeight + 'px))',
+                            gridTemplateColumns: 'repeat(' + mosaicGridColumns + ', calc((100% / ' + mosaicGridColumns + ') - (' + ((mosaicGridColumns - 1)*Number(gridMargin)) + 'px/' + mosaicGridColumns + ')))',
                             margin: gridMargin + 'px',
                             gridGap: gridMargin + 'px',
                         }
                     }
-                    className={ 'mosaic-container mosaic-container--' + mosaicGroup.length }>
+                    className={ 'mosaic-container mosaic-container--' + mosaicGroup.length + '-' + mosaicGridRows + 'x' + mosaicGridColumns }>
                         { buildMosaic(mosaicGroup) }
                     </div>
             )
@@ -199,79 +231,105 @@ registerBlockType('tainacan/dynamic-items-list', {
 
         function setContent(){
 
-            items = [];
-            isLoading = true;
-            
-            if (itemsRequestSource != undefined && typeof itemsRequestSource == 'function')
-                itemsRequestSource.cancel('Previous items search canceled.');
+            if (searchURL) {
 
-            itemsRequestSource = axios.CancelToken.source();
-            
-            setAttributes({
-                isLoading: isLoading
-            });
+                items = [];
+                isLoading = true;
+                
+                if (itemsRequestSource != undefined && typeof itemsRequestSource == 'function')
+                    itemsRequestSource.cancel('Previous items search canceled.');
 
-            let endpoint = '/collection' + searchURL.split('#')[1].split('/collections')[1];
-            let query = endpoint.split('?')[1];
-            let queryObject = qs.parse(query);
-
-            // Set up max items to be shown
-            if (maxItemsNumber != undefined && maxItemsNumber > 0)
-                queryObject.perpage = maxItemsNumber;
-            else if (queryObject.perpage != undefined && queryObject.perpage > 0)
-                setAttributes({ maxItemsNumber: queryObject.perpage });
-            else {
-                queryObject.perpage = 12;
-                setAttributes({ maxItemsNumber: 12 });
-            }
-
-            // Set up sorting order
-            if (order != undefined)
-                queryObject.order = order;
-            else if (queryObject.order != undefined)
-                setAttributes({ order: queryObject.order });
-            else {
-                queryObject.order = 'asc';
-                setAttributes({ order: 'asc' });
-            }
-
-            // Set up sorting order
-            if (searchString != undefined)
-                queryObject.search = searchString;
-            else if (queryObject.search != undefined)
-                setAttributes({ searchString: queryObject.search });
-            else {
-                delete queryObject.search;
-                setAttributes({ searchString: undefined });
-            }
-
-            // Remove unecessary queries
-            delete queryObject.readmode;
-            delete queryObject.iframemode;
-            delete queryObject.admin_view_mode;
-            delete queryObject.fetch_only_meta;
-            
-            endpoint = endpoint.split('?')[0] + '?' + qs.stringify(queryObject) + '&fetch_only=title,url,thumbnail';
-            
-            tainacan.get(endpoint, { cancelToken: itemsRequestSource.token })
-                .then(response => {
-                    
-                    if (layout !== 'mosaic') {
-                        for (let item of response.data.items)
-                            items.push(prepareItem(item));
-                    } else {
-                        const mosaicGroups = mosaicPartition(response.data.items, 5);
-                        for (let mosaicGroup of mosaicGroups)
-                            items.push(prepareMosaicItem(mosaicGroup, mosaicGroups.length));
-                    }
-
-                    setAttributes({
-                        content: <div></div>,
-                        items: items,
-                        isLoading: false,
-                        itemsRequestSource: itemsRequestSource
-                    });
+                itemsRequestSource = axios.CancelToken.source();
+                
+                setAttributes({
+                    isLoading: isLoading
                 });
+
+                let endpoint = '/collection' + searchURL.split('#')[1].split('/collections')[1];
+                let query = endpoint.split('?')[1];
+                let queryObject = qs.parse(query);
+
+                // Set up max items to be shown
+                if (maxItemsNumber != undefined && maxItemsNumber > 0)
+                    queryObject.perpage = maxItemsNumber;
+                else if (queryObject.perpage != undefined && queryObject.perpage > 0)
+                    setAttributes({ maxItemsNumber: queryObject.perpage });
+                else {
+                    queryObject.perpage = 12;
+                    setAttributes({ maxItemsNumber: 12 });
+                }
+
+                // Set up sorting order
+                if (order != undefined)
+                    queryObject.order = order;
+                else if (queryObject.order != undefined)
+                    setAttributes({ order: queryObject.order });
+                else {
+                    queryObject.order = 'asc';
+                    setAttributes({ order: 'asc' });
+                }
+
+                // Set up sorting order
+                if (searchString != undefined)
+                    queryObject.search = searchString;
+                else if (queryObject.search != undefined)
+                    setAttributes({ searchString: queryObject.search });
+                else {
+                    delete queryObject.search;
+                    setAttributes({ searchString: undefined });
+                }
+
+                // Remove unecessary queries
+                delete queryObject.readmode;
+                delete queryObject.iframemode;
+                delete queryObject.admin_view_mode;
+                delete queryObject.fetch_only_meta;
+                
+                endpoint = endpoint.split('?')[0] + '?' + qs.stringify(queryObject) + '&fetch_only=title,url,thumbnail';
+                
+                tainacan.get(endpoint, { cancelToken: itemsRequestSource.token })
+                    .then(response => {
+                        
+                        if (layout !== 'mosaic') {
+                           
+                            for (let item of response.data.items)
+                                items.push(prepareItem(item));
+
+                            setAttributes({
+                                content: <div></div>,
+                                items: items,
+                                isLoading: false,
+                                itemsRequestSource: itemsRequestSource
+                            });
+
+                        } else {
+                            // Initializes some variables
+                            mosaicDensity = mosaicDensity ? mosaicDensity : 5;
+                            mosaicGridRows = mosaicGridRows ? mosaicGridRows : 3;
+                            mosaicGridColumns = mosaicGridColumns ? mosaicGridColumns : 3;
+                            mosaicHeight = mosaicHeight ? mosaicHeight : 280;
+                            mosaicItemFocalPoint = mosaicItemFocalPoint ? mosaicItemFocalPoint : { x: 0.5, y: 0.5 };
+                            sampleBackgroundImage = response.data.items && response.data.items[0] && response.data.items[0] ? getItemThumbnail(response.data.items[0], 'tainacan-medium') : ''; 
+ 
+                            const mosaicGroups = mosaicPartition(response.data.items);
+                            for (let mosaicGroup of mosaicGroups)
+                                items.push(prepareMosaicItem(mosaicGroup, mosaicGroups.length));
+
+                            setAttributes({
+                                content: <div></div>,
+                                items: items,
+                                isLoading: false,
+                                itemsRequestSource: itemsRequestSource,
+                                mosaicDensity: mosaicDensity,
+                                mosaicHeight: mosaicHeight,
+                                mosaicGridRows: mosaicGridRows,
+                                mosaicGridColumns: mosaicGridColumns,
+                                mosaicItemFocalPoint: mosaicItemFocalPoint,
+                                sampleBackgroundImage: sampleBackgroundImage
+                            });
+                        }
+                    });
+            }
         }
 
         function fetchCollectionForHeader() {
@@ -357,12 +415,20 @@ registerBlockType('tainacan/dynamic-items-list', {
             }
         }
 
-        function mosaicPartition(items, size) {
+        function updateMosaicItemFocalPoint(focalPoint) {
+            if (Math.abs(focalPoint.x - mosaicItemFocalPoint.x) > 0.025 || Math.abs(focalPoint.y - mosaicItemFocalPoint.y) > 0.025) {
+                mosaicItemFocalPoint = focalPoint;
+                setAttributes({ mosaicItemFocalPoint: focalPoint });
+                setContent();
+            }
+        }
+
+        function mosaicPartition(items) {
             const partition = _.groupBy(items, (item, i) => {
                 if (i % 2 == 0)
-                    return Math.floor(i/size)
+                    return Math.floor(i/mosaicDensity)
                 else
-                    return Math.floor(i/(size + 1))
+                    return Math.floor(i/(mosaicDensity + 1))
             });
             return _.values(partition);
         }
@@ -542,25 +608,79 @@ registerBlockType('tainacan/dynamic-items-list', {
                                                 max={ 48 }
                                             />
                                         </div>
-                                        { layout == 'mosaic' ?
-                                            <div style={{ marginTop: '16px'}}>
-                                                <RangeControl
-                                                    label={__('Mosaic container height', 'tainacan')}
-                                                    value={ mosaicHeight ? mosaicHeight : 40 }
-                                                    onChange={ ( height ) => {
-                                                        mosaicHeight = height;
-                                                        setAttributes( { mosaicHeight: height } );
-                                                        setContent();
-                                                    }}
-                                                    min={ 10 }
-                                                    max={ 100 }
-                                                />
-                                            </div>
-                                        : null}
                                     </div>
                                 : null }
                             </div>
                         </PanelBody>
+                        { layout == 'mosaic' ?
+                        <PanelBody
+                            title={__('Mosaic', 'tainacan')}
+                            initialOpen={ true }
+                            >
+                            <div>
+                                <RangeControl
+                                    label={__('Container height (px)', 'tainacan')}
+                                    value={ mosaicHeight ? mosaicHeight : 280 }
+                                    onChange={ ( height ) => {
+                                        mosaicHeight = height;
+                                        setAttributes( { mosaicHeight: height } );
+                                        setContent();
+                                    }}
+                                    min={ 100 }
+                                    max={ 2000 }
+                                />
+                            </div>
+                            <div>
+                                <RangeControl
+                                    label={__('Group Grid Density', 'tainacan')}
+                                    value={ mosaicDensity ? mosaicDensity : 5 }
+                                    onChange={ ( value ) => {
+                                        mosaicDensity = value;
+                                        setAttributes( { mosaicDensity: mosaicDensity } );
+                                        setContent();
+                                    }}
+                                    min={ 1 }
+                                    max={ 5 }
+                                />
+                            </div>
+                            <div>
+                                <SelectControl
+                                    label={__('Group Grid Dimensions', 'tainacan')}
+                                    value={ mosaicGridRows + 'x' + mosaicGridColumns }
+                                    options={ [
+                                        { label: '2 x 3', value: '2x3' },
+                                        { label: '3 x 2', value: '3x2' },
+                                        { label: '3 x 3', value: '3x3' },
+                                        { label: '3 x 4', value: '3x4' },
+                                        { label: '4 x 3', value: '4x3' },
+                                        { label: '4 x 5', value: '4x5' },
+                                        { label: '5 x 4', value: '5x4' },
+                                    ] }
+                                    onChange={ ( aGrid ) => { 
+                                        mosaicGridRows = aGrid.split('x')[0];
+                                        mosaicGridColumns = aGrid.split('x')[1];
+                    
+                                        setAttributes({
+                                            mosaicGridRows: mosaicGridRows,
+                                            mosaicGridColumns: mosaicGridColumns
+                                        }); 
+                                        setContent();
+                                    }}/>
+                            </div>
+                            <div>
+                                <FocalPointPicker 
+                                    label={ __('Item focal point for background image', 'tainacan') }
+                                    url={ sampleBackgroundImage }
+                                    dimensions={ {
+                                        width: 400,
+                                        height: 400
+                                    } }
+                                    value={ mosaicItemFocalPoint }
+                                    onChange={ ( focalPoint ) =>_.debounce( updateMosaicItemFocalPoint(focalPoint), 700) } 
+                                />
+                            </div>
+                        </PanelBody>
+                        : null}
                     </InspectorControls>
                 </div>
 
@@ -778,7 +898,7 @@ registerBlockType('tainacan/dynamic-items-list', {
                             isPrimary
                             type="submit"
                             onClick={ () => openDynamicItemsModal() }>
-                            {__('Select items', 'tainacan')}
+                            {__('Configure search', 'tainacan')}
                         </Button>   
                     </Placeholder>
                     ) : null
@@ -789,15 +909,54 @@ registerBlockType('tainacan/dynamic-items-list', {
                         <Spinner />
                     </div> :
                     <div>
-                        <ul 
-                            style={{
-                                marginTop: showSearchBar || showCollectionHeader ? '-' + (Number(gridMargin)/2) : '0px',    
-                                padding: (Number(gridMargin)/4) + 'px',
-                                minHeight: layout === 'mosaic' ? mosaicHeight + 'vh' : ''
-                            }}
-                            className={'items-list-edit items-layout-' + layout + (!showName ? ' items-list-without-margin' : '')}>
-                            { items }
-                        </ul>
+                        { layout !== 'mosaic' ? (
+                            <ul 
+                                style={{
+                                    gridTemplateColumns: layout == 'grid' ? 'repeat(auto-fill, ' + (gridMargin + (showName ? 220 : 185)) + 'px)' : 'inherit',
+                                    marginTop: showSearchBar || showCollectionHeader ? '-' + (Number(gridMargin)/2) : '0px',    
+                                    padding: (Number(gridMargin)/4) + 'px',
+                                }}
+                                className={'items-list-edit items-layout-' + layout + (!showName ? ' items-list-without-margin' : '')}>
+                                { items }
+                            </ul>
+                        ) : 
+                            <ResizableBox
+                                size={ {
+                                    height: mosaicHeight ? mosaicHeight + (3 * gridMargin) : 280 + (3 * gridMargin),
+                                    width: '100%'
+                                } }
+                                minHeight="80"
+                                maxHeight="2000"
+                                minWidth="100%"
+                                maxWidth="100%"
+                                showHandle={ true }
+                                enable={ {
+                                    top: false,
+                                    right: false,
+                                    bottom: true,
+                                    left: false,
+                                    topRight: false,
+                                    bottomRight: true,
+                                    bottomLeft: true,
+                                    topLeft: false,
+                                } }
+                                onResizeStop={ ( event, direction, elt, delta ) => {
+                                    mosaicHeight = delta.height ? parseInt(delta.height) + parseInt(mosaicHeight) : 280;
+                                    setAttributes({ mosaicHeight: parseInt(mosaicHeight) });
+                                    setContent();
+                                } }
+                            >
+                                <ul 
+                                    style={{
+                                        marginTop: showSearchBar || showCollectionHeader ? '-' + (Number(gridMargin)/2) : '0px',    
+                                        padding: (Number(gridMargin)/4) + 'px',
+                                        minHeight: mosaicHeight + 'px'
+                                    }}
+                                    className={'items-list-edit items-layout-' + layout + (!showName ? ' items-list-without-margin' : '')}>
+                                    { items }
+                                </ul>
+                            </ResizableBox>
+                        }
                     </div>
                 }
             </div>
@@ -820,9 +979,13 @@ registerBlockType('tainacan/dynamic-items-list', {
             showCollectionLabel,
             collectionBackgroundColor,
             collectionTextColor,
-            mosaicHeight
+            mosaicHeight,
+            mosaicGridRows,
+            mosaicGridColumns,
+            mosaicItemFocalPoint,
+            mosaicDensity
         } = attributes;
-        
+
         return <div 
                     search-url={ searchURL }
                     className={ className }
@@ -834,6 +997,11 @@ registerBlockType('tainacan/dynamic-items-list', {
                     show-collection-label={ '' + showCollectionLabel }
                     layout={ layout }
                     mosaic-height={ mosaicHeight }
+                    mosaic-density={ mosaicDensity }
+                    mosaic-grid-rows={ mosaicGridRows } 
+                    mosaic-grid-columns={ mosaicGridColumns }
+                    mosaic-item-focal-point-x={ mosaicItemFocalPoint.x } 
+                    mosaic-item-focal-point-y={ mosaicItemFocalPoint.y } 
                     collection-background-color={ collectionBackgroundColor }
                     collection-text-color={ collectionTextColor }
                     grid-margin={ gridMargin }

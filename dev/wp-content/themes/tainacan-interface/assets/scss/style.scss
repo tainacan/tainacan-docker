@@ -3,7 +3,7 @@ Theme Name: Tainacan Interface
 Author: MediaLab UFG
 Author URI: https://tainacan.org
 Description: This is the default theme for the Tainacan project. Use this in conjunction with Tainacan plugin to easily manage and publish you digital collectinons with a beautiful faceted search interface. Ideal for museums, galleries, libraries and anyone who have a digital repository. 
-Version: 1.4
+Version: 1.5
 License: GNU General Public License v3
 License URI: https://www.gnu.org/licenses/gpl-3.0.en.html
 Tags: two-columns, right-sidebar, grid-layout, flexible-header, custom-colors, custom-header, custom-menu, custom-logo, featured-images, footer-widgets, theme-options, threaded-comments, translation-ready, photography, portfolio 
@@ -237,18 +237,22 @@ nav{
             }
             .tainacan-logo {
                 padding: 8px 0;
+                width: auto;
                 h1 {
                     font-size: 1.5rem;
-                    margin: 0;
+                    margin: 0.36rem 0;
                 }
                 .logo {
                     width: auto;
                     height: auto;
-                    max-width: 220px;
-                    max-height: 125px;
+                    max-width: 225px;
+                    max-height: 120px;
                 }
                 @media only screen and (max-width: 576px){
-                    h1 { font-size: 1.125rem; }
+                    h1 {
+                        font-size: 1.125rem;
+                        margin: 0.36rem 0;
+                    }
                     .logo { max-width: 175px; }
                 }
             }
@@ -378,7 +382,7 @@ nav{
                 right: 0;
                 border: 1px solid #dbdbdb;
                 background-color: #fff;
-                z-index: 2;
+                z-index: 3;
 
                 & > ul > li.menu-item a {
                     margin: 0;
@@ -416,10 +420,14 @@ nav{
 }
 
 .navbar { 
-    border: none; 
+    border: none;
+    padding: 0.6rem 1rem;  
     .navbar-brand {
         padding: 0;
         margin-right: 0;
+    }
+    & > .container-fluid {
+        align-items: flex-end;
     }
 }
 .navbar.navbar--border-bottom {
@@ -730,6 +738,13 @@ nav{
 .page-header.page-header--image-full {
     height: auto;
     display: block;
+}
+
+.page-template-landing article section.tainacan-content,
+.page-template-landing-breadcrumb article section.tainacan-content {
+    &>div {
+        margin-top: 0;
+    }
 }
 
 .tainacan-title{

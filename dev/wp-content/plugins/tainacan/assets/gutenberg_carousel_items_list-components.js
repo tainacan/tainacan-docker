@@ -3367,7 +3367,8 @@ registerBlockType('tainacan/carousel-items-list', {
 
       if (loadStrategy == 'selection') {
         var endpoint = '/collection/' + collectionId + '/items?' + qs__WEBPACK_IMPORTED_MODULE_3___default.a.stringify({
-          postin: selectedItems
+          postin: selectedItems,
+          perpage: selectedItems.length
         }) + '&fetch_only=title,url,thumbnail';
         _api_client_axios_js__WEBPACK_IMPORTED_MODULE_1__["default"].get(endpoint, {
           cancelToken: itemsRequestSource.token

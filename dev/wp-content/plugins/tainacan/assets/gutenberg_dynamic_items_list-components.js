@@ -3115,6 +3115,9 @@ __webpack_require__.r(__webpack_exports__);
 var registerBlockType = wp.blocks.registerBlockType;
 var __ = wp.i18n.__;
 var _wp$components = wp.components,
+    ResizableBox = _wp$components.ResizableBox,
+    FocalPointPicker = _wp$components.FocalPointPicker,
+    SelectControl = _wp$components.SelectControl,
     RangeControl = _wp$components.RangeControl,
     Spinner = _wp$components.Spinner,
     Button = _wp$components.Button,
@@ -3239,7 +3242,30 @@ registerBlockType('tainacan/dynamic-items-list', {
     },
     mosaicHeight: {
       type: Number,
-      value: 40
+      value: 280
+    },
+    mosaicGridColumns: {
+      type: Number,
+      value: 3
+    },
+    mosaicGridRows: {
+      type: Number,
+      value: 3
+    },
+    sampleBackgroundImage: {
+      type: String,
+      default: ''
+    },
+    mosaicItemFocalPoint: {
+      type: Object,
+      default: {
+        x: 0.5,
+        y: 0.5
+      }
+    },
+    mosaicDensity: {
+      type: Number,
+      default: 5
     }
   },
   supports: {
@@ -3254,6 +3280,7 @@ registerBlockType('tainacan/dynamic-items-list', {
         clientId = _ref.clientId;
     var items = attributes.items,
         content = attributes.content,
+        collection = attributes.collection,
         collectionId = attributes.collectionId,
         showImage = attributes.showImage,
         showName = attributes.showName,
@@ -3272,7 +3299,12 @@ registerBlockType('tainacan/dynamic-items-list', {
         isLoadingCollection = attributes.isLoadingCollection,
         collectionBackgroundColor = attributes.collectionBackgroundColor,
         collectionTextColor = attributes.collectionTextColor,
-        mosaicHeight = attributes.mosaicHeight; // Obtains block's client id to render it on save function
+        mosaicHeight = attributes.mosaicHeight,
+        mosaicGridColumns = attributes.mosaicGridColumns,
+        mosaicGridRows = attributes.mosaicGridRows,
+        mosaicItemFocalPoint = attributes.mosaicItemFocalPoint,
+        sampleBackgroundImage = attributes.sampleBackgroundImage,
+        mosaicDensity = attributes.mosaicDensity; // Obtains block's client id to render it on save function
 
     setAttributes({
       blockId: clientId
@@ -3284,12 +3316,14 @@ registerBlockType('tainacan/dynamic-items-list', {
         className: "item-list-item",
         style: {
           marginBottom: layout == 'grid' ? (showName ? gridMargin + 12 : gridMargin) + 'px' : '',
-          backgroundImage: layout == 'mosaic' ? "url(".concat(getItemThumbnail(item, 'tainacan-medium-full'), ")") : 'none'
+          backgroundImage: layout == 'mosaic' ? "url(".concat(getItemThumbnail(item, 'medium_large'), ")") : 'none',
+          backgroundPosition: layout == 'mosaic' ? "".concat(mosaicItemFocalPoint.x * 100, "% ").concat(mosaicItemFocalPoint.y * 100, "%") : 'none'
         }
       }, React.createElement("a", {
         id: isNaN(item.id) ? item.id : 'item-id-' + item.id,
         href: item.url,
         target: "_blank",
+        style: {},
         className: (!showName ? 'item-without-title' : '') + ' ' + (!showImage ? 'item-without-image' : '')
       }, React.createElement("img", {
         src: getItemThumbnail(item, 'tainacan-medium'),
@@ -3301,120 +3335,145 @@ registerBlockType('tainacan/dynamic-items-list', {
       return React.createElement("div", {
         style: {
           width: 'calc((100% / ' + mosaicGroupsLength + ') - ' + gridMargin + 'px)',
-          height: 'calc(((2 * ' + gridMargin + 'px) + ' + mosaicHeight + 'vh))',
-          gridTemplateColumns: 'repeat(3, calc((100% / 3) - (' + 2 * Number(gridMargin) + 'px/3)))',
+          height: 'calc(((' + (mosaicGridRows - 1) + ' * ' + gridMargin + 'px) + ' + mosaicHeight + 'px))',
+          gridTemplateColumns: 'repeat(' + mosaicGridColumns + ', calc((100% / ' + mosaicGridColumns + ') - (' + (mosaicGridColumns - 1) * Number(gridMargin) + 'px/' + mosaicGridColumns + ')))',
           margin: gridMargin + 'px',
           gridGap: gridMargin + 'px'
         },
-        className: 'mosaic-container mosaic-container--' + mosaicGroup.length
+        className: 'mosaic-container mosaic-container--' + mosaicGroup.length + '-' + mosaicGridRows + 'x' + mosaicGridColumns
       }, buildMosaic(mosaicGroup));
     }
 
     function setContent() {
-      items = [];
-      isLoading = true;
-      if (itemsRequestSource != undefined && typeof itemsRequestSource == 'function') itemsRequestSource.cancel('Previous items search canceled.');
-      itemsRequestSource = axios__WEBPACK_IMPORTED_MODULE_2___default.a.CancelToken.source();
-      setAttributes({
-        isLoading: isLoading
-      });
-      var endpoint = '/collection' + searchURL.split('#')[1].split('/collections')[1];
-      var query = endpoint.split('?')[1];
-      var queryObject = qs__WEBPACK_IMPORTED_MODULE_3___default.a.parse(query); // Set up max items to be shown
-
-      if (maxItemsNumber != undefined && maxItemsNumber > 0) queryObject.perpage = maxItemsNumber;else if (queryObject.perpage != undefined && queryObject.perpage > 0) setAttributes({
-        maxItemsNumber: queryObject.perpage
-      });else {
-        queryObject.perpage = 12;
+      if (searchURL) {
+        items = [];
+        isLoading = true;
+        if (itemsRequestSource != undefined && typeof itemsRequestSource == 'function') itemsRequestSource.cancel('Previous items search canceled.');
+        itemsRequestSource = axios__WEBPACK_IMPORTED_MODULE_2___default.a.CancelToken.source();
         setAttributes({
-          maxItemsNumber: 12
+          isLoading: isLoading
         });
-      } // Set up sorting order
+        var endpoint = '/collection' + searchURL.split('#')[1].split('/collections')[1];
+        var query = endpoint.split('?')[1];
+        var queryObject = qs__WEBPACK_IMPORTED_MODULE_3___default.a.parse(query); // Set up max items to be shown
 
-      if (order != undefined) queryObject.order = order;else if (queryObject.order != undefined) setAttributes({
-        order: queryObject.order
-      });else {
-        queryObject.order = 'asc';
-        setAttributes({
-          order: 'asc'
-        });
-      } // Set up sorting order
+        if (maxItemsNumber != undefined && maxItemsNumber > 0) queryObject.perpage = maxItemsNumber;else if (queryObject.perpage != undefined && queryObject.perpage > 0) setAttributes({
+          maxItemsNumber: queryObject.perpage
+        });else {
+          queryObject.perpage = 12;
+          setAttributes({
+            maxItemsNumber: 12
+          });
+        } // Set up sorting order
 
-      if (searchString != undefined) queryObject.search = searchString;else if (queryObject.search != undefined) setAttributes({
-        searchString: queryObject.search
-      });else {
-        delete queryObject.search;
-        setAttributes({
-          searchString: undefined
-        });
-      } // Remove unecessary queries
+        if (order != undefined) queryObject.order = order;else if (queryObject.order != undefined) setAttributes({
+          order: queryObject.order
+        });else {
+          queryObject.order = 'asc';
+          setAttributes({
+            order: 'asc'
+          });
+        } // Set up sorting order
 
-      delete queryObject.readmode;
-      delete queryObject.iframemode;
-      delete queryObject.admin_view_mode;
-      delete queryObject.fetch_only_meta;
-      endpoint = endpoint.split('?')[0] + '?' + qs__WEBPACK_IMPORTED_MODULE_3___default.a.stringify(queryObject) + '&fetch_only=title,url,thumbnail';
-      _api_client_axios_js__WEBPACK_IMPORTED_MODULE_1__["default"].get(endpoint, {
-        cancelToken: itemsRequestSource.token
-      }).then(function (response) {
-        if (layout !== 'mosaic') {
-          var _iteratorNormalCompletion = true;
-          var _didIteratorError = false;
-          var _iteratorError = undefined;
+        if (searchString != undefined) queryObject.search = searchString;else if (queryObject.search != undefined) setAttributes({
+          searchString: queryObject.search
+        });else {
+          delete queryObject.search;
+          setAttributes({
+            searchString: undefined
+          });
+        } // Remove unecessary queries
 
-          try {
-            for (var _iterator = response.data.items[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-              var item = _step.value;
-              items.push(prepareItem(item));
-            }
-          } catch (err) {
-            _didIteratorError = true;
-            _iteratorError = err;
-          } finally {
+        delete queryObject.readmode;
+        delete queryObject.iframemode;
+        delete queryObject.admin_view_mode;
+        delete queryObject.fetch_only_meta;
+        endpoint = endpoint.split('?')[0] + '?' + qs__WEBPACK_IMPORTED_MODULE_3___default.a.stringify(queryObject) + '&fetch_only=title,url,thumbnail';
+        _api_client_axios_js__WEBPACK_IMPORTED_MODULE_1__["default"].get(endpoint, {
+          cancelToken: itemsRequestSource.token
+        }).then(function (response) {
+          if (layout !== 'mosaic') {
+            var _iteratorNormalCompletion = true;
+            var _didIteratorError = false;
+            var _iteratorError = undefined;
+
             try {
-              if (!_iteratorNormalCompletion && _iterator.return != null) {
-                _iterator.return();
+              for (var _iterator = response.data.items[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+                var item = _step.value;
+                items.push(prepareItem(item));
               }
+            } catch (err) {
+              _didIteratorError = true;
+              _iteratorError = err;
             } finally {
-              if (_didIteratorError) {
-                throw _iteratorError;
+              try {
+                if (!_iteratorNormalCompletion && _iterator.return != null) {
+                  _iterator.return();
+                }
+              } finally {
+                if (_didIteratorError) {
+                  throw _iteratorError;
+                }
               }
             }
-          }
-        } else {
-          var mosaicGroups = mosaicPartition(response.data.items, 5);
-          var _iteratorNormalCompletion2 = true;
-          var _didIteratorError2 = false;
-          var _iteratorError2 = undefined;
 
-          try {
-            for (var _iterator2 = mosaicGroups[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-              var mosaicGroup = _step2.value;
-              items.push(prepareMosaicItem(mosaicGroup, mosaicGroups.length));
-            }
-          } catch (err) {
-            _didIteratorError2 = true;
-            _iteratorError2 = err;
-          } finally {
+            setAttributes({
+              content: React.createElement("div", null),
+              items: items,
+              isLoading: false,
+              itemsRequestSource: itemsRequestSource
+            });
+          } else {
+            // Initializes some variables
+            mosaicDensity = mosaicDensity ? mosaicDensity : 5;
+            mosaicGridRows = mosaicGridRows ? mosaicGridRows : 3;
+            mosaicGridColumns = mosaicGridColumns ? mosaicGridColumns : 3;
+            mosaicHeight = mosaicHeight ? mosaicHeight : 280;
+            mosaicItemFocalPoint = mosaicItemFocalPoint ? mosaicItemFocalPoint : {
+              x: 0.5,
+              y: 0.5
+            };
+            sampleBackgroundImage = response.data.items && response.data.items[0] && response.data.items[0] ? getItemThumbnail(response.data.items[0], 'tainacan-medium') : '';
+            var mosaicGroups = mosaicPartition(response.data.items);
+            var _iteratorNormalCompletion2 = true;
+            var _didIteratorError2 = false;
+            var _iteratorError2 = undefined;
+
             try {
-              if (!_iteratorNormalCompletion2 && _iterator2.return != null) {
-                _iterator2.return();
+              for (var _iterator2 = mosaicGroups[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+                var mosaicGroup = _step2.value;
+                items.push(prepareMosaicItem(mosaicGroup, mosaicGroups.length));
               }
+            } catch (err) {
+              _didIteratorError2 = true;
+              _iteratorError2 = err;
             } finally {
-              if (_didIteratorError2) {
-                throw _iteratorError2;
+              try {
+                if (!_iteratorNormalCompletion2 && _iterator2.return != null) {
+                  _iterator2.return();
+                }
+              } finally {
+                if (_didIteratorError2) {
+                  throw _iteratorError2;
+                }
               }
             }
-          }
-        }
 
-        setAttributes({
-          content: React.createElement("div", null),
-          items: items,
-          isLoading: false,
-          itemsRequestSource: itemsRequestSource
+            setAttributes({
+              content: React.createElement("div", null),
+              items: items,
+              isLoading: false,
+              itemsRequestSource: itemsRequestSource,
+              mosaicDensity: mosaicDensity,
+              mosaicHeight: mosaicHeight,
+              mosaicGridRows: mosaicGridRows,
+              mosaicGridColumns: mosaicGridColumns,
+              mosaicItemFocalPoint: mosaicItemFocalPoint,
+              sampleBackgroundImage: sampleBackgroundImage
+            });
+          }
         });
-      });
+      }
     }
 
     function fetchCollectionForHeader() {
@@ -3474,9 +3533,19 @@ registerBlockType('tainacan/dynamic-items-list', {
       }
     }
 
-    function mosaicPartition(items, size) {
+    function updateMosaicItemFocalPoint(focalPoint) {
+      if (Math.abs(focalPoint.x - mosaicItemFocalPoint.x) > 0.025 || Math.abs(focalPoint.y - mosaicItemFocalPoint.y) > 0.025) {
+        mosaicItemFocalPoint = focalPoint;
+        setAttributes({
+          mosaicItemFocalPoint: focalPoint
+        });
+        setContent();
+      }
+    }
+
+    function mosaicPartition(items) {
       var partition = _.groupBy(items, function (item, i) {
-        if (i % 2 == 0) return Math.floor(i / size);else return Math.floor(i / (size + 1));
+        if (i % 2 == 0) return Math.floor(i / mosaicDensity);else return Math.floor(i / (mosaicDensity + 1));
       });
 
       return _.values(partition);
@@ -3663,13 +3732,12 @@ registerBlockType('tainacan/dynamic-items-list', {
       },
       min: 0,
       max: 48
-    })), layout == 'mosaic' ? React.createElement("div", {
-      style: {
-        marginTop: '16px'
-      }
-    }, React.createElement(RangeControl, {
-      label: __('Mosaic container height', 'tainacan'),
-      value: mosaicHeight ? mosaicHeight : 40,
+    }))) : null)), layout == 'mosaic' ? React.createElement(PanelBody, {
+      title: __('Mosaic', 'tainacan'),
+      initialOpen: true
+    }, React.createElement("div", null, React.createElement(RangeControl, {
+      label: __('Container height (px)', 'tainacan'),
+      value: mosaicHeight ? mosaicHeight : 280,
       onChange: function onChange(height) {
         mosaicHeight = height;
         setAttributes({
@@ -3677,9 +3745,66 @@ registerBlockType('tainacan/dynamic-items-list', {
         });
         setContent();
       },
-      min: 10,
-      max: 100
-    })) : null) : null)))), isSelected ? React.createElement("div", null, isModalOpen ? React.createElement(_dynamic_items_modal_js__WEBPACK_IMPORTED_MODULE_0__["default"], {
+      min: 100,
+      max: 2000
+    })), React.createElement("div", null, React.createElement(RangeControl, {
+      label: __('Group Grid Density', 'tainacan'),
+      value: mosaicDensity ? mosaicDensity : 5,
+      onChange: function onChange(value) {
+        mosaicDensity = value;
+        setAttributes({
+          mosaicDensity: mosaicDensity
+        });
+        setContent();
+      },
+      min: 1,
+      max: 5
+    })), React.createElement("div", null, React.createElement(SelectControl, {
+      label: __('Group Grid Dimensions', 'tainacan'),
+      value: mosaicGridRows + 'x' + mosaicGridColumns,
+      options: [{
+        label: '2 x 3',
+        value: '2x3'
+      }, {
+        label: '3 x 2',
+        value: '3x2'
+      }, {
+        label: '3 x 3',
+        value: '3x3'
+      }, {
+        label: '3 x 4',
+        value: '3x4'
+      }, {
+        label: '4 x 3',
+        value: '4x3'
+      }, {
+        label: '4 x 5',
+        value: '4x5'
+      }, {
+        label: '5 x 4',
+        value: '5x4'
+      }],
+      onChange: function onChange(aGrid) {
+        mosaicGridRows = aGrid.split('x')[0];
+        mosaicGridColumns = aGrid.split('x')[1];
+        setAttributes({
+          mosaicGridRows: mosaicGridRows,
+          mosaicGridColumns: mosaicGridColumns
+        });
+        setContent();
+      }
+    })), React.createElement("div", null, React.createElement(FocalPointPicker, {
+      label: __('Item focal point for background image', 'tainacan'),
+      url: sampleBackgroundImage,
+      dimensions: {
+        width: 400,
+        height: 400
+      },
+      value: mosaicItemFocalPoint,
+      onChange: function onChange(focalPoint) {
+        return _.debounce(updateMosaicItemFocalPoint(focalPoint), 700);
+      }
+    }))) : null)), isSelected ? React.createElement("div", null, isModalOpen ? React.createElement(_dynamic_items_modal_js__WEBPACK_IMPORTED_MODULE_0__["default"], {
       existingCollectionId: collectionId,
       existingSearchURL: searchURL,
       onSelectCollection: function onSelectCollection(selectedCollectionId) {
@@ -3860,16 +3985,50 @@ registerBlockType('tainacan/dynamic-items-list', {
       onClick: function onClick() {
         return openDynamicItemsModal();
       }
-    }, __('Select items', 'tainacan'))) : null, isLoading ? React.createElement("div", {
+    }, __('Configure search', 'tainacan'))) : null, isLoading ? React.createElement("div", {
       class: "spinner-container"
-    }, React.createElement(Spinner, null)) : React.createElement("div", null, React.createElement("ul", {
+    }, React.createElement(Spinner, null)) : React.createElement("div", null, layout !== 'mosaic' ? React.createElement("ul", {
+      style: {
+        gridTemplateColumns: layout == 'grid' ? 'repeat(auto-fill, ' + (gridMargin + (showName ? 220 : 185)) + 'px)' : 'inherit',
+        marginTop: showSearchBar || showCollectionHeader ? '-' + Number(gridMargin) / 2 : '0px',
+        padding: Number(gridMargin) / 4 + 'px'
+      },
+      className: 'items-list-edit items-layout-' + layout + (!showName ? ' items-list-without-margin' : '')
+    }, items) : React.createElement(ResizableBox, {
+      size: {
+        height: mosaicHeight ? mosaicHeight + 3 * gridMargin : 280 + 3 * gridMargin,
+        width: '100%'
+      },
+      minHeight: "80",
+      maxHeight: "2000",
+      minWidth: "100%",
+      maxWidth: "100%",
+      showHandle: true,
+      enable: {
+        top: false,
+        right: false,
+        bottom: true,
+        left: false,
+        topRight: false,
+        bottomRight: true,
+        bottomLeft: true,
+        topLeft: false
+      },
+      onResizeStop: function onResizeStop(event, direction, elt, delta) {
+        mosaicHeight = delta.height ? parseInt(delta.height) + parseInt(mosaicHeight) : 280;
+        setAttributes({
+          mosaicHeight: parseInt(mosaicHeight)
+        });
+        setContent();
+      }
+    }, React.createElement("ul", {
       style: {
         marginTop: showSearchBar || showCollectionHeader ? '-' + Number(gridMargin) / 2 : '0px',
         padding: Number(gridMargin) / 4 + 'px',
-        minHeight: layout === 'mosaic' ? mosaicHeight + 'vh' : ''
+        minHeight: mosaicHeight + 'px'
       },
       className: 'items-list-edit items-layout-' + layout + (!showName ? ' items-list-without-margin' : '')
-    }, items)));
+    }, items))));
   },
   save: function save(_ref2) {
     var attributes = _ref2.attributes,
@@ -3889,7 +4048,11 @@ registerBlockType('tainacan/dynamic-items-list', {
         showCollectionLabel = attributes.showCollectionLabel,
         collectionBackgroundColor = attributes.collectionBackgroundColor,
         collectionTextColor = attributes.collectionTextColor,
-        mosaicHeight = attributes.mosaicHeight;
+        mosaicHeight = attributes.mosaicHeight,
+        mosaicGridRows = attributes.mosaicGridRows,
+        mosaicGridColumns = attributes.mosaicGridColumns,
+        mosaicItemFocalPoint = attributes.mosaicItemFocalPoint,
+        mosaicDensity = attributes.mosaicDensity;
     return React.createElement("div", {
       "search-url": searchURL,
       className: className,
@@ -3901,6 +4064,11 @@ registerBlockType('tainacan/dynamic-items-list', {
       "show-collection-label": '' + showCollectionLabel,
       layout: layout,
       "mosaic-height": mosaicHeight,
+      "mosaic-density": mosaicDensity,
+      "mosaic-grid-rows": mosaicGridRows,
+      "mosaic-grid-columns": mosaicGridColumns,
+      "mosaic-item-focal-point-x": mosaicItemFocalPoint.x,
+      "mosaic-item-focal-point-y": mosaicItemFocalPoint.y,
       "collection-background-color": collectionBackgroundColor,
       "collection-text-color": collectionTextColor,
       "grid-margin": gridMargin,

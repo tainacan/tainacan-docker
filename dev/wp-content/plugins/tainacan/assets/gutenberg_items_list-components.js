@@ -3222,7 +3222,8 @@ function (_React$Component) {
       if (this.state.itemsRequestSource != undefined) this.state.itemsRequestSource.cancel('Previous items search canceled.');
       var anItemsRequestSource = axios__WEBPACK_IMPORTED_MODULE_1___default.a.CancelToken.source();
       var endpoint = '/collection/' + this.state.collectionId + '/items?' + qs__WEBPACK_IMPORTED_MODULE_2___default.a.stringify({
-        postin: selectedItems
+        postin: selectedItems,
+        perpage: selectedItems.length
       }) + '&fetch_only=title,url,thumbnail';
       _api_client_axios_js__WEBPACK_IMPORTED_MODULE_0__["default"].get(endpoint, {
         cancelToken: anItemsRequestSource.token
