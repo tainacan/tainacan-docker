@@ -2059,9 +2059,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 
 var tainacan = axios__WEBPACK_IMPORTED_MODULE_0___default.a.create({
-  baseURL: tainacan_plugin.root
+  baseURL: tainacan_blocks.root
 });
-tainacan.defaults.headers.common['X-WP-Nonce'] = tainacan_plugin.nonce;
+tainacan.defaults.headers.common['X-WP-Nonce'] = tainacan_blocks.nonce;
 /* harmony default export */ __webpack_exports__["default"] = (tainacan);
 
 /***/ }),
@@ -2355,7 +2355,7 @@ function (_React$Component) {
           className: "modal-checkbox-list-item"
         }, collection.thumbnail ? React.createElement("img", {
           "aria-hidden": true,
-          src: collection.thumbnail && collection.thumbnail[0] && collection.thumbnail[0].src ? collection.thumbnail[0].src : "".concat(tainacan_plugin.base_url, "/admin/images/placeholder_square.png"),
+          src: collection.thumbnail && collection.thumbnail[0] && collection.thumbnail[0].src ? collection.thumbnail[0].src : "".concat(tainacan_blocks.base_url, "/admin/images/placeholder_square.png"),
           alt: collection.thumbnail && collection.thumbnail[0] ? collection.thumbnail[0].alt : collection.name
         }) : null, React.createElement(CheckboxControl, {
           label: collection.name,
@@ -2378,7 +2378,7 @@ function (_React$Component) {
           className: "modal-checkbox-list-item"
         }, collection.thumbnail ? React.createElement("img", {
           "aria-hidden": true,
-          src: collection.thumbnail && collection.thumbnail[0] && collection.thumbnail[0].src ? collection.thumbnail[0].src : "".concat(tainacan_plugin.base_url, "/admin/images/placeholder_square.png"),
+          src: collection.thumbnail && collection.thumbnail[0] && collection.thumbnail[0].src ? collection.thumbnail[0].src : "".concat(tainacan_blocks.base_url, "/admin/images/placeholder_square.png"),
           alt: collection.thumbnail && collection.thumbnail[0] ? collection.thumbnail[0].alt : collection.name
         }) : null, React.createElement(CheckboxControl, {
           label: collection.name,
@@ -2567,7 +2567,7 @@ registerBlockType('tainacan/collections-list', {
         target: "_blank",
         className: (!showName ? 'collection-without-name' : '') + ' ' + (!showImage ? 'collection-without-image' : '')
       }, React.createElement("img", {
-        src: collection.thumbnail && collection.thumbnail[0] && collection.thumbnail[0].src ? collection.thumbnail[0].src : "".concat(tainacan_plugin.base_url, "/admin/images/placeholder_square.png"),
+        src: collection.thumbnail && collection.thumbnail[0] && collection.thumbnail[0].src ? collection.thumbnail[0].src : "".concat(tainacan_blocks.base_url, "/admin/images/placeholder_square.png"),
         alt: collection.thumbnail && collection.thumbnail[0] ? collection.thumbnail[0].alt : collection.name
       }), React.createElement("span", null, collection.name ? collection.name : '')));
     }
@@ -2711,7 +2711,7 @@ registerBlockType('tainacan/collections-list', {
     }, __('Select collections', 'tainacan'))) : null) : null, !selectedCollectionsHTML.length ? React.createElement(Placeholder, {
       icon: React.createElement("img", {
         width: 148,
-        src: "".concat(tainacan_plugin.base_url, "/admin/images/tainacan_logo_header.svg"),
+        src: "".concat(tainacan_blocks.base_url, "/admin/images/tainacan_logo_header.svg"),
         alt: "Tainacan Logo"
       })
     }, React.createElement("p", null, React.createElement("svg", {

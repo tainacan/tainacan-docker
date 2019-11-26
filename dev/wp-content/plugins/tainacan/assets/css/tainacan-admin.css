@@ -434,7 +434,7 @@
 .delete, .modal-close, .is-unselectable, .button, .file, .breadcrumb, .pagination-previous,
 .pagination-next,
 .pagination-link,
-.pagination-ellipsis, .tabs {
+.pagination-ellipsis, .tabs, .carousel {
   -webkit-touch-callout: none;
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -12226,6 +12226,81 @@ label.panel-block {
   .autocomplete.is-large {
     font-size: 1.5rem; }
 
+.carousel {
+  position: relative; }
+  .carousel .carousel-list {
+    position: relative;
+    display: flex;
+    overflow: hidden; }
+    .carousel .carousel-list:hover .carousel-arrow.is-hovered {
+      opacity: 1; }
+    .carousel .carousel-list .carousel-item {
+      flex: none;
+      width: 100%; }
+  .carousel .carousel-pause {
+    pointer-events: none;
+    position: absolute;
+    top: 0;
+    right: 0.15rem;
+    transition: 0.5s ease-out; }
+  .carousel .carousel-arrow {
+    transition: 0.5s ease-out; }
+    .carousel .carousel-arrow.is-hovered {
+      opacity: 0; }
+      @media screen and (max-width: 768px) {
+        .carousel .carousel-arrow.is-hovered {
+          opacity: 1; } }
+    .carousel .carousel-arrow .icon {
+      background: white;
+      color: #76c6cc;
+      cursor: pointer;
+      border: 1px solid white;
+      border-radius: 290486px;
+      outline: 0; }
+      .carousel .carousel-arrow .icon:hover {
+        border: 1px solid #76c6cc;
+        opacity: 1; }
+      .carousel .carousel-arrow .icon.has-icons-left, .carousel .carousel-arrow .icon.has-icons-right {
+        top: 45%;
+        position: absolute;
+        z-index: 1; }
+      .carousel .carousel-arrow .icon.has-icons-left {
+        left: 1.5rem; }
+      .carousel .carousel-arrow .icon.has-icons-right {
+        right: 1.5rem; }
+  .carousel .carousel-indicator {
+    width: 100%;
+    padding: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center; }
+    .carousel .carousel-indicator.is-inside {
+      position: absolute;
+      bottom: 0;
+      z-index: 1; }
+    .carousel .carousel-indicator .indicator-item:not(:last-child) {
+      margin-right: 0.5rem; }
+    .carousel .carousel-indicator .indicator-item.is-active .indicator-style,
+    .carousel .carousel-indicator .indicator-item .indicator-style:hover {
+      background: #76c6cc;
+      border: 1px solid white; }
+    .carousel .carousel-indicator .indicator-item .indicator-style {
+      display: block;
+      border: 1px solid #76c6cc;
+      background: white;
+      outline: none;
+      transition: 0.3s ease-out; }
+      .carousel .carousel-indicator .indicator-item .indicator-style.is-boxs {
+        height: 10px;
+        width: 10px; }
+      .carousel .carousel-indicator .indicator-item .indicator-style.is-dots {
+        border-radius: 10px;
+        height: 10px;
+        width: 10px; }
+      .carousel .carousel-indicator .indicator-item .indicator-style.is-lines {
+        height: 5px;
+        width: 25px; }
+
 .b-checkbox.checkbox {
   outline: none;
   display: inline-flex;
@@ -13125,6 +13200,10 @@ label.panel-block {
     width: 100%; }
   .datepicker .dropdown.is-disabled {
     opacity: 1; }
+  .datepicker .dropdown-content {
+    background-color: white;
+    border-radius: 4px;
+    box-shadow: 0 2px 3px rgba(10, 10, 10, 0.1), 0 0 0 1px rgba(10, 10, 10, 0.1); }
   .datepicker .dropdown-item, .datepicker .dropdown .dropdown-menu .has-link a, .dropdown .dropdown-menu .has-link .datepicker a {
     font-size: inherit; }
   .datepicker .datepicker-header {
@@ -13343,6 +13422,8 @@ label.panel-block {
 .taginput .dialog.is-large .taginput-container.is-focusable,
 .dialog.is-large .button {
   font-size: 1.5rem; }
+.dialog.has-custom-container {
+  position: absolute; }
 
 .dropdown + .dropdown {
   margin-left: 0.5em; }
@@ -15962,43 +16043,43 @@ MIT (https://github.com/Wikiki/bulma-steps/blob/master/LICENSE)
 .b-tabs.is-vertical {
   display: flex;
   flex-direction: row; }
-  .b-tabs.is-vertical .tabs ul {
+  .b-tabs.is-vertical > .tabs ul {
     flex-direction: column;
     border-bottom-color: transparent; }
-    .b-tabs.is-vertical .tabs ul li {
+    .b-tabs.is-vertical > .tabs ul li {
       width: 100%; }
-      .b-tabs.is-vertical .tabs ul li a {
+      .b-tabs.is-vertical > .tabs ul li a {
         justify-content: left; }
-  .b-tabs.is-vertical .tabs.is-boxed li a {
+  .b-tabs.is-vertical > .tabs.is-boxed li a {
     border-bottom-color: transparent !important;
     border-right-color: #dbdbdb !important;
     border-radius: 4px 0 0 4px; }
-  .b-tabs.is-vertical .tabs.is-boxed li.is-active a {
+  .b-tabs.is-vertical > .tabs.is-boxed li.is-active a {
     border-bottom-color: #dbdbdb !important;
     border-right-color: transparent !important; }
-  .b-tabs.is-vertical .tabs.is-toggle li + li {
+  .b-tabs.is-vertical > .tabs.is-toggle li + li {
     margin-left: 0; }
-  .b-tabs.is-vertical .tabs.is-toggle li:first-child a {
+  .b-tabs.is-vertical > .tabs.is-toggle li:first-child a {
     border-radius: 4px 4px 0 0; }
-  .b-tabs.is-vertical .tabs.is-toggle li:last-child a {
+  .b-tabs.is-vertical > .tabs.is-toggle li:last-child a {
     border-radius: 0 0 4px 4px; }
-  .b-tabs.is-vertical .tabs.is-fullwidth li a {
+  .b-tabs.is-vertical > .tabs.is-fullwidth li a {
     height: 100%; }
-  .b-tabs.is-vertical .tab-content {
+  .b-tabs.is-vertical > .tab-content {
     flex-grow: 1; }
   .b-tabs.is-vertical.is-right {
     flex-direction: row-reverse; }
-    .b-tabs.is-vertical.is-right .tabs ul a {
+    .b-tabs.is-vertical.is-right > .tabs ul a {
       flex-direction: row-reverse; }
-      .b-tabs.is-vertical.is-right .tabs ul a .icon:first-child {
+      .b-tabs.is-vertical.is-right > .tabs ul a .icon:first-child {
         margin-right: 0;
         margin-left: 0.5em; }
-    .b-tabs.is-vertical.is-right .tabs.is-boxed li a {
+    .b-tabs.is-vertical.is-right > .tabs.is-boxed li a {
       border-bottom-color: transparent !important;
       border-right-color: transparent !important;
       border-left-color: #dbdbdb !important;
       border-radius: 0 4px 4px 0; }
-    .b-tabs.is-vertical.is-right .tabs.is-boxed li.is-active a {
+    .b-tabs.is-vertical.is-right > .tabs.is-boxed li.is-active a {
       border-bottom-color: #dbdbdb !important;
       border-right-color: #dbdbdb !important;
       border-left-color: transparent !important; }
@@ -17121,6 +17202,8 @@ MIT (https://github.com/Wikiki/bulma-steps/blob/master/LICENSE)
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
         transform: none !important;
+        text-transform: none !important;
+        letter-spacing: normal !important;
         font-size: 20px;
         margin-top: -2px; }
       .tainacan-form .b-numberinput button.is-primary .mdi-plus::before,
@@ -17233,8 +17316,8 @@ button.link-style:active {
     background: #76c6cc !important; }
   .button.is-success:hover, .button.is-success:focus {
     background: #25a189 !important; }
-  .button.is-white:hover, .button.is-white:focus, .button.is-outlined:hover, .button.is-outlined:focus {
-    background: white !important; }
+  .button.is-white, .button.is-white:hover, .button.is-white:focus, .button.is-outlined:hover, .button.is-outlined:focus {
+    background-color: transparent !important; }
   .button:active {
     -webkit-transform: none !important;
     transform: none !important; }
@@ -17257,7 +17340,8 @@ button.link-style:active {
     color: #555758 !important;
     background-color: white !important; }
   .button.is-white[disabled] {
-    background-color: white !important; }
+    background-color: transparent !important;
+    opacity: 0.85; }
 
 .button.is-small {
   height: 1.625rem !important;
@@ -17301,7 +17385,9 @@ button.link-style:active {
     color: #298596 !important;
     display: flex !important;
     align-items: initial;
-    margin-top: -10px !important; }
+    margin-top: -10px !important;
+    text-transform: none !important;
+    letter-spacing: normal !important; }
   .select.is-loading.is-small::after {
     font-size: 0.875rem; }
 
@@ -17893,6 +17979,9 @@ textarea.textarea,
 .metadata-options-dropdown .dropdown-content {
   max-height: unset !important; }
 
+.taginput.is-expanded {
+  width: 100%; }
+
 .taginput-container .mdi-magnify::before,
 .autocomplete .mdi-magnify::before {
   content: 'search';
@@ -17904,11 +17993,12 @@ textarea.textarea,
   line-height: inherit;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  font-size: 20px; }
+  font-size: 20px;
+  text-transform: none !important; }
 
 .taginput-container {
   padding: 0px !important;
-  background-color: white !important; }
+  background-color: transparent !important; }
   .taginput-container:focus, .taginput-container:active {
     border: none !important; }
   .taginput-container .autocomplete .icon {
@@ -17986,6 +18076,8 @@ textarea.textarea,
     line-height: inherit;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    text-transform: none !important;
+    letter-spacing: normal !important;
     color: #298596; }
   .datepicker .datepicker-header .pagination .pagination-previous {
     border: none;
@@ -18503,7 +18595,9 @@ textarea.textarea,
     vertical-align: middle;
     line-height: inherit;
     -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale; }
+    -moz-osx-font-smoothing: grayscale;
+    text-transform: none !important;
+    letter-spacing: normal !important; }
   .pagination-area .pagination .mdi-chevron-left::before {
     content: "arrowleft" !important;
     transform: none !important; }
@@ -18719,21 +18813,23 @@ textarea.textarea,
       background-color: #d6feed;
       color: #25a189; }
 
-#filters-mobile-modal .modal-close {
-  right: calc(8.3333333% + 20px);
+#filters-mobile-modal {
   background-color: white; }
-  #filters-mobile-modal .modal-close::before, #filters-mobile-modal .modal-close::after {
-    background-color: #298596; }
-#filters-mobile-modal .modal-content {
-  background-color: white;
-  margin: 0 8.3333333% 0 0;
-  padding: 24px 4.166666667% 24px 8.3333333%;
-  border-radius: 0;
-  height: 100%;
-  max-height: 100%;
-  overflow-y: auto; }
-  #filters-mobile-modal .modal-content h3 {
-    font-size: 100%; }
+  #filters-mobile-modal .modal-close {
+    right: calc(8.3333333% + 20px);
+    background-color: white; }
+    #filters-mobile-modal .modal-close::before, #filters-mobile-modal .modal-close::after {
+      background-color: #298596; }
+  #filters-mobile-modal .modal-content {
+    background-color: white;
+    margin: 0 8.3333333% 0 0;
+    padding: 24px 4.166666667% 24px 8.3333333%;
+    border-radius: 0;
+    height: 100%;
+    max-height: 100%;
+    overflow-y: auto; }
+    #filters-mobile-modal .modal-content h3 {
+      font-size: 100%; }
 
 .repository-level-page {
   margin-top: 94px;

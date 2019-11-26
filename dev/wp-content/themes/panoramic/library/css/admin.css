@@ -1,0 +1,16 @@
+
+span.premium-link {
+	color: #d54e21;
+}
+
+#adminmenu #toplevel_page_elementor a[href="https://www.outtheboxthemes.com/go/elementor/"] {
+	color: #d54e21;
+}
+
+#otb-dashboard-news .inside {
+    padding: 2px 0 0 0;
+}
+
+#otb-dashboard-news .rss-widget {
+    padding: 0 12px 15px 12px;
+}

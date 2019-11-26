@@ -2745,9 +2745,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 
 var tainacan = axios__WEBPACK_IMPORTED_MODULE_0___default.a.create({
-  baseURL: tainacan_plugin.root
+  baseURL: tainacan_blocks.root
 });
-tainacan.defaults.headers.common['X-WP-Nonce'] = tainacan_plugin.nonce;
+tainacan.defaults.headers.common['X-WP-Nonce'] = tainacan_blocks.nonce;
 /* harmony default export */ __webpack_exports__["default"] = (tainacan);
 
 /***/ }),
@@ -2844,7 +2844,7 @@ function (_React$Component) {
       if (this.props.existingCollectionId != null && this.props.existingCollectionId != undefined) {
         this.fetchCollection(this.props.existingCollectionId);
         this.setState({
-          searchURL: this.props.existingSearchURL ? this.props.existingSearchURL : tainacan_plugin.admin_url + 'admin.php?page=tainacan_admin#/collections/' + this.props.existingCollectionId + (this.props.loadStrategy == 'search' ? '/items/?iframemode=true&readmode=true' : '/items/?iframemode=true')
+          searchURL: this.props.existingSearchURL ? this.props.existingSearchURL : tainacan_blocks.admin_url + 'admin.php?page=tainacan_admin#/collections/' + this.props.existingCollectionId + (this.props.loadStrategy == 'search' ? '/items/?iframemode=true&readmode=true' : '/items/?iframemode=true')
         });
       } else {
         this.setState({
@@ -2926,7 +2926,7 @@ function (_React$Component) {
     value: function selectCollection(selectedCollectionId) {
       this.setState({
         collectionId: selectedCollectionId,
-        searchURL: tainacan_plugin.admin_url + 'admin.php?page=tainacan_admin#/collections/' + selectedCollectionId + (this.props.loadStrategy == 'search' ? '/items/?iframemode=true&readmode=true' : '/items/?iframemode=true')
+        searchURL: tainacan_blocks.admin_url + 'admin.php?page=tainacan_admin#/collections/' + selectedCollectionId + (this.props.loadStrategy == 'search' ? '/items/?iframemode=true&readmode=true' : '/items/?iframemode=true')
       });
       this.props.onSelectCollection(selectedCollectionId);
       this.fetchCollection(selectedCollectionId);
@@ -3351,7 +3351,7 @@ registerBlockType('tainacan/carousel-items-list', {
         href: item.url,
         target: "_blank"
       }, React.createElement("img", {
-        src: item.thumbnail && item.thumbnail['tainacan-medium'][0] && item.thumbnail['tainacan-medium'][0] ? item.thumbnail['tainacan-medium'][0] : item.thumbnail && item.thumbnail['thumbnail'][0] && item.thumbnail['thumbnail'][0] ? item.thumbnail['thumbnail'][0] : "".concat(tainacan_plugin.base_url, "/admin/images/placeholder_square.png"),
+        src: item.thumbnail && item.thumbnail['tainacan-medium'][0] && item.thumbnail['tainacan-medium'][0] ? item.thumbnail['tainacan-medium'][0] : item.thumbnail && item.thumbnail['thumbnail'][0] && item.thumbnail['thumbnail'][0] ? item.thumbnail['thumbnail'][0] : "".concat(tainacan_blocks.base_url, "/admin/images/placeholder_square.png"),
         alt: item.title ? item.title : __('Thumbnail', 'tainacan')
       }), !hideTitle ? React.createElement("span", null, item.title ? item.title : '') : null));
     }
@@ -3752,7 +3752,7 @@ registerBlockType('tainacan/carousel-items-list', {
     }))) : null, !items.length && !isLoading ? React.createElement(Placeholder, {
       icon: React.createElement("img", {
         width: 148,
-        src: "".concat(tainacan_plugin.base_url, "/admin/images/tainacan_logo_header.svg"),
+        src: "".concat(tainacan_blocks.base_url, "/admin/images/tainacan_logo_header.svg"),
         alt: "Tainacan Logo"
       })
     }, React.createElement("p", null, React.createElement("svg", {
@@ -3856,8 +3856,8 @@ registerBlockType('tainacan/carousel-items-list', {
       "collection-background-color": collectionBackgroundColor,
       "collection-text-color": collectionTextColor,
       "max-items-number": maxItemsNumber,
-      "tainacan-api-root": tainacan_plugin.root,
-      "tainacan-base-url": tainacan_plugin.base_url,
+      "tainacan-api-root": tainacan_blocks.root,
+      "tainacan-base-url": tainacan_blocks.base_url,
       id: 'wp-block-tainacan-carousel-items-list_' + blockId
     }, content);
   }

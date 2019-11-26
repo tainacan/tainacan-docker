@@ -2745,9 +2745,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 
 var tainacan = axios__WEBPACK_IMPORTED_MODULE_0___default.a.create({
-  baseURL: tainacan_plugin.root
+  baseURL: tainacan_blocks.root
 });
-tainacan.defaults.headers.common['X-WP-Nonce'] = tainacan_plugin.nonce;
+tainacan.defaults.headers.common['X-WP-Nonce'] = tainacan_blocks.nonce;
 /* harmony default export */ __webpack_exports__["default"] = (tainacan);
 
 /***/ }),
@@ -2923,16 +2923,16 @@ registerBlockType('tainacan/carousel-terms-list', {
       }, !showTermThumbnail ? React.createElement("div", {
         class: "term-items-grid"
       }, React.createElement("img", {
-        src: termItems[0] && termItems[0].thumbnail && termItems[0].thumbnail['tainacan-medium'][0] && termItems[0].thumbnail['tainacan-medium'][0] ? termItems[0].thumbnail['tainacan-medium'][0] : termItems[0] && termItems[0].thumbnail && termItems[0].thumbnail['thumbnail'][0] && termItems[0].thumbnail['thumbnail'][0] ? termItems[0].thumbnail['thumbnail'][0] : "".concat(tainacan_plugin.base_url, "/admin/images/placeholder_square.png"),
+        src: termItems[0] && termItems[0].thumbnail && termItems[0].thumbnail['tainacan-medium'][0] && termItems[0].thumbnail['tainacan-medium'][0] ? termItems[0].thumbnail['tainacan-medium'][0] : termItems[0] && termItems[0].thumbnail && termItems[0].thumbnail['thumbnail'][0] && termItems[0].thumbnail['thumbnail'][0] ? termItems[0].thumbnail['thumbnail'][0] : "".concat(tainacan_blocks.base_url, "/admin/images/placeholder_square.png"),
         alt: termItems[0] && termItems[0].name ? termItems[0].name : __('Thumbnail', 'tainacan')
       }), React.createElement("img", {
-        src: termItems[1] && termItems[1].thumbnail && termItems[1].thumbnail['tainacan-medium'][0] && termItems[1].thumbnail['tainacan-medium'][0] ? termItems[1].thumbnail['tainacan-medium'][0] : termItems[1] && termItems[1].thumbnail && termItems[1].thumbnail['thumbnail'][0] && termItems[1].thumbnail['thumbnail'][0] ? termItems[1].thumbnail['thumbnail'][0] : "".concat(tainacan_plugin.base_url, "/admin/images/placeholder_square.png"),
+        src: termItems[1] && termItems[1].thumbnail && termItems[1].thumbnail['tainacan-medium'][0] && termItems[1].thumbnail['tainacan-medium'][0] ? termItems[1].thumbnail['tainacan-medium'][0] : termItems[1] && termItems[1].thumbnail && termItems[1].thumbnail['thumbnail'][0] && termItems[1].thumbnail['thumbnail'][0] ? termItems[1].thumbnail['thumbnail'][0] : "".concat(tainacan_blocks.base_url, "/admin/images/placeholder_square.png"),
         alt: termItems[1] && termItems[1].name ? termItems[1].name : __('Thumbnail', 'tainacan')
       }), React.createElement("img", {
-        src: termItems[2] && termItems[2].thumbnail && termItems[2].thumbnail['tainacan-medium'][0] && termItems[2].thumbnail['tainacan-medium'][0] ? termItems[2].thumbnail['tainacan-medium'][0] : termItems[2] && termItems[2].thumbnail && termItems[2].thumbnail['thumbnail'][0] && termItems[2].thumbnail['thumbnail'][0] ? termItems[2].thumbnail['thumbnail'][0] : "".concat(tainacan_plugin.base_url, "/admin/images/placeholder_square.png"),
+        src: termItems[2] && termItems[2].thumbnail && termItems[2].thumbnail['tainacan-medium'][0] && termItems[2].thumbnail['tainacan-medium'][0] ? termItems[2].thumbnail['tainacan-medium'][0] : termItems[2] && termItems[2].thumbnail && termItems[2].thumbnail['thumbnail'][0] && termItems[2].thumbnail['thumbnail'][0] ? termItems[2].thumbnail['thumbnail'][0] : "".concat(tainacan_blocks.base_url, "/admin/images/placeholder_square.png"),
         alt: termItems[2] && termItems[2].name ? termItems[2].name : __('Thumbnail', 'tainacan')
       })) : React.createElement("img", {
-        src: term.header_image ? term.header_image : "".concat(tainacan_plugin.base_url, "/admin/images/placeholder_square.png"),
+        src: term.header_image ? term.header_image : "".concat(tainacan_blocks.base_url, "/admin/images/placeholder_square.png"),
         alt: term.name ? term.name : __('Thumbnail', 'tainacan')
       }), !hideName ? React.createElement("span", null, term.name ? term.name : '') : null));
     }
@@ -3214,7 +3214,7 @@ registerBlockType('tainacan/carousel-terms-list', {
     }, __('Add more terms', 'tainacan'))) : null) : null, !terms.length && !isLoading ? React.createElement(Placeholder, {
       icon: React.createElement("img", {
         width: 148,
-        src: "".concat(tainacan_plugin.base_url, "/admin/images/tainacan_logo_header.svg"),
+        src: "".concat(tainacan_blocks.base_url, "/admin/images/tainacan_logo_header.svg"),
         alt: "Tainacan Logo"
       })
     }, React.createElement("p", null, React.createElement("svg", {
@@ -3294,8 +3294,8 @@ registerBlockType('tainacan/carousel-terms-list', {
       "hide-name": '' + hideName,
       "max-terms-number": maxTermsNumber,
       "taxonomy-id": taxonomyId,
-      "tainacan-api-root": tainacan_plugin.root,
-      "tainacan-base-url": tainacan_plugin.base_url,
+      "tainacan-api-root": tainacan_blocks.root,
+      "tainacan-base-url": tainacan_blocks.base_url,
       "show-term-thumbnail": '' + showTermThumbnail,
       id: 'wp-block-tainacan-carousel-terms-list_' + blockId
     }, content);
@@ -3740,7 +3740,7 @@ function (_React$Component) {
           className: "modal-checkbox-list-item"
         }, term.header_image ? React.createElement("img", {
           "aria-hidden": true,
-          src: term.header_image && term.header_image[0] && term.header_image[0].src ? term.header_image[0].src : "".concat(tainacan_plugin.base_url, "/admin/images/placeholder_square.png"),
+          src: term.header_image && term.header_image[0] && term.header_image[0].src ? term.header_image[0].src : "".concat(tainacan_blocks.base_url, "/admin/images/placeholder_square.png"),
           alt: term.header_image && term.header_image[0] ? term.header_image[0].alt : term.name
         }) : null, React.createElement(CheckboxControl, {
           label: term.name,
@@ -3763,7 +3763,7 @@ function (_React$Component) {
           className: "modal-checkbox-list-item"
         }, term.header_image ? React.createElement("img", {
           "aria-hidden": true,
-          src: term.header_image && term.header_image[0] && term.header_image[0].src ? term.header_image[0].src : "".concat(tainacan_plugin.base_url, "/admin/images/placeholder_square.png"),
+          src: term.header_image && term.header_image[0] && term.header_image[0].src ? term.header_image[0].src : "".concat(tainacan_blocks.base_url, "/admin/images/placeholder_square.png"),
           alt: term.header_image && term.header_image[0] ? term.header_image[0].alt : term.name
         }) : null, React.createElement(CheckboxControl, {
           label: term.name,

@@ -2059,9 +2059,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 
 var tainacan = axios__WEBPACK_IMPORTED_MODULE_0___default.a.create({
-  baseURL: tainacan_plugin.root
+  baseURL: tainacan_blocks.root
 });
-tainacan.defaults.headers.common['X-WP-Nonce'] = tainacan_plugin.nonce;
+tainacan.defaults.headers.common['X-WP-Nonce'] = tainacan_blocks.nonce;
 /* harmony default export */ __webpack_exports__["default"] = (tainacan);
 
 /***/ }),
@@ -2240,7 +2240,7 @@ registerBlockType('tainacan/search-bar', {
           },
           className: (alignment == 'left' ? ' is-aligned-left' : '') + (alignment == 'right' ? ' is-aligned-right' : ''),
           id: "taincan-search-bar-block",
-          action: tainacan_plugin.site_url + '/' + collectionSlug + '/#/',
+          action: tainacan_blocks.site_url + '/' + collectionSlug + '/#/',
           method: "get"
         }, React.createElement("input", {
           style: {
@@ -2272,7 +2272,7 @@ registerBlockType('tainacan/search-bar', {
           },
           className: (alignment == 'left' ? ' is-aligned-left' : '') + (alignment == 'right' ? ' is-aligned-right' : ''),
           id: "taincan-search-bar-block",
-          action: tainacan_plugin.site_url + '/' + collectionSlug + '/#/',
+          action: tainacan_blocks.site_url + '/' + collectionSlug + '/#/',
           method: "get"
         }, React.createElement("input", {
           style: {
@@ -2520,7 +2520,7 @@ registerBlockType('tainacan/search-bar', {
     }, __('Configure search source', 'tainacan'))) : null) : null, !collectionId ? React.createElement(Placeholder, {
       icon: React.createElement("img", {
         width: 148,
-        src: "".concat(tainacan_plugin.base_url, "/admin/images/tainacan_logo_header.svg"),
+        src: "".concat(tainacan_blocks.base_url, "/admin/images/tainacan_logo_header.svg"),
         alt: "Tainacan Logo"
       })
     }, React.createElement("p", null, React.createElement("span", {
@@ -2792,7 +2792,7 @@ function (_React$Component) {
         label: __('Repository items', 'tainacan'),
         name: __('Repository items', 'tainacan'),
         id: 'default',
-        slug: tainacan_plugin.theme_items_list_url.split('/')[tainacan_plugin.theme_items_list_url.split('/').length - 1]
+        slug: tainacan_blocks.theme_items_list_url.split('/')[tainacan_blocks.theme_items_list_url.split('/').length - 1]
       };else {
         selectedCollection = this.state.modalCollections.find(function (collection) {
           return collection.id == selectedCollectionId;
@@ -2948,7 +2948,7 @@ function (_React$Component) {
         options: [{
           label: __('Repository items', 'tainacan'),
           value: 'default',
-          slug: tainacan_plugin.theme_items_list_url.split('/')[tainacan_plugin.theme_items_list_url.split('/').length - 1]
+          slug: tainacan_blocks.theme_items_list_url.split('/')[tainacan_blocks.theme_items_list_url.split('/').length - 1]
         }],
         onChange: function onChange(aCollectionId) {
           _this4.setState({

@@ -2745,9 +2745,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 
 var tainacan = axios__WEBPACK_IMPORTED_MODULE_0___default.a.create({
-  baseURL: tainacan_plugin.root
+  baseURL: tainacan_blocks.root
 });
-tainacan.defaults.headers.common['X-WP-Nonce'] = tainacan_plugin.nonce;
+tainacan.defaults.headers.common['X-WP-Nonce'] = tainacan_blocks.nonce;
 /* harmony default export */ __webpack_exports__["default"] = (tainacan);
 
 /***/ }),
@@ -3039,7 +3039,7 @@ function (_React$Component) {
           className: "modal-checkbox-list-item"
         }, collection.thumbnail ? React.createElement("img", {
           "aria-hidden": true,
-          src: collection.thumbnail && collection.thumbnail[0] && collection.thumbnail[0].src ? collection.thumbnail[0].src : "".concat(tainacan_plugin.base_url, "/admin/images/placeholder_square.png"),
+          src: collection.thumbnail && collection.thumbnail[0] && collection.thumbnail[0].src ? collection.thumbnail[0].src : "".concat(tainacan_blocks.base_url, "/admin/images/placeholder_square.png"),
           alt: collection.thumbnail && collection.thumbnail[0] ? collection.thumbnail[0].alt : collection.name
         }) : null, React.createElement(CheckboxControl, {
           label: collection.name,
@@ -3062,7 +3062,7 @@ function (_React$Component) {
           className: "modal-checkbox-list-item"
         }, collection.thumbnail ? React.createElement("img", {
           "aria-hidden": true,
-          src: collection.thumbnail && collection.thumbnail[0] && collection.thumbnail[0].src ? collection.thumbnail[0].src : "".concat(tainacan_plugin.base_url, "/admin/images/placeholder_square.png"),
+          src: collection.thumbnail && collection.thumbnail[0] && collection.thumbnail[0].src ? collection.thumbnail[0].src : "".concat(tainacan_blocks.base_url, "/admin/images/placeholder_square.png"),
           alt: collection.thumbnail && collection.thumbnail[0] ? collection.thumbnail[0].alt : collection.name
         }) : null, React.createElement(CheckboxControl, {
           label: collection.name,
@@ -3273,16 +3273,16 @@ registerBlockType('tainacan/carousel-collections-list', {
       }, !showCollectionThumbnail ? React.createElement("div", {
         class: "collection-items-grid"
       }, React.createElement("img", {
-        src: collectionItems[0] && collectionItems[0].thumbnail && collectionItems[0].thumbnail['tainacan-medium'][0] && collectionItems[0].thumbnail['tainacan-medium'][0] ? collectionItems[0].thumbnail['tainacan-medium'][0] : collectionItems[0] && collectionItems[0].thumbnail && collectionItems[0].thumbnail['thumbnail'][0] && collectionItems[0].thumbnail['thumbnail'][0] ? collectionItems[0].thumbnail['thumbnail'][0] : "".concat(tainacan_plugin.base_url, "/admin/images/placeholder_square.png"),
+        src: collectionItems[0] && collectionItems[0].thumbnail && collectionItems[0].thumbnail['tainacan-medium'][0] && collectionItems[0].thumbnail['tainacan-medium'][0] ? collectionItems[0].thumbnail['tainacan-medium'][0] : collectionItems[0] && collectionItems[0].thumbnail && collectionItems[0].thumbnail['thumbnail'][0] && collectionItems[0].thumbnail['thumbnail'][0] ? collectionItems[0].thumbnail['thumbnail'][0] : "".concat(tainacan_blocks.base_url, "/admin/images/placeholder_square.png"),
         alt: collectionItems[0] && collectionItems[0].name ? collectionItems[0].name : __('Thumbnail', 'tainacan')
       }), React.createElement("img", {
-        src: collectionItems[1] && collectionItems[1].thumbnail && collectionItems[1].thumbnail['tainacan-medium'][0] && collectionItems[1].thumbnail['tainacan-medium'][0] ? collectionItems[1].thumbnail['tainacan-medium'][0] : collectionItems[1] && collectionItems[1].thumbnail && collectionItems[1].thumbnail['thumbnail'][0] && collectionItems[1].thumbnail['thumbnail'][0] ? collectionItems[1].thumbnail['thumbnail'][0] : "".concat(tainacan_plugin.base_url, "/admin/images/placeholder_square.png"),
+        src: collectionItems[1] && collectionItems[1].thumbnail && collectionItems[1].thumbnail['tainacan-medium'][0] && collectionItems[1].thumbnail['tainacan-medium'][0] ? collectionItems[1].thumbnail['tainacan-medium'][0] : collectionItems[1] && collectionItems[1].thumbnail && collectionItems[1].thumbnail['thumbnail'][0] && collectionItems[1].thumbnail['thumbnail'][0] ? collectionItems[1].thumbnail['thumbnail'][0] : "".concat(tainacan_blocks.base_url, "/admin/images/placeholder_square.png"),
         alt: collectionItems[1] && collectionItems[1].name ? collectionItems[1].name : __('Thumbnail', 'tainacan')
       }), React.createElement("img", {
-        src: collectionItems[2] && collectionItems[2].thumbnail && collectionItems[2].thumbnail['tainacan-medium'][0] && collectionItems[2].thumbnail['tainacan-medium'][0] ? collectionItems[2].thumbnail['tainacan-medium'][0] : collectionItems[2] && collectionItems[2].thumbnail && collectionItems[2].thumbnail['thumbnail'][0] && collectionItems[2].thumbnail['thumbnail'][0] ? collectionItems[2].thumbnail['thumbnail'][0] : "".concat(tainacan_plugin.base_url, "/admin/images/placeholder_square.png"),
+        src: collectionItems[2] && collectionItems[2].thumbnail && collectionItems[2].thumbnail['tainacan-medium'][0] && collectionItems[2].thumbnail['tainacan-medium'][0] ? collectionItems[2].thumbnail['tainacan-medium'][0] : collectionItems[2] && collectionItems[2].thumbnail && collectionItems[2].thumbnail['thumbnail'][0] && collectionItems[2].thumbnail['thumbnail'][0] ? collectionItems[2].thumbnail['thumbnail'][0] : "".concat(tainacan_blocks.base_url, "/admin/images/placeholder_square.png"),
         alt: collectionItems[2] && collectionItems[2].name ? collectionItems[2].name : __('Thumbnail', 'tainacan')
       })) : React.createElement("img", {
-        src: collection.thumbnail && collection.thumbnail['tainacan-medium'][0] && collection.thumbnail['tainacan-medium'][0] ? collection.thumbnail['tainacan-medium'][0] : collection.thumbnail && collection.thumbnail['thumbnail'][0] && collection.thumbnail['thumbnail'][0] ? collection.thumbnail['thumbnail'][0] : "".concat(tainacan_plugin.base_url, "/admin/images/placeholder_square.png"),
+        src: collection.thumbnail && collection.thumbnail['tainacan-medium'][0] && collection.thumbnail['tainacan-medium'][0] ? collection.thumbnail['tainacan-medium'][0] : collection.thumbnail && collection.thumbnail['thumbnail'][0] && collection.thumbnail['thumbnail'][0] ? collection.thumbnail['thumbnail'][0] : "".concat(tainacan_blocks.base_url, "/admin/images/placeholder_square.png"),
         alt: collection.name ? collection.name : __('Thumbnail', 'tainacan')
       }), !hideName ? React.createElement("span", null, collection.name ? collection.name : '') : null));
     }
@@ -3555,7 +3555,7 @@ registerBlockType('tainacan/carousel-collections-list', {
     }, __('Add more collections', 'tainacan'))) : null) : null, !collections.length && !isLoading ? React.createElement(Placeholder, {
       icon: React.createElement("img", {
         width: 148,
-        src: "".concat(tainacan_plugin.base_url, "/admin/images/tainacan_logo_header.svg"),
+        src: "".concat(tainacan_blocks.base_url, "/admin/images/tainacan_logo_header.svg"),
         alt: "Tainacan Logo"
       })
     }, React.createElement("p", null, React.createElement("svg", {
@@ -3633,8 +3633,8 @@ registerBlockType('tainacan/carousel-collections-list', {
       "loop-slides": '' + loopSlides,
       "hide-name": '' + hideName,
       "max-collections-number": maxCollectionsNumber,
-      "tainacan-api-root": tainacan_plugin.root,
-      "tainacan-base-url": tainacan_plugin.base_url,
+      "tainacan-api-root": tainacan_blocks.root,
+      "tainacan-base-url": tainacan_blocks.base_url,
       "show-collection-thumbnail": '' + showCollectionThumbnail,
       id: 'wp-block-tainacan-carousel-collections-list_' + blockId
     }, content);

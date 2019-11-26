@@ -2745,9 +2745,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 
 var tainacan = axios__WEBPACK_IMPORTED_MODULE_0___default.a.create({
-  baseURL: tainacan_plugin.root
+  baseURL: tainacan_blocks.root
 });
-tainacan.defaults.headers.common['X-WP-Nonce'] = tainacan_plugin.nonce;
+tainacan.defaults.headers.common['X-WP-Nonce'] = tainacan_blocks.nonce;
 /* harmony default export */ __webpack_exports__["default"] = (tainacan);
 
 /***/ }),
@@ -2839,7 +2839,7 @@ function (_React$Component) {
       if (this.props.existingCollectionId != null && this.props.existingCollectionId != undefined) {
         this.fetchCollection(this.props.existingCollectionId);
         this.setState({
-          searchURL: this.props.existingSearchURL ? this.props.existingSearchURL : tainacan_plugin.admin_url + 'admin.php?page=tainacan_admin#/collections/' + this.props.existingCollectionId + '/items/?readmode=true&iframemode=true'
+          searchURL: this.props.existingSearchURL ? this.props.existingSearchURL : tainacan_blocks.admin_url + 'admin.php?page=tainacan_admin#/collections/' + this.props.existingCollectionId + '/items/?readmode=true&iframemode=true'
         });
       } else {
         this.setState({
@@ -2920,7 +2920,7 @@ function (_React$Component) {
     value: function selectCollection(selectedCollectionId) {
       this.setState({
         collectionId: selectedCollectionId,
-        searchURL: tainacan_plugin.admin_url + 'admin.php?page=tainacan_admin#/collections/' + selectedCollectionId + '/items/?readmode=true&iframemode=true'
+        searchURL: tainacan_blocks.admin_url + 'admin.php?page=tainacan_admin#/collections/' + selectedCollectionId + '/items/?readmode=true&iframemode=true'
       });
       this.props.onSelectCollection(selectedCollectionId);
       this.fetchCollection(selectedCollectionId);
@@ -3256,7 +3256,7 @@ registerBlockType('tainacan/dynamic-items-list', {
       type: String,
       default: ''
     },
-    mosaicItemFocalPoint: {
+    osaicItemFocalPointm: {
       type: Object,
       default: {
         x: 0.5,
@@ -3317,7 +3317,7 @@ registerBlockType('tainacan/dynamic-items-list', {
         style: {
           marginBottom: layout == 'grid' ? (showName ? gridMargin + 12 : gridMargin) + 'px' : '',
           backgroundImage: layout == 'mosaic' ? "url(".concat(getItemThumbnail(item, 'medium_large'), ")") : 'none',
-          backgroundPosition: layout == 'mosaic' ? "".concat(mosaicItemFocalPoint.x * 100, "% ").concat(mosaicItemFocalPoint.y * 100, "%") : 'none'
+          backgroundPosition: layout == 'mosaic' ? "".concat((mosaicItemFocalPoint && mosaicItemFocalPoint.x ? mosaicItemFocalPoint.x : 0.5) * 100, "% ").concat((mosaicItemFocalPoint && mosaicItemFocalPoint.y ? mosaicItemFocalPoint.y : 0.5) * 100, "%") : 'none'
         }
       }, React.createElement("a", {
         id: isNaN(item.id) ? item.id : 'item-id-' + item.id,
@@ -3499,7 +3499,7 @@ registerBlockType('tainacan/dynamic-items-list', {
     }
 
     function getItemThumbnail(item, size) {
-      return item.thumbnail && item.thumbnail[size][0] && item.thumbnail[size][0] ? item.thumbnail[size][0] : item.thumbnail && item.thumbnail['thumbnail'][0] && item.thumbnail['thumbnail'][0] ? item.thumbnail['thumbnail'][0] : "".concat(tainacan_plugin.base_url, "/admin/images/placeholder_square.png");
+      return item.thumbnail && item.thumbnail[size][0] && item.thumbnail[size][0] ? item.thumbnail[size][0] : item.thumbnail && item.thumbnail['thumbnail'][0] && item.thumbnail['thumbnail'][0] ? item.thumbnail['thumbnail'][0] : "".concat(tainacan_blocks.base_url, "/admin/images/placeholder_square.png");
     }
 
     function openDynamicItemsModal() {
@@ -3534,7 +3534,7 @@ registerBlockType('tainacan/dynamic-items-list', {
     }
 
     function updateMosaicItemFocalPoint(focalPoint) {
-      if (Math.abs(focalPoint.x - mosaicItemFocalPoint.x) > 0.025 || Math.abs(focalPoint.y - mosaicItemFocalPoint.y) > 0.025) {
+      if (Math.abs(focalPoint.x - (mosaicItemFocalPoint && mosaicItemFocalPoint.x ? mosaicItemFocalPoint.x : 0.5)) > 0.025 || Math.abs(focalPoint.y - (mosaicItemFocalPoint && mosaicItemFocalPoint.y ? mosaicItemFocalPoint.y : 0.5)) > 0.025) {
         mosaicItemFocalPoint = focalPoint;
         setAttributes({
           mosaicItemFocalPoint: focalPoint
@@ -3969,7 +3969,7 @@ registerBlockType('tainacan/dynamic-items-list', {
     }))))))) : null, !items.length && !isLoading ? React.createElement(Placeholder, {
       icon: React.createElement("img", {
         width: 148,
-        src: "".concat(tainacan_plugin.base_url, "/admin/images/tainacan_logo_header.svg"),
+        src: "".concat(tainacan_blocks.base_url, "/admin/images/tainacan_logo_header.svg"),
         alt: "Tainacan Logo"
       })
     }, React.createElement("p", null, React.createElement("svg", {
@@ -4067,15 +4067,15 @@ registerBlockType('tainacan/dynamic-items-list', {
       "mosaic-density": mosaicDensity,
       "mosaic-grid-rows": mosaicGridRows,
       "mosaic-grid-columns": mosaicGridColumns,
-      "mosaic-item-focal-point-x": mosaicItemFocalPoint.x,
-      "mosaic-item-focal-point-y": mosaicItemFocalPoint.y,
+      "mosaic-item-focal-point-x": mosaicItemFocalPoint && mosaicItemFocalPoint.x ? mosaicItemFocalPoint.x : 0.5,
+      "mosaic-item-focal-point-y": mosaicItemFocalPoint && mosaicItemFocalPoint.y ? mosaicItemFocalPoint.y : 0.5,
       "collection-background-color": collectionBackgroundColor,
       "collection-text-color": collectionTextColor,
       "grid-margin": gridMargin,
       "max-items-number": maxItemsNumber,
       order: order,
-      "tainacan-api-root": tainacan_plugin.root,
-      "tainacan-base-url": tainacan_plugin.base_url,
+      "tainacan-api-root": tainacan_blocks.root,
+      "tainacan-base-url": tainacan_blocks.base_url,
       id: 'wp-block-tainacan-dynamic-items-list_' + blockId
     }, content);
   },
@@ -4204,8 +4204,8 @@ registerBlockType('tainacan/dynamic-items-list', {
         "grid-margin": gridMargin,
         "max-items-number": maxItemsNumber,
         order: order,
-        "tainacan-api-root": tainacan_plugin.root,
-        "tainacan-base-url": tainacan_plugin.base_url,
+        "tainacan-api-root": tainacan_blocks.root,
+        "tainacan-base-url": tainacan_blocks.base_url,
         id: 'wp-block-tainacan-dynamic-items-list_' + blockId
       }, content);
     }

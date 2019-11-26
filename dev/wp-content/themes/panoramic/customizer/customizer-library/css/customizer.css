@@ -1,0 +1,72 @@
+
+.customize-control input[type=text].pixels,
+.customize-control input[type=text].percentage {
+	width: 50px;
+}
+
+.customize-control-warning {
+	color: red;
+	font-weight: 400;
+}
+
+#customize-theme-controls #accordion-section-colors h3:hover,
+#customize-theme-controls #accordion-section-panoramic-fonts h3:hover,
+#customize-theme-controls #accordion-section-panoramic-header h3:hover,
+#customize-theme-controls #accordion-section-panoramic-social h3:hover,
+#customize-theme-controls #accordion-section-panoramic-search h3:hover,
+#customize-theme-controls #accordion-section-panoramic-slider h3:hover,
+#customize-theme-controls #accordion-section-panoramic-blog h3:hover,
+#customize-theme-controls #accordion-section-panoramic-recent-posts-widget-extended h3:hover,
+#customize-theme-controls #accordion-section-panoramic-website-text h3:hover {
+    background-color: #4b8b99;
+	color: #FFFFFF;
+}
+
+#customize-theme-controls #accordion-section-colors:hover>.accordion-section-title:after,
+#customize-theme-controls #accordion-section-panoramic-fonts:hover>.accordion-section-title:after,
+#customize-theme-controls #accordion-section-panoramic-header:hover>.accordion-section-title:after,
+#customize-theme-controls #accordion-section-panoramic-social:hover>.accordion-section-title:after,
+#customize-theme-controls #accordion-section-panoramic-search:hover>.accordion-section-title:after,
+#customize-theme-controls #accordion-section-panoramic-slider:hover>.accordion-section-title:after,
+#customize-theme-controls #accordion-section-panoramic-blog:hover>.accordion-section-title:after,
+#customize-theme-controls #accordion-section-panoramic-recent-posts-widget-extended:hover>.accordion-section-title:after,
+#customize-theme-controls #accordion-section-panoramic-website-text:hover>.accordion-section-title:after {
+	color: #FFFFFF !important;
+}
+
+#sub-accordion-section-colors.control-section.open h3,
+#sub-accordion-section-panoramic-fonts.control-section.open h3,
+#sub-accordion-section-panoramic-header.control-section.open h3,
+#sub-accordion-section-panoramic-social.control-section.open h3,
+#sub-accordion-section-panoramic-search.control-section.open h3,
+#sub-accordion-section-panoramic-slider.control-section.open h3,
+#sub-accordion-section-panoramic-blog.control-section.open h3,
+#sub-accordion-section-panoramic-recent-posts-widget-extended.control-section.open h3,
+#sub-accordion-section-panoramic-website-text.control-section.open h3 {
+    background-color: #4b8b99 !important;
+	color: #FFFFFF;
+}
+
+/*
+.out_the_box_upgrade {
+	display: block;
+	float: left;
+	width: 100%;
+}
+
+.out_the_box_upgrade .button {
+	background: none #5cb85c;
+	border-color: #4cae4c;
+	box-shadow: none;
+	color: #fff;
+	margin-top: 10px;
+}
+
+.out_the_box_upgrade .button:hover,
+.out_the_box_upgrade .button:focus {
+	background: none #449d44;
+	border-color: #398439;
+	box-shadow: none;
+	color: #fff;
+}
+*/

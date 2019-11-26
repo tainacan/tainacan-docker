@@ -2745,9 +2745,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 
 var tainacan = axios__WEBPACK_IMPORTED_MODULE_0___default.a.create({
-  baseURL: tainacan_plugin.root
+  baseURL: tainacan_blocks.root
 });
-tainacan.defaults.headers.common['X-WP-Nonce'] = tainacan_plugin.nonce;
+tainacan.defaults.headers.common['X-WP-Nonce'] = tainacan_blocks.nonce;
 /* harmony default export */ __webpack_exports__["default"] = (tainacan);
 
 /***/ }),
@@ -2901,7 +2901,7 @@ registerBlockType('tainacan/items-list', {
         target: "_blank",
         className: (!showName ? 'item-without-title' : '') + ' ' + (!showImage ? 'item-without-image' : '')
       }, React.createElement("img", {
-        src: item.thumbnail && item.thumbnail[0] && item.thumbnail[0].src ? item.thumbnail[0].src : "".concat(tainacan_plugin.base_url, "/admin/images/placeholder_square.png"),
+        src: item.thumbnail && item.thumbnail[0] && item.thumbnail[0].src ? item.thumbnail[0].src : "".concat(tainacan_blocks.base_url, "/admin/images/placeholder_square.png"),
         alt: item.thumbnail && item.thumbnail[0] ? item.thumbnail[0].alt : item.title
       }), React.createElement("span", null, item.title ? item.title : '')));
     }
@@ -3051,7 +3051,7 @@ registerBlockType('tainacan/items-list', {
     }, __('Add more items', 'tainacan'))) : null) : null, !selectedItemsHTML.length ? React.createElement(Placeholder, {
       icon: React.createElement("img", {
         width: 148,
-        src: "".concat(tainacan_plugin.base_url, "/admin/images/tainacan_logo_header.svg"),
+        src: "".concat(tainacan_blocks.base_url, "/admin/images/tainacan_logo_header.svg"),
         alt: "Tainacan Logo"
       })
     }, React.createElement("p", null, React.createElement("svg", {
@@ -3181,7 +3181,7 @@ function (_React$Component) {
       if (this.props.existingCollectionId != null && this.props.existingCollectionId != undefined) {
         this.fetchCollection(this.props.existingCollectionId);
         this.setState({
-          searchURL: this.props.existingSearchURL ? this.props.existingSearchURL : tainacan_plugin.admin_url + 'admin.php?page=tainacan_admin#/collections/' + this.props.existingCollectionId + '/items/?iframemode=true'
+          searchURL: this.props.existingSearchURL ? this.props.existingSearchURL : tainacan_blocks.admin_url + 'admin.php?page=tainacan_admin#/collections/' + this.props.existingCollectionId + '/items/?iframemode=true'
         });
       } else {
         this.setState({
@@ -3325,7 +3325,7 @@ function (_React$Component) {
     value: function selectCollection(selectedCollectionId) {
       this.setState({
         collectionId: selectedCollectionId,
-        searchURL: tainacan_plugin.admin_url + 'admin.php?page=tainacan_admin#/collections/' + selectedCollectionId + '/items/?iframemode=true'
+        searchURL: tainacan_blocks.admin_url + 'admin.php?page=tainacan_admin#/collections/' + selectedCollectionId + '/items/?iframemode=true'
       });
       this.props.onSelectCollection(selectedCollectionId);
       this.fetchCollection(selectedCollectionId);

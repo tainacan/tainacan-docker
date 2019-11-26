@@ -2745,9 +2745,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 
 var tainacan = axios__WEBPACK_IMPORTED_MODULE_0___default.a.create({
-  baseURL: tainacan_plugin.root
+  baseURL: tainacan_blocks.root
 });
-tainacan.defaults.headers.common['X-WP-Nonce'] = tainacan_plugin.nonce;
+tainacan.defaults.headers.common['X-WP-Nonce'] = tainacan_blocks.nonce;
 /* harmony default export */ __webpack_exports__["default"] = (tainacan);
 
 /***/ }),
@@ -2762,14 +2762,16 @@ tainacan.defaults.headers.common['X-WP-Nonce'] = tainacan_plugin.nonce;
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _metadata_modal_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./metadata-modal.js */ "./src/gutenberg-blocks/tainacan-facets/facets-list/metadata-modal.js");
-/* harmony import */ var _api_client_axios_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../api-client/axios.js */ "./src/gutenberg-blocks/api-client/axios.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var qs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! qs */ "./node_modules/qs/lib/index.js");
-/* harmony import */ var qs__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(qs__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _parent_term_modal_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./parent-term-modal.js */ "./src/gutenberg-blocks/tainacan-facets/facets-list/parent-term-modal.js");
+/* harmony import */ var _api_client_axios_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../api-client/axios.js */ "./src/gutenberg-blocks/api-client/axios.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var qs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! qs */ "./node_modules/qs/lib/index.js");
+/* harmony import */ var qs__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(qs__WEBPACK_IMPORTED_MODULE_4__);
 var registerBlockType = wp.blocks.registerBlockType;
 var __ = wp.i18n.__;
 var _wp$components = wp.components,
+    BaseControl = _wp$components.BaseControl,
     RangeControl = _wp$components.RangeControl,
     Spinner = _wp$components.Spinner,
     Button = _wp$components.Button,
@@ -2781,6 +2783,7 @@ var _wp$components = wp.components,
 var _wp$editor = wp.editor,
     InspectorControls = _wp$editor.InspectorControls,
     BlockControls = _wp$editor.BlockControls;
+
 
 
 
@@ -2888,6 +2891,14 @@ registerBlockType('tainacan/facets-list', {
     blockId: {
       type: String,
       default: undefined
+    },
+    parentTerm: {
+      type: Number,
+      default: null
+    },
+    isParentTermModalOpen: {
+      type: Boolean,
+      default: false
     }
   },
   supports: {
@@ -2918,7 +2929,9 @@ registerBlockType('tainacan/facets-list', {
         facetsRequestSource = attributes.facetsRequestSource,
         maxFacetsNumber = attributes.maxFacetsNumber,
         searchString = attributes.searchString,
-        isLoading = attributes.isLoading; // Obtains block's client id to render it on save function
+        isLoading = attributes.isLoading,
+        parentTerm = attributes.parentTerm,
+        isParentTermModalOpen = attributes.isParentTermModalOpen; // Obtains block's client id to render it on save function
 
     setAttributes({
       blockId: clientId
@@ -2939,10 +2952,10 @@ registerBlockType('tainacan/facets-list', {
           fontSize: layout == 'cloud' && facet.total_items ? +(1 + cloudRate / 4 * Math.log(facet.total_items)) + 'rem' : ''
         }
       }, metadatumType == 'Taxonomy' ? React.createElement("img", {
-        src: facet.entity && facet.entity['header_image'] ? facet.entity['header_image'] : "".concat(tainacan_plugin.base_url, "/admin/images/placeholder_square.png"),
+        src: facet.entity && facet.entity['header_image'] ? facet.entity['header_image'] : "".concat(tainacan_blocks.base_url, "/admin/images/placeholder_square.png"),
         alt: facet.label ? facet.label : __('Thumbnail', 'tainacan')
       }) : null, metadatumType == 'Relationship' ? React.createElement("img", {
-        src: facet.entity.thumbnail && facet.entity.thumbnail['tainacan-medium'][0] && facet.entity.thumbnail['tainacan-medium'][0] ? facet.entity.thumbnail['tainacan-medium'][0] : facet.entity.thumbnail && facet.entity.thumbnail['thumbnail'][0] && facet.entity.thumbnail['thumbnail'][0] ? facet.entity.thumbnail['thumbnail'][0] : "".concat(tainacan_plugin.base_url, "/admin/images/placeholder_square.png"),
+        src: facet.entity.thumbnail && facet.entity.thumbnail['tainacan-medium'][0] && facet.entity.thumbnail['tainacan-medium'][0] ? facet.entity.thumbnail['tainacan-medium'][0] : facet.entity.thumbnail && facet.entity.thumbnail['thumbnail'][0] && facet.entity.thumbnail['thumbnail'][0] ? facet.entity.thumbnail['thumbnail'][0] : "".concat(tainacan_blocks.base_url, "/admin/images/placeholder_square.png"),
         alt: facet.label ? facet.label : __('Thumbnail', 'tainacan')
       }) : null, React.createElement("span", null, facet.label ? facet.label : ''), facet.total_items ? React.createElement("span", {
         class: "facet-item-count",
@@ -2956,13 +2969,13 @@ registerBlockType('tainacan/facets-list', {
       facets = [];
       isLoading = true;
       if (facetsRequestSource != undefined && typeof facetsRequestSource == 'function') facetsRequestSource.cancel('Previous facets search canceled.');
-      facetsRequestSource = axios__WEBPACK_IMPORTED_MODULE_2___default.a.CancelToken.source();
+      facetsRequestSource = axios__WEBPACK_IMPORTED_MODULE_3___default.a.CancelToken.source();
       setAttributes({
         isLoading: isLoading
       });
       var endpoint = '/facets/' + metadatumId;
       var query = endpoint.split('?')[1];
-      var queryObject = qs__WEBPACK_IMPORTED_MODULE_3___default.a.parse(query); // Set up max facets to be shown
+      var queryObject = qs__WEBPACK_IMPORTED_MODULE_4___default.a.parse(query); // Set up max facets to be shown
 
       if (maxFacetsNumber != undefined && maxFacetsNumber > 0) queryObject.number = maxFacetsNumber;else if (queryObject.number != undefined && queryObject.number > 0) setAttributes({
         maxFacetsNumber: queryObject.number
@@ -2980,11 +2993,18 @@ registerBlockType('tainacan/facets-list', {
         setAttributes({
           searchString: undefined
         });
+      } // Set up parentTerm for taxonomies
+
+      if (parentTerm && parentTerm.id !== undefined && parentTerm.id !== null && parentTerm.id !== '' && metadatumType == 'Taxonomy') queryObject.parent = parentTerm.id;else {
+        delete queryObject.parent;
+        setAttributes({
+          parentTerm: null
+        });
       } // Parameter fo tech entity object with image and url
 
       queryObject['context'] = 'extended';
-      endpoint = endpoint.split('?')[0] + '?' + qs__WEBPACK_IMPORTED_MODULE_3___default.a.stringify(queryObject);
-      _api_client_axios_js__WEBPACK_IMPORTED_MODULE_1__["default"].get(endpoint, {
+      endpoint = endpoint.split('?')[0] + '?' + qs__WEBPACK_IMPORTED_MODULE_4___default.a.stringify(queryObject);
+      _api_client_axios_js__WEBPACK_IMPORTED_MODULE_2__["default"].get(endpoint, {
         cancelToken: facetsRequestSource.token
       }).then(function (response) {
         facetsObject = [];
@@ -2998,7 +3018,7 @@ registerBlockType('tainacan/facets-list', {
             for (var _iterator = response.data.values[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
               var facet = _step.value;
               facetsObject.push(Object.assign({
-                url: facet.entity && facet.entity.url ? facet.entity.url : tainacan_plugin.site_url + '/' + collectionSlug + '/#/?taxquery[0][compare]=IN&taxquery[0][taxonomy]=' + facet.taxonomy + '&taxquery[0][terms][0]=' + facet.value
+                url: facet.entity && facet.entity.url ? facet.entity.url : tainacan_blocks.site_url + '/' + collectionSlug + '/#/?taxquery[0][compare]=IN&taxquery[0][taxonomy]=' + facet.taxonomy + '&taxquery[0][terms][0]=' + facet.value
               }, facet));
             }
           } catch (err) {
@@ -3024,7 +3044,7 @@ registerBlockType('tainacan/facets-list', {
             for (var _iterator2 = response.data.values[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
               var _facet = _step2.value;
               facetsObject.push(Object.assign({
-                url: tainacan_plugin.site_url + '/' + collectionSlug + '/#/?metaquery[0][key]=' + metadatumId + '&metaquery[0][value]=' + _facet.value
+                url: tainacan_blocks.site_url + '/' + collectionSlug + '/#/?metaquery[0][key]=' + metadatumId + '&metaquery[0][value]=' + _facet.value
               }, _facet));
             }
           } catch (err) {
@@ -3113,6 +3133,13 @@ registerBlockType('tainacan/facets-list', {
       isModalOpen = true;
       setAttributes({
         isModalOpen: isModalOpen
+      });
+    }
+
+    function openParentTermModal() {
+      isParentTermModalOpen = true;
+      setAttributes({
+        isParentTermModalOpen: isParentTermModalOpen
       });
     }
 
@@ -3205,7 +3232,25 @@ registerBlockType('tainacan/facets-list', {
       },
       min: 1,
       max: 96
-    })), React.createElement("hr", null), React.createElement("div", null, layout == 'list' && (metadatumType == 'Taxonomy' || metadatumType == 'Relationship') ? React.createElement(ToggleControl, {
+    })), metadatumType == 'Taxonomy' ? React.createElement("div", null, React.createElement(BaseControl, {
+      id: "parent-term-selection",
+      label: parentTerm && (parentTerm.id === '0' || parentTerm.id === 0) ? __('Showing only:', 'tainacan') : __('Showing children of:', 'tainacan'),
+      help: "Narrow terms to children of a parent term."
+    }, React.createElement("span", {
+      style: {
+        fontWeight: 'bold'
+      }
+    }, "\xA0", parentTerm && parentTerm.name ? parentTerm.name : __('Any term.', 'tainacan')), React.createElement("br", null), React.createElement(Button, {
+      style: {
+        margin: '6px auto 16px auto',
+        display: 'block'
+      },
+      id: "parent-term-selection",
+      isPrimary: true,
+      onClick: function onClick() {
+        return openParentTermModal();
+      }
+    }, __('Select parent term', 'tainacan')))) : null, React.createElement("hr", null), React.createElement("div", null, layout == 'list' && (metadatumType == 'Taxonomy' || metadatumType == 'Relationship') ? React.createElement(ToggleControl, {
       label: __('Image', 'tainacan'),
       help: showImage ? __("Toggle to show facet's image", 'tainacan') : __("Do not show facet's image", 'tainacan'),
       checked: showImage,
@@ -3288,13 +3333,31 @@ registerBlockType('tainacan/facets-list', {
         setAttributes({
           metadatumId: metadatumId,
           metadatumType: metadatumType,
-          isModalOpen: false
+          isModalOpen: false,
+          parentTerm: null
         });
         setContent();
       },
       onCancelSelection: function onCancelSelection() {
         return setAttributes({
           isModalOpen: false
+        });
+      }
+    }) : null, isParentTermModalOpen ? React.createElement(_parent_term_modal_js__WEBPACK_IMPORTED_MODULE_1__["default"], {
+      existingFacetId: parentTerm && parentTerm.id ? parentTerm.id : null,
+      collectionId: collectionId,
+      metadatumId: metadatumId,
+      onSelectFacet: function onSelectFacet(selectedFacet) {
+        parentTerm = selectedFacet.id !== null && selectedFacet.id !== '' && selectedFacet.id !== undefined ? selectedFacet : null;
+        setAttributes({
+          parentTerm: parentTerm,
+          isParentTermModalOpen: false
+        });
+        setContent();
+      },
+      onCancelSelection: function onCancelSelection() {
+        return setAttributes({
+          isParentTermModalOpen: false
         });
       }
     }) : null, facets.length ? React.createElement("div", {
@@ -3313,7 +3376,7 @@ registerBlockType('tainacan/facets-list', {
       onClick: function onClick() {
         return openMetadataModal();
       }
-    }, __('Configure search', 'tainacan'))) : null) : null, showSearchBar ? React.createElement("div", {
+    }, __('Select facets', 'tainacan'))) : null) : null, showSearchBar ? React.createElement("div", {
       class: "facets-search-bar"
     }, React.createElement(Button, {
       onClick: function onClick() {
@@ -3338,7 +3401,7 @@ registerBlockType('tainacan/facets-list', {
     })) : null, !facets.length && !isLoading && !(searchString != undefined && searchString != '') ? React.createElement(Placeholder, {
       icon: React.createElement("img", {
         width: 148,
-        src: "".concat(tainacan_plugin.base_url, "/admin/images/tainacan_logo_header.svg"),
+        src: "".concat(tainacan_blocks.base_url, "/admin/images/tainacan_logo_header.svg"),
         alt: "Tainacan Logo"
       })
     }, React.createElement("p", null, React.createElement("svg", {
@@ -3349,7 +3412,27 @@ registerBlockType('tainacan/facets-list', {
     }, React.createElement("path", {
       fill: "#298596",
       d: "M21.43,13.64,19.32,16a2.57,2.57,0,0,1-2,1H11a3.91,3.91,0,0,0,0-.49,5.49,5.49,0,0,0-5-5.47V9.64A2.59,2.59,0,0,1,8.59,7H17.3a2.57,2.57,0,0,1,2,1l2.11,2.38A2.59,2.59,0,0,1,21.43,13.64ZM4,3A2,2,0,0,0,2,5v7.3a5.32,5.32,0,0,1,2-1V5H16V3ZM11,21l-1,1L8.86,20.89,8,20H8l-.57-.57A3.42,3.42,0,0,1,5.5,20a3.5,3.5,0,0,1,0-7,2.74,2.74,0,0,1,.5,0A3.5,3.5,0,0,1,9,16a2.92,2.92,0,0,1,0,.51,3.42,3.42,0,0,1-.58,1.92L9,19H9l.85.85Zm-4-4.5A1.5,1.5,0,1,0,5.5,18,1.5,1.5,0,0,0,7,16.53Z"
-    })), __('List facets from a Tainacan Collection or Repository', 'tainacan')), React.createElement(Button, {
+    })), __('List facets from a Tainacan Collection or Repository', 'tainacan')), parentTerm && parentTerm.id && metadatumType == 'Taxonomy' ? React.createElement("div", {
+      style: {
+        display: 'flex'
+      }
+    }, React.createElement(Button, {
+      isPrimary: true,
+      type: "submit",
+      onClick: function onClick() {
+        return openParentTermModal();
+      }
+    }, __('Change parent term', 'tainacan')), React.createElement("p", {
+      style: {
+        margin: '0 12px'
+      }
+    }, __('or', 'tainacan')), React.createElement(Button, {
+      isPrimary: true,
+      type: "submit",
+      onClick: function onClick() {
+        return openMetadataModal();
+      }
+    }, __('Change facets source', 'tainacan'))) : React.createElement(Button, {
       isPrimary: true,
       type: "submit",
       onClick: function onClick() {
@@ -3389,6 +3472,7 @@ registerBlockType('tainacan/facets-list', {
         blockId = attributes.blockId,
         collectionId = attributes.collectionId,
         collectionSlug = attributes.collectionSlug,
+        parentTerm = attributes.parentTerm,
         showImage = attributes.showImage,
         showItemsCount = attributes.showItemsCount,
         showLoadMore = attributes.showLoadMore,
@@ -3405,6 +3489,7 @@ registerBlockType('tainacan/facets-list', {
       "metadatum-type": metadatumType,
       "collection-id": collectionId,
       "collection-slug": collectionSlug,
+      "parent-term-id": parentTerm ? parentTerm.id : null,
       "show-image": '' + showImage,
       "show-items-count": '' + showItemsCount,
       "show-search-bar": '' + showSearchBar,
@@ -3413,12 +3498,142 @@ registerBlockType('tainacan/facets-list', {
       "cloud-rate": cloudRate,
       "grid-margin": gridMargin,
       "max-facets-number": maxFacetsNumber,
-      "tainacan-api-root": tainacan_plugin.root,
-      "tainacan-base-url": tainacan_plugin.base_url,
-      "tainacan-site-url": tainacan_plugin.site_url,
+      "tainacan-api-root": tainacan_blocks.root,
+      "tainacan-base-url": tainacan_blocks.base_url,
+      "tainacan-site-url": tainacan_blocks.site_url,
       id: 'wp-block-tainacan-facets-list_' + blockId
     }, content);
-  }
+  },
+  deprecated: [{
+    attributes: {
+      content: {
+        type: 'array',
+        source: 'children',
+        selector: 'div'
+      },
+      collectionId: {
+        type: String,
+        default: undefined
+      },
+      collectionSlug: {
+        type: String,
+        default: undefined
+      },
+      facets: {
+        type: Array,
+        default: []
+      },
+      facetsObject: {
+        type: Array,
+        default: []
+      },
+      showImage: {
+        type: Boolean,
+        default: true
+      },
+      showItemsCount: {
+        type: Boolean,
+        default: true
+      },
+      showLoadMore: {
+        type: Boolean,
+        default: false
+      },
+      showSearchBar: {
+        type: Boolean,
+        value: false
+      },
+      layout: {
+        type: String,
+        default: 'grid'
+      },
+      cloudRate: {
+        type: Number,
+        default: 1
+      },
+      isModalOpen: {
+        type: Boolean,
+        default: false
+      },
+      gridMargin: {
+        type: Number,
+        default: 0
+      },
+      metadatumId: {
+        type: String,
+        default: undefined
+      },
+      metadatumType: {
+        type: String,
+        default: undefined
+      },
+      facetsRequestSource: {
+        type: String,
+        default: undefined
+      },
+      maxFacetsNumber: {
+        type: Number,
+        value: undefined
+      },
+      isLoading: {
+        type: Boolean,
+        value: false
+      },
+      isLoadingCollection: {
+        type: Boolean,
+        value: false
+      },
+      collection: {
+        type: Object,
+        value: undefined
+      },
+      searchString: {
+        type: String,
+        default: undefined
+      },
+      blockId: {
+        type: String,
+        default: undefined
+      }
+    },
+    save: function save(_ref3) {
+      var attributes = _ref3.attributes,
+          className = _ref3.className;
+      var content = attributes.content,
+          blockId = attributes.blockId,
+          collectionId = attributes.collectionId,
+          collectionSlug = attributes.collectionSlug,
+          showImage = attributes.showImage,
+          showItemsCount = attributes.showItemsCount,
+          showLoadMore = attributes.showLoadMore,
+          layout = attributes.layout,
+          cloudRate = attributes.cloudRate,
+          gridMargin = attributes.gridMargin,
+          metadatumId = attributes.metadatumId,
+          metadatumType = attributes.metadatumType,
+          maxFacetsNumber = attributes.maxFacetsNumber,
+          showSearchBar = attributes.showSearchBar;
+      return React.createElement("div", {
+        className: className,
+        "metadatum-id": metadatumId,
+        "metadatum-type": metadatumType,
+        "collection-id": collectionId,
+        "collection-slug": collectionSlug,
+        "show-image": '' + showImage,
+        "show-items-count": '' + showItemsCount,
+        "show-search-bar": '' + showSearchBar,
+        "show-load-more": '' + showLoadMore,
+        layout: layout,
+        "cloud-rate": cloudRate,
+        "grid-margin": gridMargin,
+        "max-facets-number": maxFacetsNumber,
+        "tainacan-api-root": tainacan_plugin.root,
+        "tainacan-base-url": tainacan_plugin.base_url,
+        "tainacan-site-url": tainacan_plugin.site_url,
+        id: 'wp-block-tainacan-facets-list_' + blockId
+      }, content);
+    }
+  }]
 });
 
 /***/ }),
@@ -3592,7 +3807,7 @@ function (_React$Component) {
       if (selectedCollectionId == 'default') selectedCollection = {
         label: __('Repository items', 'tainacan'),
         id: 'default',
-        slug: tainacan_plugin.theme_items_list_url.split('/')[tainacan_plugin.theme_items_list_url.split('/').length - 1]
+        slug: tainacan_blocks.theme_items_list_url.split('/')[tainacan_blocks.theme_items_list_url.split('/').length - 1]
       };else {
         selectedCollection = this.state.modalCollections.find(function (collection) {
           return collection.id == selectedCollectionId;
@@ -3890,7 +4105,7 @@ function (_React$Component) {
         options: [{
           label: __('Repository items', 'tainacan'),
           value: 'default',
-          slug: tainacan_plugin.theme_items_list_url.split('/')[tainacan_plugin.theme_items_list_url.split('/').length - 1]
+          slug: tainacan_blocks.theme_items_list_url.split('/')[tainacan_blocks.theme_items_list_url.split('/').length - 1]
         }],
         onChange: function onChange(aCollectionId) {
           _this5.setState({
@@ -3945,6 +4160,329 @@ function (_React$Component) {
   }]);
 
   return MetadataModal;
+}(React.Component);
+
+
+
+/***/ }),
+
+/***/ "./src/gutenberg-blocks/tainacan-facets/facets-list/parent-term-modal.js":
+/*!*******************************************************************************!*\
+  !*** ./src/gutenberg-blocks/tainacan-facets/facets-list/parent-term-modal.js ***!
+  \*******************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return ParentTermModal; });
+/* harmony import */ var _api_client_axios_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../api-client/axios.js */ "./src/gutenberg-blocks/api-client/axios.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+
+
+var __ = wp.i18n.__;
+var _wp$components = wp.components,
+    TextControl = _wp$components.TextControl,
+    Button = _wp$components.Button,
+    Modal = _wp$components.Modal,
+    RadioControl = _wp$components.RadioControl,
+    SelectControl = _wp$components.SelectControl,
+    Spinner = _wp$components.Spinner;
+
+var ParentTermModal =
+/*#__PURE__*/
+function (_React$Component) {
+  _inherits(ParentTermModal, _React$Component);
+
+  function ParentTermModal(props) {
+    var _this;
+
+    _classCallCheck(this, ParentTermModal);
+
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(ParentTermModal).call(this, props)); // Initialize state
+
+    _this.state = {
+      metadatumId: '',
+      facetsPerPage: 3,
+      facetId: undefined,
+      isLoadingFacets: false,
+      modalFacets: [],
+      totalModalFacets: 0,
+      offset: 0,
+      lastTerm: undefined,
+      temporaryFacetId: '',
+      searchFacetName: '',
+      facets: [],
+      facetsRequestSource: undefined
+    }; // Bind events
+
+    _this.selectFacet = _this.selectFacet.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+    _this.fetchFacets = _this.fetchFacets.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+    _this.fetchModalFacets = _this.fetchModalFacets.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+    return _this;
+  }
+
+  _createClass(ParentTermModal, [{
+    key: "componentWillMount",
+    value: function componentWillMount() {
+      this.setState({
+        collectionId: this.props.collectionId,
+        metadatumId: this.props.metadatumId,
+        temporaryFacetId: this.props.existingFacetId,
+        facetId: this.props.existingFacetId,
+        offset: 0,
+        lastTerm: undefined
+      });
+      this.fetchModalFacets();
+    } // COLLECTIONS RELATED --------------------------------------------------
+
+  }, {
+    key: "fetchModalFacets",
+    value: function fetchModalFacets() {
+      var _this2 = this;
+
+      var someModalFacets = this.state.modalFacets;
+      if (this.state.offset == 0) someModalFacets = [];
+      var endpoint = '/facets/' + this.props.metadatumId + '?number=' + this.state.facetsPerPage + '&offset=' + this.state.offset;
+      if (this.state.collectionId) endpoint = '/collection/' + this.props.collectionId + endpoint;
+      if (this.state.lastTerm != undefined) endpoint += 'last_term=' + this.state.lastTerm;
+      this.setState({
+        isLoadingFacets: true,
+        modalFacets: someModalFacets
+      });
+      _api_client_axios_js__WEBPACK_IMPORTED_MODULE_0__["default"].get(endpoint).then(function (response) {
+        var otherModalFacets = _this2.state.modalFacets;
+        var _iteratorNormalCompletion = true;
+        var _didIteratorError = false;
+        var _iteratorError = undefined;
+
+        try {
+          for (var _iterator = response.data.values[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+            var facet = _step.value;
+            otherModalFacets.push({
+              name: facet.label,
+              id: facet.value
+            });
+          }
+        } catch (err) {
+          _didIteratorError = true;
+          _iteratorError = err;
+        } finally {
+          try {
+            if (!_iteratorNormalCompletion && _iterator.return != null) {
+              _iterator.return();
+            }
+          } finally {
+            if (_didIteratorError) {
+              throw _iteratorError;
+            }
+          }
+        }
+
+        _this2.setState({
+          isLoadingFacets: false,
+          modalFacets: otherModalFacets,
+          totalModalFacets: response.headers['x-wp-total'],
+          offset: _this2.state.offset + response.data.values.length,
+          lastTerm: response.data.last_term
+        });
+
+        return otherModalFacets;
+      }).catch(function (error) {
+        console.log('Error trying to fetch facets: ' + error);
+      });
+    }
+  }, {
+    key: "selectFacet",
+    value: function selectFacet(selectedFacetId) {
+      var selectedFacet;
+      if (selectedFacetId === null || selectedFacetId === '') selectedFacet = {
+        name: __('Any term.', 'tainacan'),
+        id: null
+      };else if (selectedFacetId == '0' || selectedFacet == 0) selectedFacet = {
+        name: __('Root terms', 'tainacan'),
+        id: '0'
+      };else {
+        selectedFacet = this.state.modalFacets.find(function (facet) {
+          return facet.id == selectedFacetId;
+        });
+        if (selectedFacet == undefined) selectedFacet = this.state.facets.find(function (facet) {
+          return facet.id == selectedFacetId;
+        });
+      }
+      this.setState({
+        facetId: selectedFacet.id
+      });
+      this.props.onSelectFacet(selectedFacet);
+    }
+  }, {
+    key: "fetchFacets",
+    value: function fetchFacets(name) {
+      var _this3 = this;
+
+      if (this.state.facetsRequestSource != undefined) this.state.facetsRequestSource.cancel('Previous facets search canceled.');
+      var aFacetRequestSource = axios__WEBPACK_IMPORTED_MODULE_1___default.a.CancelToken.source();
+      this.setState({
+        facetsRequestSource: aFacetRequestSource,
+        isLoadingFacets: true,
+        facets: [],
+        metadata: []
+      });
+      var endpoint = '/facets/' + this.props.metadatumId + '?number=' + this.state.facetsPerPage;
+      if (this.state.collectionId) endpoint = '/collection/' + this.props.collectionId + endpoint;
+      if (name != undefined && name != '') endpoint += '&search=' + name;
+      _api_client_axios_js__WEBPACK_IMPORTED_MODULE_0__["default"].get(endpoint, {
+        cancelToken: aFacetRequestSource.token
+      }).then(function (response) {
+        var someFacets = response.data.values.map(function (facet) {
+          return {
+            name: facet.label,
+            id: facet.value + ''
+          };
+        });
+
+        _this3.setState({
+          isLoadingFacets: false,
+          facets: someFacets
+        });
+
+        return someFacets;
+      }).catch(function (error) {
+        console.log('Error trying to fetch facets: ' + error);
+      });
+    }
+  }, {
+    key: "cancelSelection",
+    value: function cancelSelection() {
+      this.setState({
+        modalFacets: []
+      });
+      this.props.onCancelSelection();
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var _this4 = this;
+
+      return (// Facets modal
+        React.createElement(Modal, {
+          className: "wp-block-tainacan-modal",
+          title: __('Select a parent term to fetch facets from', 'tainacan'),
+          onRequestClose: function onRequestClose() {
+            return _this4.cancelSelection();
+          },
+          contentLabel: __('Select term', 'tainacan')
+        }, React.createElement("div", null, React.createElement("div", {
+          className: "modal-search-area"
+        }, React.createElement(TextControl, {
+          label: __('Search for a term', 'tainacan'),
+          placeholder: __('Search by term\'s name', 'tainacan'),
+          value: this.state.searchFacetName,
+          onChange: function onChange(value) {
+            _this4.setState({
+              searchFacetName: value
+            });
+
+            _.debounce(_this4.fetchFacets(value), 300);
+          }
+        })), this.state.searchFacetName != '' ? this.state.facets.length > 0 ? React.createElement("div", null, React.createElement("div", {
+          className: "modal-radio-list"
+        }, React.createElement(RadioControl, {
+          selected: this.state.temporaryFacetId,
+          options: this.state.facets.map(function (facet) {
+            return {
+              label: facet.name,
+              value: '' + facet.id
+            };
+          }),
+          onChange: function onChange(aFacetId) {
+            _this4.setState({
+              temporaryFacetId: aFacetId
+            });
+          }
+        })), React.createElement("br", null)) : this.state.isLoadingFacets ? React.createElement(Spinner, null) : React.createElement("div", {
+          className: "modal-loadmore-section"
+        }, React.createElement("p", null, __('Sorry, no term found.', 'tainacan'))) : this.state.modalFacets.length > 0 ? React.createElement("div", null, React.createElement("div", {
+          className: "modal-radio-list"
+        }, React.createElement("p", {
+          class: "modal-radio-area-label"
+        }, __('Non specific term', 'tainacan')), React.createElement(RadioControl, {
+          className: 'repository-radio-option',
+          selected: this.state.temporaryFacetId,
+          options: [{
+            label: __('Terms children of any term', 'tainacan'),
+            value: ''
+          }, {
+            label: __('Terms with no parent (root terms)', 'tainacan'),
+            value: '0'
+          }],
+          onChange: function onChange(aFacetId) {
+            _this4.setState({
+              temporaryFacetId: aFacetId
+            });
+          }
+        }), React.createElement("hr", null), React.createElement("p", {
+          class: "modal-radio-area-label"
+        }, __('Terms', 'tainacan')), React.createElement(RadioControl, {
+          selected: this.state.temporaryFacetId,
+          options: this.state.modalFacets.map(function (facet) {
+            return {
+              label: facet.name,
+              value: '' + facet.id
+            };
+          }),
+          onChange: function onChange(aFacetId) {
+            _this4.setState({
+              temporaryFacetId: aFacetId
+            });
+          }
+        })), React.createElement("div", {
+          className: "modal-loadmore-section"
+        }, React.createElement("p", null, __('Showing', 'tainacan') + " " + this.state.modalFacets.length + " " + __('of', 'tainacan') + " " + this.state.totalModalFacets + " " + __('terms', 'tainacan') + "."), this.state.modalFacets.length < this.state.totalModalFacets ? React.createElement(Button, {
+          isDefault: true,
+          isSmall: true,
+          onClick: function onClick() {
+            return _this4.fetchModalFacets();
+          }
+        }, __('Load more', 'tainacan')) : null)) : this.state.isLoadingFacets ? React.createElement(Spinner, null) : React.createElement("div", {
+          className: "modal-loadmore-section"
+        }, React.createElement("p", null, __('Sorry, no terms found.', 'tainacan'))), React.createElement("div", {
+          className: "modal-footer-area"
+        }, React.createElement(Button, {
+          isDefault: true,
+          onClick: function onClick() {
+            _this4.cancelSelection();
+          }
+        }, __('Cancel', 'tainacan')), React.createElement(Button, {
+          isPrimary: true,
+          onClick: function onClick() {
+            _this4.selectFacet(_this4.state.temporaryFacetId);
+          }
+        }, __('Select term', 'tainacan')))))
+      );
+    }
+  }]);
+
+  return ParentTermModal;
 }(React.Component);
 
 
