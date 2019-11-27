@@ -94,12 +94,12 @@
 /***/ (function(module, exports) {
 
 document.addEventListener("DOMContentLoaded", function () {
-  var form = document.getElementById('taincan-search-bar-block');
+  var form = document.getElementById('tainacan-search-bar-block');
 
   if (form) {
     form.addEventListener('submit', function (e) {
       e.preventDefault();
-      var input = document.getElementById('taincan-search-bar-block_input');
+      var input = document.getElementById('tainacan-search-bar-block_input');
 
       if (input) {
         if (input.value) window.location.href = e.target.action + '?search=' + input.value;
