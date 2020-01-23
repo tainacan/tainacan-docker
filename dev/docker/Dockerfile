@@ -46,6 +46,8 @@ RUN apt-get update && apt-get install -y \
 RUN docker-php-ext-enable xdebug memcached
 
 RUN a2enmod rewrite
+
+COPY ./docker/config.ini /usr/local/etc/php/conf.d/php.config.ini
  
 ENV path="/var/www/html"
 ENV url="localhost"
