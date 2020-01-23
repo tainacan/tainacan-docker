@@ -1,6 +1,6 @@
 @charset "UTF-8";
-@import url(../../assets/css/fonts/tainacanicons.css);
-@import url(../../assets/css/fonts/materialdesignicons.css);
+@import url(../../../assets/css/tainacanicons.css);
+@import url(../../../assets/css/materialdesignicons.css);
 .sr-only {
   position: absolute;
   width: 1px;
@@ -174,6 +174,38 @@
 .form-collapse-leave-active {
   overflow: hidden;
   animation-name: form-collapse-out;
+  animation-duration: 0.15s;
+  animation-timing-function: ease; }
+
+@keyframes form-capabilities-in {
+  from {
+    opacity: 0;
+    height: 0px;
+    max-height: 0px;
+    min-height: 0px; }
+  to {
+    height: 120px;
+    max-height: 120px;
+    min-height: 120px;
+    opacity: 1; } }
+@keyframes form-capabilities-out {
+  from {
+    height: 120px;
+    max-height: 120px;
+    min-height: 120px; }
+  to {
+    height: 0px;
+    max-height: 0px;
+    min-height: 0px; } }
+.form-capabilities-enter-active {
+  overflow: hidden;
+  animation-name: form-capabilities-in;
+  animation-duration: 0.2s;
+  animation-timing-function: ease; }
+
+.form-capabilities-leave-active {
+  overflow: hidden;
+  animation-name: form-capabilities-out;
   animation-duration: 0.15s;
   animation-timing-function: ease; }
 
@@ -434,7 +466,7 @@
 .delete, .modal-close, .is-unselectable, .button, .file, .breadcrumb, .pagination-previous,
 .pagination-next,
 .pagination-link,
-.pagination-ellipsis, .tabs, .carousel {
+.pagination-ellipsis, .tabs, .carousel, .carousel-list, .b-checkbox.checkbox, .b-radio.radio, .switch {
   -webkit-touch-callout: none;
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -12227,57 +12259,66 @@ label.panel-block {
     font-size: 1.5rem; }
 
 .carousel {
+  min-height: 120px;
   position: relative; }
-  .carousel .carousel-list {
+  .carousel.is-overlay {
+    background-color: rgba(10, 10, 10, 0.86);
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    display: flex;
+    max-height: 100vh;
+    position: fixed;
+    z-index: 40; }
+    .carousel.is-overlay .carousel-item img {
+      cursor: default; }
+    .carousel.is-overlay .carousel-indicator.has-background {
+      background: transparent; }
+  .carousel .progress {
+    border-radius: 2px;
+    height: 0.25rem;
+    margin-bottom: 0; }
+  .carousel .carousel-items {
     position: relative;
     display: flex;
-    overflow: hidden; }
-    .carousel .carousel-list:hover .carousel-arrow.is-hovered {
-      opacity: 1; }
-    .carousel .carousel-list .carousel-item {
-      flex: none;
+    overflow: hidden;
+    width: 100%; }
+    @media screen and (min-width: 769px), print {
+      .carousel .carousel-items:hover .carousel-arrow.is-hovered {
+        opacity: 1; } }
+    .carousel .carousel-items .carousel-item {
+      flex-shrink: 0;
       width: 100%; }
   .carousel .carousel-pause {
     pointer-events: none;
     position: absolute;
     top: 0;
     right: 0.15rem;
-    transition: 0.5s ease-out; }
-  .carousel .carousel-arrow {
-    transition: 0.5s ease-out; }
-    .carousel .carousel-arrow.is-hovered {
-      opacity: 0; }
-      @media screen and (max-width: 768px) {
-        .carousel .carousel-arrow.is-hovered {
-          opacity: 1; } }
-    .carousel .carousel-arrow .icon {
-      background: white;
-      color: #76c6cc;
-      cursor: pointer;
-      border: 1px solid white;
-      border-radius: 290486px;
-      outline: 0; }
-      .carousel .carousel-arrow .icon:hover {
-        border: 1px solid #76c6cc;
-        opacity: 1; }
-      .carousel .carousel-arrow .icon.has-icons-left, .carousel .carousel-arrow .icon.has-icons-right {
-        top: 45%;
-        position: absolute;
-        z-index: 1; }
-      .carousel .carousel-arrow .icon.has-icons-left {
-        left: 1.5rem; }
-      .carousel .carousel-arrow .icon.has-icons-right {
-        right: 1.5rem; }
+    z-index: 1; }
   .carousel .carousel-indicator {
     width: 100%;
     padding: 0.5rem;
     display: flex;
     align-items: center;
     justify-content: center; }
+    .carousel .carousel-indicator.has-background {
+      background: rgba(10, 10, 10, 0.5); }
+    .carousel .carousel-indicator.has-custom {
+      flex-wrap: nowrap;
+      justify-content: flex-start;
+      -webkit-overflow-scrolling: touch;
+      overflow: hidden;
+      overflow-x: auto; }
+      .carousel .carousel-indicator.has-custom.is-small .indicator-item {
+        flex: 1 0 10%; }
+      .carousel .carousel-indicator.has-custom.is-medium .indicator-item {
+        flex: 1 0 16.66667%; }
     .carousel .carousel-indicator.is-inside {
-      position: absolute;
-      bottom: 0;
-      z-index: 1; }
+      position: absolute; }
+      .carousel .carousel-indicator.is-inside.is-bottom {
+        bottom: 0; }
+      .carousel .carousel-indicator.is-inside.is-top {
+        top: 0; }
     .carousel .carousel-indicator .indicator-item:not(:last-child) {
       margin-right: 0.5rem; }
     .carousel .carousel-indicator .indicator-item.is-active .indicator-style,
@@ -12290,7 +12331,7 @@ label.panel-block {
       background: white;
       outline: none;
       transition: 0.3s ease-out; }
-      .carousel .carousel-indicator .indicator-item .indicator-style.is-boxs {
+      .carousel .carousel-indicator .indicator-item .indicator-style.is-boxes {
         height: 10px;
         width: 10px; }
       .carousel .carousel-indicator .indicator-item .indicator-style.is-dots {
@@ -12301,15 +12342,61 @@ label.panel-block {
         height: 5px;
         width: 25px; }
 
+.carousel-list {
+  position: relative;
+  overflow: hidden;
+  width: 100%; }
+  .carousel-list.has-shadow {
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25); }
+  @media screen and (min-width: 769px), print {
+    .carousel-list:hover .carousel-arrow.is-hovered {
+      opacity: 1; } }
+  .carousel-list .carousel-slides {
+    position: relative;
+    display: flex;
+    width: 100%; }
+    .carousel-list .carousel-slides:not(.is-dragging) {
+      transition: all 250ms ease-out 0s; }
+    .carousel-list .carousel-slides.has-grayscale .carousel-slide img {
+      filter: grayscale(100%); }
+    .carousel-list .carousel-slides.has-grayscale .carousel-slide.is-active img {
+      filter: grayscale(0%); }
+    .carousel-list .carousel-slides.has-opacity .carousel-slide img {
+      opacity: 0.25; }
+    .carousel-list .carousel-slides.has-opacity .carousel-slide.is-active img {
+      opacity: 1; }
+    .carousel-list .carousel-slides .carousel-slide {
+      border: 2px solid transparent;
+      flex-shrink: 0; }
+
+.carousel-arrow {
+  transition: 0.5s ease-out; }
+  .carousel-arrow.is-hovered {
+    opacity: 0; }
+  .carousel-arrow .icon {
+    background: white;
+    color: #76c6cc;
+    cursor: pointer;
+    border: 1px solid white;
+    border-radius: 290486px;
+    outline: 0; }
+    .carousel-arrow .icon:hover {
+      border: 1px solid #76c6cc;
+      opacity: 1; }
+    .carousel-arrow .icon.has-icons-left, .carousel-arrow .icon.has-icons-right {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 1; }
+    .carousel-arrow .icon.has-icons-left {
+      left: 1.5rem; }
+    .carousel-arrow .icon.has-icons-right {
+      right: 1.5rem; }
+
 .b-checkbox.checkbox {
   outline: none;
   display: inline-flex;
-  align-items: center;
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none; }
+  align-items: center; }
   .b-checkbox.checkbox + .checkbox {
     margin-left: 0.5em; }
   .b-checkbox.checkbox input[type=checkbox] {
@@ -13558,7 +13645,7 @@ label.panel-block {
       left: 0;
       right: 0;
       height: 0.375em;
-      background-color: #fff;
+      background-color: white;
       z-index: -1; }
     .field.is-floating-label .label.is-small {
       font-size: calc(0.85em * 3 / 4); }
@@ -13737,7 +13824,7 @@ label.panel-block {
   height: 100%;
   max-height: 100vh;
   margin: 0;
-  background-color: #ffffff; }
+  background-color: whitesmoke; }
 .modal .animation-content {
   margin: 0 20px; }
   .modal .animation-content .modal-card {
@@ -14075,12 +14162,7 @@ label.panel-block {
 .b-radio.radio {
   outline: none;
   display: inline-flex;
-  align-items: center;
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none; }
+  align-items: center; }
   .b-radio.radio + .radio {
     margin-left: 0.5em; }
   .b-radio.radio input[type=radio] {
@@ -15383,12 +15465,7 @@ MIT (https://github.com/Wikiki/bulma-steps/blob/master/LICENSE)
   cursor: pointer;
   display: inline-flex;
   align-items: center;
-  position: relative;
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none; }
+  position: relative; }
   .switch + .switch {
     margin-left: 0.5em; }
   .switch input[type=checkbox] {
@@ -16102,6 +16179,7 @@ MIT (https://github.com/Wikiki/bulma-steps/blob/master/LICENSE)
   cursor: text; }
 .taginput .taginput-container > .tag,
 .taginput .taginput-container > .tags {
+  margin-left: 0.275rem;
   margin-bottom: calc(0.275em - 1px);
   font-size: 0.9em;
   height: 1.7em; }
@@ -16113,9 +16191,6 @@ MIT (https://github.com/Wikiki/bulma-steps/blob/master/LICENSE)
     .taginput .taginput-container > .tag .tag.is-delete,
     .taginput .taginput-container > .tags .tag.is-delete {
       width: 1.7em; }
-  .taginput .taginput-container > .tag:not(:last-child),
-  .taginput .taginput-container > .tags:not(:last-child) {
-    margin-left: 0.275rem; }
 .taginput .taginput-container .autocomplete {
   flex: 1; }
   .taginput .taginput-container .autocomplete input {
@@ -16864,7 +16939,7 @@ MIT (https://github.com/Wikiki/bulma-steps/blob/master/LICENSE)
     visibility: hidden;
     pointer-events: none; }
   .b-tooltip:before {
-    z-index: 889; }
+    z-index: 39; }
   .b-tooltip:after {
     content: attr(data-label);
     width: auto;
@@ -16873,7 +16948,7 @@ MIT (https://github.com/Wikiki/bulma-steps/blob/master/LICENSE)
     font-size: 0.85rem;
     font-weight: 400;
     box-shadow: 0px 1px 2px 1px rgba(0, 1, 0, 0.2);
-    z-index: 888;
+    z-index: 38;
     white-space: nowrap; }
   .b-tooltip:not([data-label=""]):hover:before, .b-tooltip:not([data-label=""]):hover:after {
     transition-delay: inherit;
@@ -18013,7 +18088,8 @@ textarea.textarea,
     background-color: white;
     border: 1px solid #dbdbdb !important; }
   .taginput-container .tags {
-    margin: 0.17rem 0.25rem 0.08rem 0.25rem !important; }
+    margin: 0.17rem 0.25rem 0.08rem 0.25rem !important;
+    display: inline-flex; }
   .taginput-container .tag {
     background: white;
     padding-right: 0;
@@ -19014,7 +19090,7 @@ body.tainacan-admin-page #adminmenumain, body.tainacan-admin-page #wpfooter, bod
   z-index: 9999999999; }
 
 .loading-overlay .loading-icon::after {
-  background-image: url("../../admin/images/tainacan_loading.gif");
+  background-image: url("../../assets/images/tainacan_loading.gif");
   border: none;
   border-radius: 0;
   animation: none;
