@@ -427,24 +427,16 @@
 
         </div>
 
-        <!-- Sidebar with search and filters -->
-        <aside
-                :aria-busy="isLoadingFilters"
+        <!-- SIDEBAR WITH FILTERS -->
+        <filters-items-list
                 id="filters-desktop-aside"
                 role="region"
                 aria-labelledby="filters-label-landmark"
                 :style="{ top: searchControlHeight + 'px' }"
                 v-show="!isFiltersMenuCompressed && !openAdvancedSearch"
-                class="filters-menu tainacan-form is-hidden-mobile">
-            <!-- <b-loading
-                    :is-full-page="false"
-                    :active.sync="isLoadingFilters"/> -->
-
-            <filters-items-list
-                    :collection-id="collectionId"
-                    :is-repository-level="isRepositoryLevel"/>
-
-        </aside>
+                class="filters-menu tainacan-form is-hidden-mobile"
+                :collection-id="collectionId"
+                :is-repository-level="isRepositoryLevel"/>
 
         <!-- ITEMS LIST AREA (ASIDE THE ASIDE) ------------------------- -->
         <div 
@@ -728,7 +720,7 @@
                 return this.getOrder();
             },
             showLoading() {
-                return this.isLoadingItems || this.isLoadingFilters || this.isLoadingMetadata;
+                return this.isLoadingItems || this.isLoadingMetadata;
             },
             metaKey() {
                 return this.getMetaKey();
@@ -891,18 +883,6 @@
                 'getAdminViewMode',
                 'getMetaKey'
             ]),
-            onSwipeFiltersMenu($event) {
-
-                let screenWidth = (window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth);
-
-                if ($event.offsetDirection == 4 && screenWidth <= 768) {
-                    if (!this.isFilterModalActive)
-                        this.isFilterModalActive = true;
-                } else if ($event.offsetDirection == 2 && screenWidth <= 768) {
-                    if (this.isFilterModalActive)
-                        this.isFilterModalActive = false;
-                }
-            },
             onOpenImportersModal() {
                 this.$buefy.modal.open({
                     parent: this,
@@ -984,43 +964,6 @@
 
                 // Closes dropdown
                 this.$refs.displayedMetadataDropdown.toggle();
-            },
-            prepareFilters() {
-                
-                // Cancels previous Request
-                if (this.filtersSearchCancel != undefined)
-                    this.filtersSearchCancel.cancel('Filters search Canceled.');
-
-                this.isLoadingFilters = true;
-                this.fetchFilters({
-                    collectionId: this.collectionId,
-                    isRepositoryLevel: this.isRepositoryLevel,
-                    isContextEdit: true,
-                    includeDisabled: false,
-                })
-                    .then((resp) => {
-                        resp.request
-                            .then(() => this.isLoadingFilters = false)
-                            .catch(() => this.isLoadingFilters = false);
-
-                        // Search Request Token for cancelling
-                        this.filtersSearchCancel = resp.source;
-                    })
-                    .catch(() => this.isLoadingFilters = false);
-
-                // On repository level we also fetch collection filters
-                if (this.isRepositoryLevel) {
-                    
-                    // Cancels previous Request
-                    if (this.repositoryFiltersSearchCancel != undefined)
-                        this.repositoryFiltersSearchCancel.cancel('Repository Collection Filters search Canceled.');
-
-                    this.fetchRepositoryCollectionFilters()
-                        .then((source) => {
-                            this.repositoryFiltersSearchCancel = source;
-                        });
-                }
-
             },
             prepareMetadata() {
 
@@ -1282,8 +1225,8 @@
                     if (this.$refs['search-control'] != undefined)
                         this.searchControlHeight = this.$refs['search-control'] ? this.$refs['search-control'].clientHeight + this.$refs['search-control'].offsetTop : 0;
                     
-                    if (jQuery && jQuery(window))
-                        this.isFiltersMenuCompressed = jQuery(window).width() <= 768;
+                    if (window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth)
+                        this.isFiltersMenuCompressed = (window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth) <= 768;
                 });
             }, 500),
             removeEventListeners() {
@@ -1480,7 +1423,10 @@
         min-height: $subheader-height;
         height: auto;
         position: relative;
-        padding: $page-small-top-padding;
+        padding-top: $page-small-top-padding;
+        padding-bottom: $page-small-top-padding;
+        padding-left: $page-side-padding;
+        padding-right: $page-side-padding;
         display: flex;
         justify-content: space-between;
         flex-wrap: wrap;
@@ -1499,7 +1445,12 @@
                     min-width: 100%;
 
                     .search-area {
+                        padding-right: 0;
                         max-width: 100% !important;
+                    }
+                    .is-pulled-right {
+                        position: relative;
+                        right: 0px !important;
                     }
                 }
             }
@@ -1571,7 +1522,8 @@
                 display: flex;
                 align-items: center;
                 width: 100%;
-                max-width: calc(16.66667vw - 25px);
+                max-width: calc(16.66667vw - 60px);
+                padding-right: 15px;
 
                 .control {
                     width: 100%;
@@ -1587,7 +1539,7 @@
                 }
                 .is-pulled-right {
                     position: absolute;
-                    right: 0;
+                    right: 15px;
                     top: 100%;
                 }
                 .input {
