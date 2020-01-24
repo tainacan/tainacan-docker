@@ -70,10 +70,12 @@
 </template>
 
 <script>
+    import { wpAjax } from '../../../js/mixins';
     import { filterTypeMixin } from '../../../js/filter-types-mixin';
 
     export default {
         mixins: [
+            wpAjax,
             filterTypeMixin
         ],
         data(){

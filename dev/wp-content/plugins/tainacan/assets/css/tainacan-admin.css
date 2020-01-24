@@ -18905,7 +18905,7 @@ textarea.textarea,
     max-height: 100%;
     overflow-y: auto; }
     #filters-mobile-modal .modal-content h3 {
-      font-size: 100%; }
+      font-size: 1rem; }
 
 .repository-level-page {
   margin-top: 94px;

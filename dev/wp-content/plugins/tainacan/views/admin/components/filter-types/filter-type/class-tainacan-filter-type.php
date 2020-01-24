@@ -37,12 +37,6 @@ abstract class Filter_Type {
     private $component;
 
     /**
-     * The content of the js script associated to the vue component for extra filters
-     * @var string
-     */
-    private $script = '';
-
-    /**
      * The name of the web component used by the Form
      * @var bool | string
      */
@@ -131,7 +125,6 @@ abstract class Filter_Type {
         $attributes['className']        = get_class($this);
         $attributes['name']             = $this->get_name();
         $attributes['component']        = $this->get_component();
-        $attributes['script']           = $this->get_script();
         $attributes['options']          = $this->get_options();
         $attributes['supported_types']  = $this->get_supported_types();
         $attributes['preview_template'] = $this->get_preview_template();
@@ -183,13 +176,6 @@ abstract class Filter_Type {
 	 */
 	public function set_component( $component ) {
 		$this->component = $component;
-    }
-   
-    /**
-	 * @param string $script
-	 */
-	public function set_script( $script ) {
-		$this->script= $script;
 	}
 
     /**
@@ -234,13 +220,6 @@ abstract class Filter_Type {
      */
     public function get_form_component() {
         return $this->form_component;
-    }
-
-    /**
-     * @return string 
-     */
-    public function get_script() {
-        return $this->script;
     }
 
     /**
