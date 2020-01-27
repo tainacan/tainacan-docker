@@ -18889,23 +18889,28 @@ textarea.textarea,
       background-color: #d6feed;
       color: #25a189; }
 
-#filters-mobile-modal {
-  background-color: white; }
-  #filters-mobile-modal .modal-close {
-    right: calc(8.3333333% + 20px);
+#filters-modal .modal-content {
+  height: 100%;
+  max-height: 100%;
+  width: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  border-radius: 0;
+  border: none; }
+  #filters-modal .modal-content h3 {
+    font-size: 1rem; }
+@media screen and (max-width: 768px) {
+  #filters-modal .modal-close {
+    top: 32px;
+    right: calc(8.3333333% + 28px);
     background-color: white; }
-    #filters-mobile-modal .modal-close::before, #filters-mobile-modal .modal-close::after {
+    #filters-modal .modal-close::before, #filters-modal .modal-close::after {
       background-color: #298596; }
-  #filters-mobile-modal .modal-content {
+  #filters-modal .modal-content {
     background-color: white;
-    margin: 0 8.3333333% 0 0;
-    padding: 24px 4.166666667% 24px 8.3333333%;
-    border-radius: 0;
-    height: 100%;
-    max-height: 100%;
-    overflow-y: auto; }
-    #filters-mobile-modal .modal-content h3 {
-      font-size: 1rem; }
+    margin: 0 12% 0 0;
+    margin: 0 12vw 0 0;
+    padding: 25px; } }
 
 .repository-level-page {
   margin-top: 94px;
@@ -19013,7 +19018,7 @@ textarea.textarea,
       display: none;
       visibility: hidden; }
     @media screen and (min-width: 769px) {
-      #tainacan-admin-app.tainacan-admin-iframe-mode #repository-container .is-secondary-content .page-container-small #filters-desktop-aside {
+      #tainacan-admin-app.tainacan-admin-iframe-mode #repository-container .is-secondary-content .page-container-small #filters-modal {
         padding-left: 3rem; } }
 #tainacan-admin-app.tainacan-admin-iframe-mode #items-list-area .tainacan-record .metadata-title {
   min-height: 68px; }
