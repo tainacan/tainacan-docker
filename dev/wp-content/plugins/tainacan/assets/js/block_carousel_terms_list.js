@@ -2948,7 +2948,7 @@ registerBlockType('tainacan/carousel-terms-list', {
       var endpoint = '/taxonomy/' + taxonomyId + '/terms/?' + qs__WEBPACK_IMPORTED_MODULE_3___default.a.stringify({
         hideempty: 0,
         include: selectedTerms
-      }) + '&fetch_only=id,name,url,header_image';
+      }) + '&order=asc&fetch_only=id,name,url,header_image';
       _js_axios_js__WEBPACK_IMPORTED_MODULE_1__["default"].get(endpoint, {
         cancelToken: itemsRequestSource.token
       }).then(function (response) {

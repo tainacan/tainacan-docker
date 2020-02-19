@@ -8,10 +8,10 @@
 
         <!-- PAGE TITLE --------------------- -->
         <tainacan-title
-                v-if="!openAdvancedSearch" 
+                v-if="!$route.query.iframemode && !$route.query.readmode && !openAdvancedSearch" 
                 :bread-crumb-items="[{ path: '', label: this.$i18n.get('items') }]"/>
         <div 
-                v-else
+                v-else-if="openAdvancedSearch"
                 class="tnc-advanced-search-close"> 
             <div class="advanced-search-criteria-title">
                 <div class="is-flex">
@@ -67,7 +67,7 @@
                 <span class="icon">
                     <i 
                             :class="{ 'tainacan-icon-arrowleft' : isFiltersModalActive, 'tainacan-icon-arrowright' : !isFiltersModalActive }"
-                            class="tainacan-icon tainacan-icon-20px"/>
+                            class="tainacan-icon tainacan-icon-1-25em"/>
                 </span>
                 <span class="text is-hidden-tablet">{{ $i18n.get('filters') }}</span>
             </button>
@@ -90,12 +90,13 @@
                                 aria-controls="items-list-results"
                                 @click="updateSearch()"
                                 class="icon is-right">
-                            <i class="tainacan-icon tainacan-icon-20px tainacan-icon-search"/>
+                            <i class="tainacan-icon tainacan-icon-1-25em tainacan-icon-search"/>
                         </span>
                     </div>
                     <a
                             @click="openAdvancedSearch = !openAdvancedSearch"
-                            class="is-size-7 has-text-secondary is-pulled-right">{{ $i18n.get('advanced_search') }}</a>
+                            style="font-size: 0.75em;"
+                            class="has-text-secondary is-pulled-right">{{ $i18n.get('advanced_search') }}</a>
                 </div>
             </div>
 
@@ -116,7 +117,7 @@
                             slot="trigger">
                         <span>{{ $i18n.getFrom('items','add_new') }}</span>
                         <span class="icon">
-                            <i class="tainacan-icon tainacan-icon-20px tainacan-icon-arrowdown" />
+                            <i class="tainacan-icon tainacan-icon-1-25em tainacan-icon-arrowdown" />
                         </span>
                     </button>
 
@@ -188,9 +189,10 @@
                             :aria-label="$i18n.get('label_displayed_metadata')"
                             class="button is-white"
                             slot="trigger">
-                        <span>{{ $i18n.get('label_displayed_metadata') }}</span>
+                        <span class="is-hidden-touch is-hidden-desktop-only">{{ $i18n.get('label_displayed_metadata') }}</span>
+                        <span class="is-hidden-widescreen">{{ $i18n.get('metadata') }}</span>
                         <span class="icon">
-                            <i class="tainacan-icon tainacan-icon-20px tainacan-icon-arrowdown" />
+                            <i class="tainacan-icon tainacan-icon-1-25em tainacan-icon-arrowdown" />
                         </span>
                     </button>
                     <div class="metadata-options-container">
@@ -237,7 +239,7 @@
                                         class="tainacan-icon"/>
                             </span>
                             <span class="icon">
-                                <i class="tainacan-icon tainacan-icon-20px tainacan-icon-arrowdown" />
+                                <i class="tainacan-icon tainacan-icon-1-25em tainacan-icon-arrowdown" />
                             </span>
                         </button>
                         <b-dropdown-item
@@ -245,29 +247,27 @@
                                 role="button"
                                 :class="{ 'is-active': order == 'DESC' }"
                                 :value="'DESC'"
-                                aria-role="listitem"
-                                style="padding-bottom: 0.45rem">
-                            <span class="icon is-small gray-icon">
+                                aria-role="listitem">
+                            <span class="icon gray-icon">
                                 <i class="tainacan-icon tainacan-icon-18px tainacan-icon-sortdescending"/>
                             </span>
-                            {{ $i18n.get('label_descending') }}
+                            <span>{{ $i18n.get('label_descending') }}</span>
                         </b-dropdown-item>
                         <b-dropdown-item
                                 aria-controls="items-list-results"
                                 role="button"
                                 :class="{ 'is-active': order == 'ASC' }"
                                 :value="'ASC'"
-                                aria-role="listitem"
-                                style="padding-bottom: 0.45rem">
-                            <span class="icon is-small gray-icon">
+                                aria-role="listitem">
+                            <span class="icon gray-icon">
                                 <i class="tainacan-icon tainacan-icon-18px tainacan-icon-sortascending"/>
                             </span>
-                            {{ $i18n.get('label_ascending') }}
+                            <span>{{ $i18n.get('label_ascending') }}</span>
                         </b-dropdown-item>
                     </b-dropdown>
                     <span
                             class="label"
-                            style="padding-left: 0.65rem;">
+                            style="padding-left: 0.65em;">
                         {{ $i18n.get('info_by_inner') }}
                     </span>
                     <b-dropdown
@@ -281,7 +281,7 @@
                                 slot="trigger">
                             <span>{{ orderByName }}</span>
                             <span class="icon">
-                                <i class="tainacan-icon tainacan-icon-20px tainacan-icon-arrowdown" />
+                                <i class="tainacan-icon tainacan-icon-1-25em tainacan-icon-arrowdown" />
                             </span>
                         </button>
                         <b-dropdown-item
@@ -301,7 +301,16 @@
 
             <div class="search-control-item">
                 <b-field>
-                    <label class="label is-hidden-mobile">{{ $i18n.get('label_visualization') + ':' }}</label>
+                    <label 
+                            class="label is-hidden-touch is-hidden-desktop-only"
+                            style="margin-right: -10px;">
+                        {{ $i18n.get('label_visualization') + ':&nbsp; ' }}
+                    </label>
+                    <label 
+                            class="label is-hidden-widescreen is-hidden-mobile"
+                            style="margin-right: -10px;">
+                        {{ $i18n.get('label_view_on') + ':&nbsp; ' }}
+                    </label>
                     <b-dropdown
                             @change="onChangeAdminViewMode($event)"
                             :mobile-modal="true"
@@ -321,12 +330,12 @@
                                                     'tainacan-icon-viewminiature' : adminViewMode == 'grid',
                                                     'tainacan-icon-viewrecords' : adminViewMode == 'records',
                                                     'tainacan-icon-viewmasonry' : adminViewMode == 'masonry'}"
-                                            class="tainacan-icon tainacan-icon-20px"/>
+                                            class="tainacan-icon tainacan-icon-1-25em"/>
                                 </span>
                             </span>
                             &nbsp;&nbsp;&nbsp;{{ adminViewMode != undefined ? $i18n.get('label_' + adminViewMode) : $i18n.get('label_table') }}
                             <span class="icon">
-                                <i class="tainacan-icon tainacan-icon-20px tainacan-icon-arrowdown" />
+                                <i class="tainacan-icon tainacan-icon-1-25em tainacan-icon-arrowdown" />
                             </span>
                         </button>
                         <b-dropdown-item 
@@ -398,9 +407,9 @@
                         :disabled="totalItems == undefined || totalItems <= 0"
                         @click="openExposersModal()">
                     <span class="gray-icon">
-                            <i class="tainacan-icon tainacan-icon-20px tainacan-icon-url"/>
+                            <i class="tainacan-icon tainacan-icon-1-25em tainacan-icon-url"/>
                     </span>
-                    <span class="is-hidden-touch">{{ $i18n.get('label_view_as') }}</span>
+                    <span class="is-hidden-touch is-hidden-desktop-only">{{ $i18n.get('label_view_as') }}</span>
                 </button>
             </div>
 
@@ -713,8 +722,10 @@
                 if (newValue == false){
                     this.$eventBusSearch.$emit('closeAdvancedSearch');
                     this.advancedSearchResults = false;
+                    this.isFiltersModalActive = true;
                 } else {
                     this.$eventBusSearch.clearAllFilters();
+                    this.isFiltersModalActive = false;
                 }
             },
             orderByName() {
@@ -742,7 +753,6 @@
             });
 
             this.$eventBusSearch.$on('hasFiltered', hasFiltered => {
-                this.adjustSearchControlHeight();
                 this.hasFiltered = hasFiltered;
             });
 
@@ -796,8 +806,8 @@
             this.showItemsHiddingDueSortingDialog();
 
             // Watches window resize to adjust filter's top position and compression on mobile 
-            this.adjustSearchControlHeight();
-            window.addEventListener('resize', this.adjustSearchControlHeight);
+            this.hideFiltersOnMobile();
+            window.addEventListener('resize', this.hideFiltersOnMobile);
         },
         beforeDestroy() {
             this.removeEventListeners();
@@ -1175,20 +1185,18 @@
                         trapFocus: true
                     });
             },
-            adjustSearchControlHeight: _.debounce( function() {
+            hideFiltersOnMobile: _.debounce( function() {
                 this.$nextTick(() => {
  
                     if (window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth) {
-                        const isMobile = (window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth) > 768;
+                        const isMobile = (window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth) <= 768;
                         
                         if (isMobile) {
-                            this.isFiltersModalActive = true;
-                            document.documentElement.classList.add('is-filters-menu-clipped');
-                        } else {
                             this.isFiltersModalActive = false;
-                            document.documentElement.classList.remove('is-filters-menu-clipped');
+                        } else {
+                            this.isFiltersModalActive = true;
+                            document.documentElement.classList.remove('is-clipped');
                         }
-                        
                     }
                 });
             }, 500),
@@ -1196,7 +1204,7 @@
                 // Component
                 this.$off();
                 // Window
-                window.removeEventListener('resize', this.adjustSearchControlHeight);
+                window.removeEventListener('resize', this.hideFiltersOnMobile);
                 // $root
                 this.$root.$off('openAdvancedSearch');
                 // $eventBusSearch
@@ -1218,13 +1226,17 @@
         margin: 0;
     }
 
+    .repository-level-page {
+        overflow-y: auto;
+    }
+
     .advanced-search-criteria-title {
         margin-bottom: 40px;
 
         h1, h2 {
-            font-size: 20px;
+            font-size: 1.25em;
             font-weight: 500;
-            color: $gray5;
+            color: var(--tainacan-heading-color);
             display: inline-block;
             margin-bottom: 0;
         }
@@ -1238,8 +1250,9 @@
         }
         hr{
             margin: 3px 0px 4px 0px; 
-            height: 1px;
-            background-color: $secondary;
+            height: 2px;
+            background-color: var(--tainacan-secondary);
+            border: none;
         }
     }
 
@@ -1248,9 +1261,9 @@
         margin: 0 $page-side-padding 42px $page-side-padding;
 
         h1, h2 {
-            font-size: 20px;
+            font-size: 1.25em;
             font-weight: 500;
-            color: $gray5;
+            color: var(--tainacan-heading-color);
             display: inline-block;
             margin-bottom: 0;
         }
@@ -1265,7 +1278,7 @@
         hr{
             margin: 3px 0px 4px 0px; 
             height: 1px;
-            background-color: $secondary;
+            background-color: var(--tainacan-secondary);
         }
     }
 
@@ -1274,9 +1287,9 @@
         justify-content: flex-end;
         padding-right: $page-side-padding;
         padding-left: $page-side-padding;
-        margin-bottom: 1rem;
+        margin-bottom: 1em;
 
-        p { margin-left: 0.75rem; }
+        p { margin-left: 0.75em; }
     }
 
     .tnc-advanced-search-close {
@@ -1285,7 +1298,7 @@
         padding-left: $page-side-padding;
 
         .column {
-            padding: 0 0.3rem 0.3rem !important;
+            padding: 0 0.3em 0.3em !important;
         }
     }
 
@@ -1294,13 +1307,12 @@
     }
 
     .filters-menu {
-        z-index: 10;
         width: $filter-menu-width;
         min-width: 180px;
         min-height: 100%;
         height: auto;
-        max-height: 100vh;
-        padding: $page-small-side-padding;
+        max-height: calc(100% - 94px);
+        max-height: calc(100vh - 94px);
         float: left;
         overflow-y: auto;
         overflow-x: hidden;
@@ -1322,7 +1334,7 @@
         }
 
         .label {
-            font-size: 0.75rem;
+            font-size: 0.75em;
             font-weight: normal;
         }
 
@@ -1337,12 +1349,12 @@
         z-index: 99;
         bottom: 0px;
         left: 0;
-        max-width: 23px;
-        height: 26px;
-        width: 23px;
+        max-width: 1.625em;
+        height: 1.625em;
+        width: 1.625em;
         border: none;
-        background-color: $turquoise1;
-        color: $turquoise5;
+        background-color: var(--tainacan-primary);
+        color: var(--tainacan-secondary);
         padding: 0;
         border-top-right-radius: 2px;
         border-bottom-right-radius: 2px;
@@ -1361,7 +1373,7 @@
             max-width: 100%;
             width: auto;
             padding: 3px 6px 3px 0px;
-            height: 26px;
+            height: 1.625em;
 
             .icon {
                 position: relative;
@@ -1411,7 +1423,8 @@
             }
 
             .label {
-                font-size: 0.875rem;
+                color: var(--tainacan-label-color);
+                font-size: 0.875em;
                 font-weight: normal;
                 margin-top: 3px;
                 margin-bottom: 2px;
@@ -1427,21 +1440,23 @@
                 align-items: center;
             }
 
-            .gray-icon, .gray-icon .icon {
-                color: $gray4 !important;
+            .gray-icon, 
+            .gray-icon .icon {
+                color: var(--tainacan-info-color) !important;
                 padding-right: 10px;
             }
             .gray-icon .icon i::before, 
             .gray-icon i::before {
-                font-size: 1.3125rem !important;
+                font-size: 1.3125em !important;
+                color: var(--tainacan-info-color) !important;
                 max-width: 26px;
             }
             
             .view-mode-icon {
-                margin-right: 3px !important;
-                margin-top: -4px;
-                margin-left: 6px !important;
-                width: 1.25rem;
+                margin-right: 0px !important;
+                margin-top: -2px;
+                margin-left: 4px !important;
+                width: 1.25em;
             }
 
             .dropdown-menu {
@@ -1455,14 +1470,14 @@
                         overflow: auto;
                     }
                     .dropdown-item {
-                        padding: 0.25rem 1.0rem 0.25rem 0.75rem; 
+                        padding: 0.25em 1.0em 0.25em 0.75em; 
                     }
                     .dropdown-item span{
                         vertical-align: middle;
                     }      
                     .dropdown-item-apply {
                         width: 100%;
-                        border-top: 1px solid #efefef;
+                        border-top: 1px solid var(--tainacan-skeleton-color);
                         padding: 8px 12px;
                         text-align: right;
                     }
@@ -1477,6 +1492,7 @@
                 display: flex;
                 align-items: center;
                 width: 100%;
+                min-width: 120px;
                 max-width: calc(16.66667vw - 60px);
                 padding-right: 15px;
 
@@ -1485,10 +1501,7 @@
                     .icon {
                         pointer-events: all;
                         cursor: pointer;
-                        color: $blue5;
-                        height: 27px;
-                        font-size: 1.125rem !important;
-                        height: auto !important;
+                        color: var(--tainacan-label-color);
                     }
                     margin-bottom: 5px;
                 }
@@ -1498,7 +1511,7 @@
                     top: 100%;
                 }
                 .input {
-                    border: 1px solid $gray2;
+                    border: 1px solid var(--tainacan-input-border-color);
                     min-height: 30px !important;
                 }
                 a {
@@ -1546,8 +1559,8 @@
         margin: 6px $page-side-padding;
         border-radius: 3px;
         padding: 4px 12px;
-        color: $yellow2;
-        background: $yellow1;
+        color: var(--tainacan-yellow2);
+        background: var(--tainacan-yellow1);
         animation-name: appear;
         animation-duration: 0.5s;
 
@@ -1563,7 +1576,7 @@
             .button:active,
             .button:focus {
                 background: none;
-                color:$yellow2;
+                color:var(--tainacan-yellow2);
                 font-weight: bold;
                 border: none;
                 cursor: pointer;

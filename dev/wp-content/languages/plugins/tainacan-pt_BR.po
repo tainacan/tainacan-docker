@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the Plugins - Tainacan - Stable (latest release) package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2019-11-22 15:17:37+0000\n"
+"PO-Revision-Date: 2019-12-17 16:09:01+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -10,6 +10,35 @@ msgstr ""
 "X-Generator: GlotPress/2.4.0-alpha\n"
 "Language: pt_BR\n"
 "Project-Id-Version: Plugins - Tainacan - Stable (latest release)\n"
+
+#: gutenberg-blocks/tainacan-facets/facets-list/parent-term-modal.js:223
+msgid "Terms with no parent (root terms)"
+msgstr "Termos sem vínculo (termos raiz)"
+
+#: gutenberg-blocks/tainacan-facets/facets-list/parent-term-modal.js:222
+msgid "Terms children of any term"
+msgstr "Termos vinculados a qualquer termo."
+
+#: gutenberg-blocks/tainacan-facets/facets-list/parent-term-modal.js:169
+#: gutenberg-blocks/tainacan-facets/facets-list/parent-term-modal.js:269
+msgid "Select term"
+msgstr "Selecione o termo"
+
+#: gutenberg-blocks/tainacan-facets/facets-list/parent-term-modal.js:167
+msgid "Select a parent term to fetch facets from"
+msgstr "Selecione um termo vinculado para busca facetada"
+
+#: gutenberg-blocks/tainacan-facets/facets-list/parent-term-modal.js:99
+msgid "Root terms"
+msgstr "Termos raiz"
+
+#: gutenberg-blocks/tainacan-facets/facets-list/parent-term-modal.js:97
+msgid "Any term."
+msgstr "Qualquer termo."
+
+#: gutenberg-blocks/tainacan-facets/facets-list/parent-term-modal.js:217
+msgid "Non specific term"
+msgstr "Nenhum termo específico"
 
 #: admin/tainacan-admin-i18n.php:676
 msgid "The title is the most relevant metadata, that shall identify your item on lists for different view modes. Select the title source metadata first, or skip to run importer as it is."
@@ -659,6 +688,7 @@ msgid "Search by taxonomy name"
 msgstr "Busque pelo nome da taxonomia"
 
 #: gutenberg-blocks/tainacan-terms/terms-list/terms-modal.js:323
+#: gutenberg-blocks/tainacan-facets/facets-list/parent-term-modal.js:174
 msgid "Search by term's name"
 msgstr "Busque pelo nome do termo"
 
@@ -1403,6 +1433,10 @@ msgstr "Trocar coleção"
 msgid "items"
 msgstr "Itens"
 
+#: gutenberg-blocks/tainacan-facets/facets-list/parent-term-modal.js:209
+msgid "Sorry, no term found."
+msgstr "Desculpe, nenhum item encontrado."
+
 #: gutenberg-blocks/tainacan-items/carousel-items-list/carousel-items-modal.js:245
 #: gutenberg-blocks/tainacan-items/carousel-items-list/carousel-items-modal.js:355
 #: gutenberg-blocks/tainacan-items/items-list/items-modal.js:268
@@ -1643,10 +1677,12 @@ msgstr "Mudar Taxonomia"
 
 #: gutenberg-blocks/tainacan-terms/terms-list/terms-modal.js:384
 #: gutenberg-blocks/tainacan-terms/terms-list/terms-modal.js:428
+#: gutenberg-blocks/tainacan-facets/facets-list/parent-term-modal.js:257
 msgid "Sorry, no terms found."
 msgstr "Desculpe, mas nenhum termo foi encontrado."
 
 #: gutenberg-blocks/tainacan-terms/terms-list/terms-modal.js:324
+#: gutenberg-blocks/tainacan-facets/facets-list/parent-term-modal.js:173
 msgid "Search for a term"
 msgstr "Buscar por um termo"
 
@@ -1659,6 +1695,7 @@ msgstr "Buscar por um termo"
 #: gutenberg-blocks/tainacan-terms/terms-list/terms-modal.js:420
 #: gutenberg-blocks/tainacan-terms/terms-list/terms-modal.js:540
 #: gutenberg-blocks/tainacan-facets/facets-list/metadata-modal.js:415
+#: gutenberg-blocks/tainacan-facets/facets-list/parent-term-modal.js:249
 msgid "Load more"
 msgstr "Mostrar mais"
 
@@ -1675,6 +1712,7 @@ msgstr "Taxonomias"
 #: gutenberg-blocks/tainacan-terms/terms-list/terms-modal.js:413
 #: gutenberg-blocks/tainacan-terms/terms-list/terms-modal.js:533
 #: gutenberg-blocks/tainacan-facets/facets-list/metadata-modal.js:408
+#: gutenberg-blocks/tainacan-facets/facets-list/parent-term-modal.js:242
 msgid "of"
 msgstr "de"
 
@@ -1687,6 +1725,7 @@ msgstr "de"
 #: gutenberg-blocks/tainacan-terms/terms-list/terms-modal.js:413
 #: gutenberg-blocks/tainacan-terms/terms-list/terms-modal.js:533
 #: gutenberg-blocks/tainacan-facets/facets-list/metadata-modal.js:408
+#: gutenberg-blocks/tainacan-facets/facets-list/parent-term-modal.js:242
 msgid "Showing"
 msgstr "Mostrando"
 
@@ -1719,6 +1758,7 @@ msgstr "Taxonomia"
 #: gutenberg-blocks/tainacan-terms/terms-list/terms-modal.js:413
 #: gutenberg-blocks/tainacan-terms/terms-list/index.js:20
 #: gutenberg-blocks/tainacan-terms/carousel-terms-list/index.js:27
+#: gutenberg-blocks/tainacan-facets/facets-list/parent-term-modal.js:242
 msgid "terms"
 msgstr "Termos"
 
@@ -1759,6 +1799,31 @@ msgstr "Tainacan"
 #: gutenberg-blocks/tainacan-collections/carousel-collections-list/index.js:15
 msgid "Tainacan Collections Carousel"
 msgstr "Carrossel de Coleções do Tainacan"
+
+#: assets/gutenberg_items_grid-components.js:3034
+msgid "Paste a Tainacan sharing URL for get items"
+msgstr "Cole uma URL de compartilhamento do Tainacan para obter itens"
+
+#: assets/gutenberg_items_grid-components.js:3017
+#: assets/gutenberg_items_grid-components.js:3027
+msgid "Add items"
+msgstr "Adicionar Itens"
+
+#: assets/gutenberg_items_grid-components.js:3017
+msgid "Update items grid"
+msgstr "Atualizar grade de itens"
+
+#: assets/gutenberg_items_grid-components.js:2997
+msgid "yes"
+msgstr "Sim"
+
+#: assets/gutenberg_items_grid-components.js:2996
+msgid "Show items title"
+msgstr "Exibir título dos itens"
+
+#: assets/gutenberg_items_grid-components.js:2715
+msgid "Tainacan Items Grid"
+msgstr "Grade de itens do Tainacan"
 
 #: importer/term-importer/class-tainacan-term-importer.php:100
 msgid "New taxonomy name"
@@ -3747,6 +3812,7 @@ msgstr "Remover valor"
 #: gutenberg-blocks/tainacan-collections/carousel-collections-list/carousel-collections-modal.js:296
 #: gutenberg-blocks/tainacan-terms/terms-list/terms-modal.js:555
 #: gutenberg-blocks/tainacan-facets/facets-list/metadata-modal.js:430
+#: gutenberg-blocks/tainacan-facets/facets-list/parent-term-modal.js:264
 msgid "Cancel"
 msgstr "Cancelar"
 
@@ -3775,6 +3841,7 @@ msgid "Edit"
 msgstr "Editar"
 
 #: admin/tainacan-admin-i18n.php:42
+#: assets/gutenberg_items_grid-components.js:3059
 msgid "Close"
 msgstr "Fechar"
 
@@ -3799,6 +3866,7 @@ msgid "Mapping"
 msgstr "Mapeamento"
 
 #: admin/tainacan-admin-i18n.php:34 admin/tainacan-admin-i18n.php:105
+#: gutenberg-blocks/tainacan-facets/facets-list/parent-term-modal.js:229
 msgid "Terms"
 msgstr "Termos"
 

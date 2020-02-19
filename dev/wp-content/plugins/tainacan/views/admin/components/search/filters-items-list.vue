@@ -19,11 +19,11 @@
                     isRepositoryLevel) || filters.length > 0)"
                 class="link-style collapse-all"
                 @click="collapseAll = !collapseAll">
-            {{ collapseAll ? $i18n.get('label_collapse_all') : $i18n.get('label_expand_all') }}
+            {{ !collapseAll ? $i18n.get('label_collapse_all') : $i18n.get('label_expand_all') }}
             <span class="icon">
                 <i 
-                        :class="{ 'tainacan-icon-arrowdown' : collapseAll, 'tainacan-icon-arrowright' : !collapseAll }"
-                        class="has-text-secondary tainacan-icon tainacan-icon-20px"/>
+                        :class="{ 'tainacan-icon-arrowdown' : !collapseAll, 'tainacan-icon-arrowright' : collapseAll }"
+                        class="has-text-secondary tainacan-icon tainacan-icon-1-25em"/>
             </span>
         </button>
 
@@ -36,6 +36,9 @@
 
             <!-- TERM ITEMS PAGE FILTERS -->
             <template v-if="taxonomy && taxonomyFilters">
+                <collections-filter
+                        :open="!collapseAll"
+                        :query="getQuery"/>
                 <div 
                         v-if="key == 'repository-filters'"
                         :key="index"
@@ -75,7 +78,8 @@
                                 :is-repository-level="key == 'repository-filters'"/>
                     </template>
                     <!-- <p   
-                            class="has-text-gray is-size-7"
+                            class="has-text-gray"
+                            style="font-size: 0.75em;"
                             v-if="taxonomyFilter.length <= 0">
                         {{ $i18n.get('info_there_is_no_filter') }}    
                     </p> -->
@@ -120,7 +124,8 @@
                                 :is-repository-level="key == 'repository-filters'"/>
                     </template>
                     <!-- <p   
-                            class="has-text-gray is-size-7"
+                            class="has-text-gray"
+                            style="font-size: 0.75em;"
                             v-if="taxonomyFilter.length <= 0">
                         {{ $i18n.get('info_there_is_no_filter') }}    
                     </p> -->
@@ -172,7 +177,8 @@
                                 :is-repository-level="key == 'repository-filters'"/>
                     </template>
                     <!-- <p   
-                            class="has-text-gray is-size-7"
+                            class="has-text-gray"
+                            style="font-size: 0.75em;"
                             v-if="taxonomyFilter.length <= 0">
                         {{ $i18n.get('info_there_is_no_filter') }}    
                     </p> -->
@@ -217,7 +223,8 @@
                                 :is-repository-level="key == 'repository-filters'"/>
                     </template>
                     <!-- <p   
-                            class="has-text-gray is-size-7"
+                            class="has-text-gray"
+                            style="font-size: 0.75em;"
                             v-if="taxonomyFilter.length <= 0">
                         {{ $i18n.get('info_there_is_no_filter') }}    
                     </p> -->
@@ -445,23 +452,24 @@
 <style scoped>
 
     h3 {
-        font-size: 1rem;
+        font-size: 1em;
+        color: var(--tainacan-heading-color);
     }
 
     .collapse-all {
         display: inline-flex;
         align-items: center;
-        font-size: 0.75rem !important;
+        font-size: 0.75em !important;
     }
     .extra-margin {
         margin-bottom: 64px;
     }
     .collection-name {
-        color: #454647;
-        font-size: 0.875rem;
+        color: var(--tainacan-heading-color);
+        font-size: 0.875em;
         font-weight: 500;
-        margin-bottom: 0.875rem;
-        margin-top: 1rem;
+        margin-bottom: 0.875em;
+        margin-top: 1em;
         text-overflow: ellipsis;
         white-space: nowrap;
         overflow: hidden;
@@ -469,8 +477,8 @@
     }
     .is-loading:after {
         border: 2px solid white !important;
-        border-top-color: #dbdbdb !important;
-        border-right-color: #dbdbdb !important;
+        border-top-color: var(--tainacan-gray2) !important;
+        border-right-color: var(--tainacan-gray2) !important;
     }
 
 </style>

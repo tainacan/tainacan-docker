@@ -1,7 +1,7 @@
 <template>
     <div 
             :class="{
-                'is-filters-menu-open': isFiltersModalActive && !openAdvancedSearch && !(registeredViewModes[viewMode] != undefined && registeredViewModes[viewMode].full_screen),
+                'is-filters-menu-open': !hideFilters && isFiltersModalActive && !openAdvancedSearch,
                 'repository-level-page': isRepositoryLevel,
                 'is-fullscreen': registeredViewModes[viewMode] != undefined && registeredViewModes[viewMode].full_screen
             }"
@@ -28,7 +28,8 @@
             <button 
                     aria-controls="filters-modal"
                     :aria-expanded="isFiltersModalActive"
-                    v-if="!openAdvancedSearch && !(registeredViewModes[viewMode] != undefined && registeredViewModes[viewMode].full_screen)"
+                    :class="hideHideFiltersButton ? 'is-hidden-tablet' : ''"
+                    v-if="!hideFilters && !openAdvancedSearch && !(registeredViewModes[viewMode] != undefined && registeredViewModes[viewMode].full_screen)"
                     id="filter-menu-compress-button"
                     :aria-label="!isFiltersModalActive ? $i18n.get('label_show_filters') : $i18n.get('label_hide_filters')"
                     @click="isFiltersModalActive = !isFiltersModalActive"
@@ -45,13 +46,15 @@
                 <span class="icon">
                     <i 
                             :class="{ 'tainacan-icon-arrowleft' : isFiltersModalActive, 'tainacan-icon-arrowright' : !isFiltersModalActive }"
-                            class="tainacan-icon tainacan-icon-20px"/>
+                            class="tainacan-icon tainacan-icon-1-25em"/>
                 </span>
                 <span class="text is-hidden-tablet">{{ $i18n.get('filters') }}</span>
             </button>
 
             <!-- Text simple search -->
-            <div class="search-control-item">
+            <div 
+                    v-if="!hideSearch"
+                    class="search-control-item">
                 <div 
                         role="search" 
                         class="search-area">
@@ -68,12 +71,14 @@
                                     aria-controls="items-list-results"
                                     @click="updateSearch()"
                                     class="icon is-right">
-                                <i class="tainacan-icon tainacan-icon-20px tainacan-icon-search"/>
+                                <i class="tainacan-icon tainacan-icon-1-25em tainacan-icon-search"/>
                             </span>
                     </div>
                     <a
+                            v-if="!hideAdvancedSearch"
                             @click="openAdvancedSearch = !openAdvancedSearch"
-                            class="is-size-7 has-text-secondary is-pulled-right">
+                            style="font-size: 0.75em;"
+                            class="has-text-secondary is-pulled-right">
                         {{ $i18n.get('advanced_search') }}
                     </a>
                 </div>
@@ -104,9 +109,10 @@
                             :aria-label="$i18n.get('label_displayed_metadata')"
                             class="button is-white"
                             slot="trigger">
-                        <span>{{ $i18n.get('label_displayed_metadata') }}</span>
+                        <span class="is-hidden-touch is-hidden-desktop-only">{{ $i18n.get('label_displayed_metadata') }}</span>
+                        <span class="is-hidden-widescreen">{{ $i18n.get('metadata') }}</span>
                         <span class="icon">
-                            <i class="tainacan-icon tainacan-icon-20px tainacan-icon-arrowdown"/>
+                            <i class="tainacan-icon tainacan-icon-1-25em tainacan-icon-arrowdown"/>
                         </span>
                     </button>
                     <div class="metadata-options-container">
@@ -137,7 +143,7 @@
             <!-- Change OrderBy Select and Order Button-->
             <div class="search-control-item">
                 <b-field>
-                    <label class="label">{{ $i18n.get('label_sorting_direction') }}</label>
+                    <label class="label">{{ $i18n.get('label_sort') }}</label>
                     <b-dropdown
                             :mobile-modal="true"
                             @input="onChangeOrder()"
@@ -153,7 +159,7 @@
                                         class="tainacan-icon"/>
                             </span>
                             <span class="icon">
-                                <i class="tainacan-icon tainacan-icon-20px tainacan-icon-arrowdown" />
+                                <i class="tainacan-icon tainacan-icon-1-25em tainacan-icon-arrowdown" />
                             </span>
                         </button>
                         <b-dropdown-item
@@ -161,66 +167,76 @@
                                 role="button"
                                 :class="{ 'is-active': order == 'DESC' }"
                                 :value="'DESC'"
-                                aria-role="listitem"
-                                style="padding-bottom: 0.45rem">
-                            <span class="icon is-small gray-icon">
+                                aria-role="listitem">
+                            <span class="icon gray-icon">
                                 <i class="tainacan-icon tainacan-icon-18px tainacan-icon-sortdescending"/>
                             </span>
-                            {{ $i18n.get('label_descending') }}
+                            <span>{{ $i18n.get('label_descending') }}</span>
                         </b-dropdown-item>
                         <b-dropdown-item
                                 aria-controls="items-list-results"
                                 role="button"
                                 :class="{ 'is-active': order == 'ASC' }"
                                 :value="'ASC'"
-                                aria-role="listitem"
-                                style="padding-bottom: 0.45rem">
-                            <span class="icon is-small gray-icon">
+                                aria-role="listitem">
+                            <span class="icon gray-icon">
                                 <i class="tainacan-icon tainacan-icon-18px tainacan-icon-sortascending"/>
                             </span>
-                            {{ $i18n.get('label_ascending') }}
+                            <span>{{ $i18n.get('label_ascending') }}</span>
                         </b-dropdown-item>
                     </b-dropdown>
-                    <span
-                            class="label"
-                            style="padding-left: 0.65rem;">
-                        {{ $i18n.get('info_by_inner') }}
-                    </span>
-                    <b-dropdown
-                            :mobile-modal="true"
-                            @input="onChangeOrderBy($event)"
-                            aria-role="list"
-                            trap-focus>
-                        <button
-                                :aria-label="$i18n.get('label_sorting')"
-                                class="button is-white"
-                                slot="trigger">
-                            <span>{{ orderByName }}</span>
-                            <span class="icon">
-                                <i class="tainacan-icon tainacan-icon-20px tainacan-icon-arrowdown" />
-                            </span>
-                        </button>
-                        <b-dropdown-item
-                                aria-controls="items-list-results"
-                                role="button"
-                                :class="{ 'is-active': (orderBy != 'meta_value' && orderBy != 'meta_value_num' && orderBy == metadatum.slug) || ((orderBy == 'meta_value' || orderBy == 'meta_value_num') && metaKey == metadatum.id) }"
-                                v-for="metadatum of sortingMetadata"
-                                v-if="metadatum != undefined"
-                                :value="metadatum"
-                                :key="metadatum.slug"
-                                aria-role="listitem">
-                            {{ metadatum.name }}
-                        </b-dropdown-item>
-                    </b-dropdown>
+                    <template v-if="!hideSortByButton">
+                        <span
+                                class="label"
+                                style="padding-left: 2px;">
+                            {{ $i18n.get('info_by_inner') }}
+                        </span>
+                        <b-dropdown
+                                :mobile-modal="true"
+                                @input="onChangeOrderBy($event)"
+                                aria-role="list"
+                                trap-focus>
+                            <button
+                                    :aria-label="$i18n.get('label_sorting')"
+                                    class="button is-white"
+                                    slot="trigger">
+                                <span>{{ orderByName }}</span>
+                                <span class="icon">
+                                    <i class="tainacan-icon tainacan-icon-1-25em tainacan-icon-arrowdown" />
+                                </span>
+                            </button>
+                            <b-dropdown-item
+                                    aria-controls="items-list-results"
+                                    role="button"
+                                    :class="{ 'is-active': (orderBy != 'meta_value' && orderBy != 'meta_value_num' && orderBy == metadatum.slug) || ((orderBy == 'meta_value' || orderBy == 'meta_value_num') && metaKey == metadatum.id) }"
+                                    v-for="metadatum of sortingMetadata"
+                                    v-if="metadatum != undefined"
+                                    :value="metadatum"
+                                    :key="metadatum.slug"
+                                    aria-role="listitem">
+                                {{ metadatum.name }}
+                            </b-dropdown-item>
+                        </b-dropdown>
+                    </template>
                 </b-field>
             </div>
 
             <!-- View Modes Dropdown -->
             <div class="search-control-item">
                 <b-field>
-                    <label class="label is-hidden-mobile">{{ $i18n.get('label_visualization') + ':&nbsp; ' }}</label>
+                    <label 
+                            class="label is-hidden-touch is-hidden-desktop-only"
+                            style="margin-right: -10px;">
+                        {{ $i18n.get('label_visualization') + ':&nbsp; ' }}
+                    </label>
+                    <label 
+                            class="label is-hidden-widescreen"
+                            :style="{ marginRight: showInlineViewModeOptions ? '' : '-10px'}">
+                        {{ $i18n.get('label_view_on') + ':&nbsp; ' }}
+                    </label>
                     <b-dropdown
                             @change="onChangeViewMode($event)"
+                            :inline="showInlineViewModeOptions"
                             :mobile-modal="true"
                             position="is-bottom-left"
                             :aria-label="$i18n.get('label_view_mode')"
@@ -236,7 +252,7 @@
                                     v-html="registeredViewModes[viewMode].icon"/>
                             <span class="is-hidden-touch">&nbsp;&nbsp;&nbsp;{{ registeredViewModes[viewMode] != undefined ? registeredViewModes[viewMode].label : $i18n.get('label_visualization') }}</span>
                             <span class="icon">
-                                <i class="tainacan-icon tainacan-icon-20px tainacan-icon-arrowdown" />
+                                <i class="tainacan-icon tainacan-icon-1-25em tainacan-icon-arrowdown" />
                             </span>
                         </button>
                         <b-dropdown-item 
@@ -246,12 +262,27 @@
                                 v-for="(viewModeOption, index) of enabledViewModes"
                                 :key="index"
                                 :value="viewModeOption"
-                                v-if="registeredViewModes[viewModeOption] != undefined && registeredViewModes[viewModeOption].full_screen == false"
+                                v-if="(registeredViewModes[viewModeOption] != undefined && registeredViewModes[viewModeOption].full_screen == false) || (showFullscreenWithViewModes && registeredViewModes[viewModeOption] != undefined)"
                                 aria-role="listitem">
                             <span 
+                                    v-if="!showInlineViewModeOptions"
                                     class="gray-icon"
                                     v-html="registeredViewModes[viewModeOption].icon"/>
-                            <span>{{ registeredViewModes[viewModeOption].label }}</span>
+                            <span 
+                                    v-else 
+                                    v-tooltip="{
+                                        delay: {
+                                            show: 500,
+                                            hide: 300,
+                                        },
+                                        content: registeredViewModes[viewModeOption].label,
+                                        autoHide: false,
+                                        placement: 'auto-start',
+                                        classes: ['tooltip', isRepositoryLevel ? 'repository-tooltip' : '']
+                                    }"
+                                    class="gray-icon"
+                                    v-html="registeredViewModes[viewModeOption].icon"/>
+                            <span v-if="!showInlineViewModeOptions">{{ registeredViewModes[viewModeOption].label }}</span>
                         </b-dropdown-item>
                     </b-dropdown>
                 </b-field>
@@ -266,33 +297,32 @@
                         v-for="(viewModeOption, index) of enabledViewModes"
                         :key="index"
                         :value="viewModeOption"
-                        v-if="registeredViewModes[viewModeOption] != undefined && registeredViewModes[viewModeOption].full_screen == true ">
+                        v-if="!showFullscreenWithViewModes && registeredViewModes[viewModeOption] != undefined && registeredViewModes[viewModeOption].full_screen == true ">
                     <span 
                             class="gray-icon view-mode-icon"
                             v-html="registeredViewModes[viewModeOption].icon"/>
-                    <span class="is-hidden-touch">{{ registeredViewModes[viewModeOption].label }}</span>
+                    <span class="is-hidden-tablet-only">{{ registeredViewModes[viewModeOption].label }}</span>
                 </button>
             </div>
 
             <!-- Exposers or alternative links modal button -->
-            <div
-                    v-if="!$route.query.iframemode"
-                    class="search-control-item">
+            <div class="search-control-item">
                 <button 
                         class="button is-white"
                         :aria-label="$i18n.get('label_view_as')"
                         :disabled="totalItems == undefined || totalItems <= 0"
                         @click="openExposersModal()">
                     <span class="gray-icon">
-                            <i class="tainacan-icon tainacan-icon-20px tainacan-icon-url"/>
+                            <i class="tainacan-icon tainacan-icon-1-25em tainacan-icon-url"/>
                     </span>
-                    <span class="is-hidden-touch">{{ $i18n.get('label_view_as') }}</span>
+                    <span class="is-hidden-touch is-hidden-desktop-only">{{ $i18n.get('label_view_as') }}</span>
                 </button>
             </div>
         </div>
 
         <!-- SIDEBAR WITH FILTERS -->
         <b-modal
+                v-if="!hideFilters"
                 role="region"
                 aria-labelledby="filters-label-landmark"
                 id="filters-modal"     
@@ -300,40 +330,38 @@
                 :active.sync="isFiltersModalActive"
                 :width="736"
                 animation="slide-menu"
-                trap-focus
-                aria-modal
-                aria-role="dialog"
-                custom-class="tainacan-form filters-menu">
+                :trap-focus="filtersAsModal"
+                full-screen
+                :custom-class="'tainacan-form filters-menu' + (filtersAsModal ? ' filters-menu-modal' : '')">
             <filters-items-list
-                    autofocus="true"
-                    tabindex="-1"
-                    aria-modal
-                    role="dialog"
+                    :autofocus="filtersAsModal"
+                    :tabindex="filtersAsModal ? -1 : 0"
+                    :aria-modal="filtersAsModal"
+                    :role="filtersAsModal ? 'dialog' : ''"
                     id="filters-items-list"
                     :taxonomy="taxonomy"
                     :collection-id="collectionId"
                     :is-repository-level="isRepositoryLevel"/>
         </b-modal>
 
-
-        <!-- FILTERS TAG LIST-->
-        <filters-tags-list 
-                class="filter-tags-list"
-                :filters="filters"
-                v-if="hasFiltered && 
-                    !openAdvancedSearch &&
-                    !(registeredViewModes[viewMode] != undefined && registeredViewModes[viewMode].full_screen)" />
-        
         <!-- ITEMS LIST AREA (ASIDE THE ASIDE) ------------------------- -->
         <div 
                 id="items-list-area"
                 class="items-list-area">
 
+            <!-- FILTERS TAG LIST-->
+            <filters-tags-list
+                    class="filter-tags-list"
+                    v-if="!hideFilters &&
+                        hasFiltered && 
+                        !openAdvancedSearch &&
+                        !(registeredViewModes[viewMode] != undefined && registeredViewModes[viewMode].full_screen)" />
+
             <!-- ADVANCED SEARCH -->
             <div 
                     id="advanced-search-container"
                     role="search"
-                    v-if="openAdvancedSearch">
+                    v-if="openAdvancedSearch && !hideAdvancedSearch">
 
                 <div class="tnc-advanced-search-close"> 
                     <div class="advanced-search-criteria-title">
@@ -360,7 +388,7 @@
                         :open-form-advanced-search="openFormAdvancedSearch"
                         :is-do-search="isDoSearch"/>
 
-                <div class="advanced-searh-form-submit">
+                <div class="advanced-search-form-submit">
                     <p
                             v-if="advancedSearchResults"
                             class="control">
@@ -454,7 +482,7 @@
                         :collection-id="collectionId"
                         :displayed-metadata="displayedMetadata" 
                         :items="items"
-                        :is-filters-menu-compressed="!isFiltersModalActive"
+                        :is-filters-menu-compressed="!hideFilters && !isFiltersModalActive"
                         :total-items="totalItems"
                         :is-loading="showLoading"
                         :is="registeredViewModes[viewMode] != undefined ? registeredViewModes[viewMode].component : ''"/>     
@@ -463,8 +491,10 @@
                 <pagination
                         :is-sorting-by-custom-metadata="isSortingByCustomMetadata"
                         v-if="totalItems > 0 &&
-                         ((registeredViewModes[viewMode] != undefined && registeredViewModes[viewMode].show_pagination)) &&
-                          (advancedSearchResults || !openAdvancedSearch)"/>
+                            ((registeredViewModes[viewMode] != undefined && registeredViewModes[viewMode].show_pagination)) &&
+                            (advancedSearchResults || !openAdvancedSearch)"
+                        :hide-items-per-page-button="hideItemsPerPageButton"
+                        :hide-go-to-page-button="hideGoToPageButton"/>
             </div>
         </div>
        
@@ -490,11 +520,26 @@
             ExposersModal
         },
         props: {
+            // Source settings
             collectionId: Number,
             termId: Number,
             taxonomy: String,
+            // View Mode settings
             defaultViewMode: String,
-            enabledViewModes: Object
+            enabledViewModes: Object,
+            // Hidding elements
+            hideFilters: false,
+            hideHideFiltersButton: false,
+            hideSearch: false,
+            hideAdvancedSearch: false,
+            hideSortByButton: false,
+            hideItemsPerPageButton: false,
+            hideGoToPageButton: false,
+            // Other Tweaks
+            startWithFiltersHidden: false,
+            filtersAsModal: false,
+            showInlineViewModeOptions: false,
+            showFullscreenWithViewModes: false
         },
         data() {
             return {
@@ -513,10 +558,10 @@
                 isDoSearch: false,
                 sortingMetadata: [],
                 isFiltersModalActive: false,
-                customFilters: [],
                 hasAnOpenModal: false,
                 hasAnOpenAlert: true,                
-                metadataSearchCancel: undefined
+                metadataSearchCancel: undefined,
+                isMobile: false
             }
         },
         computed: {
@@ -559,8 +604,7 @@
                     return this.getOrderByName();
                 } else {
                     for (let metadatum of this.sortingMetadata) {
-                 
-                    if (
+                        if (
                             ((this.orderBy != 'meta_value' && this.orderBy != 'meta_value_num' && metadatum.slug == 'creation_date' && (!metadatum.metadata_type_object || !metadatum.metadata_type_object.core)) && this.orderBy == 'date') ||
                             ((this.orderBy != 'meta_value' && this.orderBy != 'meta_value_num' && metadatum.slug != 'creation_date' && (metadatum.metadata_type_object != undefined && metadatum.metadata_type_object.core)) && this.orderBy == metadatum.metadata_type_object.related_mapped_prop) ||
                             ((this.orderBy != 'meta_value' && this.orderBy != 'meta_value_num' && metadatum.slug != 'creation_date' && (!metadatum.metadata_type_object || !metadatum.metadata_type_object.core)) && this.orderBy == metadatum.slug) ||
@@ -569,6 +613,7 @@
                             return metadatum.name;
                     }
                 }
+                return '';
             }
         },
         watch: {
@@ -579,8 +624,10 @@
                 if (newValue == false){
                     this.$eventBusSearch.$emit('closeAdvancedSearch');
                     this.advancedSearchResults = false;
+                    this.isFiltersModalActive = !this.startWithFiltersHidden;
                 } else {
                     this.$eventBusSearch.clearAllFilters();
+                    this.isFiltersModalActive = false;
                 }
             },
             orderByName() {
@@ -590,15 +637,19 @@
             isFiltersModalActive() {
                 if (this.isFiltersModalActive) {
                     setTimeout(() => {
-                        if (this.$refs['filters-modal'] && this.$refs['filters-modal'].focus)
+                        if (this.filtersAsModal && this.$refs['filters-modal'] && this.$refs['filters-modal'].focus)
                             this.$refs['filters-modal'].focus();
+                            
+                        if (!this.filtersAsModal && !this.isMobile && document.documentElement)
+                            document.documentElement.classList.remove('is-clipped');
                     }, 800);
+                    
                 }
             }
         },
         created() {
 
-            this.isRepositoryLevel = (this.collectionId === undefined);
+            this.isRepositoryLevel = (this.collectionId == undefined || this.collectionId == '' || this.collectionId == null);
 
             if (this.collectionId != undefined)
                 this.$eventBusSearch.setCollectionId(this.collectionId);
@@ -613,13 +664,22 @@
             });
 
             this.$eventBusSearch.$on('hasFiltered', hasFiltered => {
-                this.adjustSearchControlHeight();
                 this.hasFiltered = hasFiltered;
             });
+            
+            if (!this.hideAdvancedSearch) {
+                this.$eventBusSearch.$on('advancedSearchResults', advancedSearchResults => {
+                    this.advancedSearchResults = advancedSearchResults;
+                });
 
-            this.$eventBusSearch.$on('advancedSearchResults', advancedSearchResults => {
-                this.advancedSearchResults = advancedSearchResults;
-            });
+                if (this.$route.query && this.$route.query.advancedSearch) {
+                    this.openAdvancedSearch = this.$route.query.advancedSearch;
+                }
+
+                this.$root.$on('openAdvancedSearch', (openAdvancedSearch) => {
+                    this.openAdvancedSearch = openAdvancedSearch;
+                });
+            }
 
             this.$eventBusSearch.$on('hasToPrepareMetadataAndFilters', () => {
                 /* This condition is to prevent an incorrect fetch by filter or metadata when we come from items
@@ -627,18 +687,8 @@
                  */
                 this.prepareMetadata();
             });
-
-            if(this.$route.query && this.$route.query.advancedSearch) {
-                this.openAdvancedSearch = this.$route.query.advancedSearch;
-            }
-
-            this.$root.$on('openAdvancedSearch', (openAdvancedSearch) => {
-                this.openAdvancedSearch = openAdvancedSearch;
-            });
-
         },
         mounted() {
-            
             this.prepareMetadata();
             this.localDisplayedMetadata = JSON.parse(JSON.stringify(this.displayedMetadata));
 
@@ -647,13 +697,15 @@
             if (this.$userPrefs.get(prefsViewMode) == undefined)
                 this.$eventBusSearch.setInitialViewMode(this.defaultViewMode);
             else {
-                let existingViewModeIndex = Object.keys(this.registeredViewModes).findIndex(viewMode => viewMode == this.$userPrefs.get(prefsViewMode));
-                if (existingViewModeIndex >= 0)
-                    this.$eventBusSearch.setInitialViewMode(this.$userPrefs.get(prefsViewMode));
+                const userPrefViewMode = this.$userPrefs.get(prefsViewMode);
+
+                let existingViewModeIndex = Object.keys(this.registeredViewModes).findIndex(viewMode => viewMode == userPrefViewMode);
+                let enabledViewModeIndex = this.enabledViewModes.findIndex((viewMode) => viewMode == userPrefViewMode);
+                if (existingViewModeIndex >= 0 && enabledViewModeIndex >= 0)
+                    this.$eventBusSearch.setInitialViewMode(userPrefViewMode);
                 else   
                     this.$eventBusSearch.setInitialViewMode(this.defaultViewMode);
             }
-            
             // For view modes such as slides, we force pagination to request only 12 per page
             let existingViewModeIndex = Object.keys(this.registeredViewModes).findIndex(viewMode => viewMode == this.$userPrefs.get(prefsViewMode));
             if (existingViewModeIndex >= 0) {
@@ -664,9 +716,11 @@
 
             this.showItemsHiddingDueSortingDialog();
 
-            // Watches window resize to adjust filter's top position and compression on mobile 
-            this.adjustSearchControlHeight();
-            window.addEventListener('resize', this.adjustSearchControlHeight);
+            // Watches window resize to adjust filter's top position and compression on mobile
+            if (!this.hideFilters) {            
+                this.hideFiltersOnMobile();
+                window.addEventListener('resize', this.hideFiltersOnMobile);
+            }
         },
         beforeDestroy() {
             this.removeEventListeners();
@@ -678,7 +732,6 @@
             // Cancels previous Items Request
             if (this.$eventBusSearch.searchCancel != undefined)
                 this.$eventBusSearch.searchCancel.cancel('Item search Canceled.');
-
 
         },
         methods: {
@@ -849,16 +902,16 @@
                                             }
 
                                             metadata.push({
-                                                    name: metadatum.name,
-                                                    metadatum: metadatum.description,
-                                                    slug: metadatum.slug,
-                                                    metadata_type: metadatum.metadata_type,
-                                                    metadata_type_object: metadatum.metadata_type_object,
-                                                    metadata_type_options: metadatum.metadata_type_options,
-                                                    id: metadatum.id,
-                                                    display: display,
-                                                    collection_id: metadatum.collection_id,
-                                                    multiple: metadatum.multiple,
+                                                name: metadatum.name,
+                                                metadatum: metadatum.description,
+                                                slug: metadatum.slug,
+                                                metadata_type: metadatum.metadata_type,
+                                                metadata_type_object: metadatum.metadata_type_object,
+                                                metadata_type_options: metadatum.metadata_type_options,
+                                                id: metadatum.id,
+                                                display: display,
+                                                collection_id: metadatum.collection_id,
+                                                multiple: metadatum.multiple,
                                             });
 
                                             if (display)
@@ -982,20 +1035,16 @@
                         trapFocus: true
                     });
             },
-            adjustSearchControlHeight: _.debounce( function() {
+            hideFiltersOnMobile: _.debounce( function() {
                 this.$nextTick(() => {
  
                     if (window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth) {
-                        const isMobile = (window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth) > 768;
+                        this.isMobile = (window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth) <= 768;
                         
-                        if (isMobile) {
-                            this.isFiltersModalActive = true;
-                            document.documentElement.classList.add('is-filters-menu-clipped');
-                        } else {
+                        if (this.isMobile || this.startWithFiltersHidden)
                             this.isFiltersModalActive = false;
-                            document.documentElement.classList.remove('is-filters-menu-clipped');
-                        }
-                        
+                        else
+                            this.isFiltersModalActive = true;
                     }
                 });
             }, 500),
@@ -1003,13 +1052,16 @@
                 // Component
                 this.$off();
                 // Window
-                window.removeEventListener('resize', this.adjustSearchControlHeight);
+                if (!this.hideFilters)
+                    window.removeEventListener('resize', this.hideFiltersOnMobile);
                 // $root
-                this.$root.$off('openAdvancedSearch');
+                if (!this.hideAdvancedSearch)
+                    this.$root.$off('openAdvancedSearch');
                 // $eventBusSearch
                 this.$eventBusSearch.$off('isLoadingItems');
                 this.$eventBusSearch.$off('hasFiltered');
-                this.$eventBusSearch.$off('advancedSearchResults');
+                if (!this.hideAdvancedSearch)
+                    this.$eventBusSearch.$off('advancedSearchResults');
                 this.$eventBusSearch.$off('hasToPrepareMetadataAndFilters');
 
             },
@@ -1043,18 +1095,22 @@
         width: 100vw;
         height: 100vh;
         z-index: 999999999;
-        background-color: black;
+        background-color: var(--tainacan-black);
         transition: background-color 0.3s ease, width 0.3s ease, height 0.3s ease;
         animation: open-full-screen 0.4s ease;
+
+        .filters-menu {
+            display: none;
+        }
     }
 
     .advanced-search-criteria-title {
        margin-bottom: 40px;
 
         h1, h2 {
-            font-size: 20px;
+            font-size: 1.25em;
             font-weight: 500;
-            color: $gray5;
+            color: var(--tainacan-heading-color);
             display: inline-block;
             margin-bottom: 0;
         }
@@ -1068,19 +1124,20 @@
         }
         hr{
             margin: 3px 0px 4px 0px; 
-            height: 1px;
-            background-color: $secondary;
+            height: 2px;
+            background-color: var(--tainacan-secondary);
+            border: none;
         }
     }
 
     .advanced-search-results-title {
-       margin-bottom: 40px;
+        margin-bottom: 40px;
         margin: 0 $page-side-padding 42px $page-side-padding;
 
         h1, h2 {
-            font-size: 20px;
+            font-size: 1.25em;
             font-weight: 500;
-            color: $gray5;
+            color: var(--tainacan-heading-color);
             display: inline-block;
             margin-bottom: 0;
         }
@@ -1095,8 +1152,18 @@
         hr{
             margin: 3px 0px 4px 0px; 
             height: 1px;
-            background-color: $secondary;
+            background-color: var(--tainacan-secondary);
         }
+    }
+
+    .advanced-search-form-submit {
+        display: flex;
+        justify-content: flex-end;
+        padding-right: $page-side-padding;
+        padding-left: $page-side-padding;
+        margin-bottom: 1em;
+
+        p { margin-left: 0.75em; }
     }
 
     .tnc-advanced-search-close {
@@ -1105,42 +1172,17 @@
         padding-left: $page-side-padding;
 
         .column {
-            padding: 0 0.3rem 0.3rem !important;
+            padding: 0 0.3em 0.3em !important;
         }
     }
 
     .page-container {
         padding: 0;
     }
-
+    
     .filters-menu {
-        z-index: 10;
-        width: 100%;
-        min-width: 180px;
-        min-height: 100%;
-        height: 100%;
         border-right: 0;
-        padding: 24px 2.0833333% 24px 4.1666667%;
-        padding: 24px 2.0833333vw 24px 4.1666667vw;
-        overflow-y: auto;
-        overflow-x: hidden;
-        visibility: visible;
-        display: block;
-
-        @media screen and (max-width: 768px) {
-            width: 100%;
-            padding: 0;
-
-            #filters-items-list {
-                padding: $page-small-side-padding;
-            }
-        }
-        @media screen and (min-width: 769px) {
-            top: 0px !important;
-            position: relative;
-            padding-top: 0;
-        }
-
+        
         .columns {
             display: flex;
         }
@@ -1152,7 +1194,7 @@
         }
 
         .label {
-            font-size: 0.75rem;
+            font-size: 0.75em;
             font-weight: normal;
         }
 
@@ -1166,12 +1208,12 @@
         z-index: 99;
         bottom: 0px;
         left: 0;
-        max-width: 23px;
-        height: 26px;
-        width: 23px;
+        max-width: 1.625em;
+        height: 1.625em;
+        width: 1.625em;
         border: none;
-        background-color: $turquoise1;
-        color: $turquoise5;
+        background-color: var(--tainacan-primary);
+        color: var(--tainacan-secondary);
         padding: 0;
         border-top-right-radius: 2px;
         border-bottom-right-radius: 2px;
@@ -1190,7 +1232,7 @@
             max-width: 100%;
             width: auto;
             padding: 3px 6px 3px 0px;
-            height: 26px;
+            height: 1.625em;
 
             .icon {
                 position: relative;
@@ -1215,29 +1257,23 @@
         padding-left: $page-side-padding;
         padding-right: $page-side-padding;
 
-        .gray-icon, 
-        .gray-icon .icon {
-            color: $gray4 !important;
-            i::before {
-                font-size: 1.3125rem;
-                color: $gray4 !important;
-            }
-        }
         .dropdown-item {
-            padding: 0.25rem 1.35rem 0.25rem 0.25rem;
+            padding: 0.25em 1.35em 0.25em 0.25em;
         }
         .view-mode-icon {
             margin-right: 0px !important;
-            margin-top: -4px;
+            margin-top: -2px;
             margin-left: 4px;
-            width: 1.25rem;
+            width: 1.25em;
 
             &.icon i::before, 
             .gray-icon i::before {
                 font-size: 1.1875px !important;
             }
         }
-
+        .control {
+            font-size: 1em;
+        }
         .search-control-item {
             display: inline-block;
             margin-bottom: 12px;
@@ -1250,6 +1286,10 @@
 
                  &:first-of-type {
                     min-width: 100%;
+
+                    .search-area {
+                        max-width: 100% !important;
+                    }
                 }
             }
 
@@ -1258,67 +1298,39 @@
             }
 
             .label {
-                font-size: 0.875rem;
+                color: var(--tainacan-label-color);
+                font-size: 0.875em;
                 font-weight: normal;
                 margin-top: 3px;
                 margin-bottom: 2px;
                 cursor: default;
             }
 
-            .button {
+            .button,
+            .button:hover,
+            .button:focus {
                 display: flex;
                 align-items: center;
+                color: var(--tainacan-input-color) !important;
+                background: transparent;
             }
             
             .field {
                 align-items: center;
             }
 
-            .gray-icon, .gray-icon .icon {
-                color: $gray4 !important;
+            .gray-icon, 
+            .gray-icon .icon {
+                color: var(--tainacan-info-color) !important;
                 padding-right: 10px;
             }
             .gray-icon .icon i::before, 
             .gray-icon i::before {
-                font-size: 1.3125rem !important;
+                font-size: 1.3125em !important;
+                color: var(--tainacan-info-color) !important;
                 max-width: 26px;
             }
             
-            .view-mode-icon {
-                margin-right: 3px !important;
-                margin-top: -4px;
-                margin-left: 6px !important;
-                width: 1.25rem;
-            }
-
-            .search-area {
-                position: relative;
-                display: flex;
-                align-items: center;
-                width: 100%;
-
-                .control {
-                    width: 100%;
-                    .icon {
-                        pointer-events: all;
-                        cursor: pointer;
-                        color: $blue5;
-                        height: 27px;
-                        font-size: 1.125rem !important;
-                        height: auto !important;
-                    }
-                    margin: -2px 0 5px 0;
-                }
-                .is-pulled-right {
-                    position: absolute;
-                    right: 0;
-                    top: 100%;
-                }
-                .input {
-                    border: 1px solid $gray2;
-                }
-            }
-
             .dropdown-menu {
                 display: block;
 
@@ -1330,14 +1342,14 @@
                         overflow: auto;
                     }
                     .dropdown-item {
-                        padding: 0.25rem 1.0rem 0.25rem 0.75rem;
+                        padding: 0.25em 1.0em 0.25em 0.75em;
                     }
                     .dropdown-item span{
                         vertical-align: middle;
                     }      
                     .dropdown-item-apply {
                         width: 100%;
-                        border-top: 1px solid #efefef;
+                        border-top: 1px solid var(--tainacan-skeleton-color);
                         padding: 8px 12px; 
                         text-align: right;
                     }
@@ -1348,28 +1360,33 @@
             }
 
             .search-area {
+                position: relative;
                 display: flex;
                 align-items: center;
                 width: 100%;
+                max-width: 16.66667vw;
 
-                .input {
-                    border: 1px solid $gray2;
-                }
                 .control {
                     width: 100%;
                     .icon {
                         pointer-events: all;
                         cursor: pointer;
-                        color: $blue5;
-                        height: 27px;
-                        font-size: 1.125rem !important;
-                        height: auto !important;
+                        color: var(--tainacan-blue5);
                     }
+                    margin: -2px 0 5px 0;
+                }
+                .is-pulled-right {
+                    position: absolute;
+                    right: 0;
+                    top: 100%;
+                }
+                .input {
+                    border: 1px solid var(--tainacan-input-border-color);
                 }
                 a {
                     margin-left: 12px;
                     white-space: nowrap; 
-                }
+                } 
             }
         }
 
@@ -1390,7 +1407,6 @@
 
     #items-list-area {
         position: relative;
-        width: 100%;
         height: 100%;
         overflow-y: hidden;
         overflow-x: hidden;
@@ -1399,7 +1415,7 @@
 
         // Metadata type textarea has different separators in different spots on interface
         .multivalue-separator {
-            color: $gray3;
+            color: var(--tainacan-gray3);
             margin: 0 8px;    
         }
         .metadata-type-textarea {
@@ -1407,10 +1423,10 @@
                 display: block;
                 max-height: 1px;
                 width: 35px;
-                background: $gray3;
+                background: var(--tainacan-gray3);
                 content: none;
                 color: transparent;
-                margin: 1rem auto;
+                margin: 1em auto;
             }
         }
     }
