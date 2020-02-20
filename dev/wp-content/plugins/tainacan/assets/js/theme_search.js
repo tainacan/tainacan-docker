@@ -8979,6 +8979,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
 
 
 
@@ -9009,6 +9013,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     hideSearch: false,
     hideAdvancedSearch: false,
     hideSortByButton: false,
+    hideExposersButton: false,
     hideItemsPerPageButton: false,
     hideGoToPageButton: false,
     // Other Tweaks
@@ -9177,16 +9182,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
     var prefsViewMode = !this.isRepositoryLevel ? 'view_mode_' + this.collectionId : 'view_mode';
     if (this.$userPrefs.get(prefsViewMode) == undefined) this.$eventBusSearch.setInitialViewMode(this.defaultViewMode);else {
-      var userPrefViewMode = this.$userPrefs.get(prefsViewMode);
-
       var _existingViewModeIndex = Object.keys(this.registeredViewModes).findIndex(function (viewMode) {
-        return viewMode == userPrefViewMode;
+        return viewMode == _this3.$userPrefs.get(prefsViewMode);
       });
 
-      var enabledViewModeIndex = this.enabledViewModes.findIndex(function (viewMode) {
-        return viewMode == userPrefViewMode;
-      });
-      if (_existingViewModeIndex >= 0 && enabledViewModeIndex >= 0) this.$eventBusSearch.setInitialViewMode(userPrefViewMode);else this.$eventBusSearch.setInitialViewMode(this.defaultViewMode);
+      if (_existingViewModeIndex >= 0) this.$eventBusSearch.setInitialViewMode(this.$userPrefs.get(prefsViewMode));else this.$eventBusSearch.setInitialViewMode(this.defaultViewMode);
     } // For view modes such as slides, we force pagination to request only 12 per page
 
     var existingViewModeIndex = Object.keys(this.registeredViewModes).findIndex(function (viewMode) {
@@ -9560,6 +9560,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
 //
 //
 //
@@ -68118,217 +68119,232 @@ var render = function() {
                 1
               ),
               _vm._v(" "),
-              _c(
-                "div",
-                { staticClass: "search-control-item" },
-                [
-                  _c(
-                    "b-field",
+              _vm.enabledViewModes.length > 1
+                ? _c(
+                    "div",
+                    { staticClass: "search-control-item" },
                     [
                       _c(
-                        "label",
-                        {
-                          staticClass:
-                            "label is-hidden-touch is-hidden-desktop-only",
-                          staticStyle: { "margin-right": "-10px" }
-                        },
-                        [
-                          _vm._v(
-                            "\n                    " +
-                              _vm._s(
-                                _vm.$i18n.get("label_visualization") + ":  "
-                              ) +
-                              "\n                "
-                          )
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "label",
-                        {
-                          staticClass: "label is-hidden-widescreen",
-                          style: {
-                            marginRight: _vm.showInlineViewModeOptions
-                              ? ""
-                              : "-10px"
-                          }
-                        },
-                        [
-                          _vm._v(
-                            "\n                    " +
-                              _vm._s(_vm.$i18n.get("label_view_on") + ":  ") +
-                              "\n                "
-                          )
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "b-dropdown",
-                        {
-                          attrs: {
-                            inline: _vm.showInlineViewModeOptions,
-                            "mobile-modal": true,
-                            position: "is-bottom-left",
-                            "aria-label": _vm.$i18n.get("label_view_mode"),
-                            "aria-role": "list",
-                            "trap-focus": ""
-                          },
-                          on: {
-                            change: function($event) {
-                              return _vm.onChangeViewMode($event)
-                            }
-                          }
-                        },
+                        "b-field",
                         [
                           _c(
-                            "button",
+                            "label",
                             {
-                              staticClass: "button is-white",
-                              attrs: {
-                                slot: "trigger",
-                                "aria-label":
-                                  _vm.registeredViewModes[_vm.viewMode] !=
-                                  undefined
-                                    ? _vm.registeredViewModes[_vm.viewMode]
-                                        .label
-                                    : _vm.$i18n.get("label_visualization")
-                              },
-                              slot: "trigger"
+                              staticClass:
+                                "label is-hidden-touch is-hidden-desktop-only",
+                              staticStyle: { "margin-right": "-10px" }
                             },
                             [
-                              _vm.registeredViewModes[_vm.viewMode] != undefined
-                                ? _c("span", {
-                                    staticClass: "gray-icon view-mode-icon",
-                                    domProps: {
-                                      innerHTML: _vm._s(
-                                        _vm.registeredViewModes[_vm.viewMode]
-                                          .icon
-                                      )
-                                    }
-                                  })
-                                : _vm._e(),
-                              _vm._v(" "),
-                              _c("span", { staticClass: "is-hidden-touch" }, [
-                                _vm._v(
-                                  "   " +
-                                    _vm._s(
+                              _vm._v(
+                                "\n                    " +
+                                  _vm._s(
+                                    _vm.$i18n.get("label_visualization") + ":  "
+                                  ) +
+                                  "\n                "
+                              )
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "label",
+                            {
+                              staticClass: "label is-hidden-widescreen",
+                              style: {
+                                marginRight: _vm.showInlineViewModeOptions
+                                  ? ""
+                                  : "-10px"
+                              }
+                            },
+                            [
+                              _vm._v(
+                                "\n                    " +
+                                  _vm._s(
+                                    _vm.$i18n.get("label_view_on") + ":  "
+                                  ) +
+                                  "\n                "
+                              )
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "b-dropdown",
+                            {
+                              attrs: {
+                                inline: _vm.showInlineViewModeOptions,
+                                "mobile-modal": true,
+                                position: "is-bottom-left",
+                                "aria-label": _vm.$i18n.get("label_view_mode"),
+                                "aria-role": "list",
+                                "trap-focus": ""
+                              },
+                              on: {
+                                change: function($event) {
+                                  return _vm.onChangeViewMode($event)
+                                }
+                              }
+                            },
+                            [
+                              _c(
+                                "button",
+                                {
+                                  staticClass: "button is-white",
+                                  attrs: {
+                                    slot: "trigger",
+                                    "aria-label":
                                       _vm.registeredViewModes[_vm.viewMode] !=
                                       undefined
                                         ? _vm.registeredViewModes[_vm.viewMode]
                                             .label
                                         : _vm.$i18n.get("label_visualization")
-                                    )
-                                )
-                              ]),
-                              _vm._v(" "),
-                              _c("span", { staticClass: "icon" }, [
-                                _c("i", {
-                                  staticClass:
-                                    "tainacan-icon tainacan-icon-1-25em tainacan-icon-arrowdown"
-                                })
-                              ])
-                            ]
-                          ),
-                          _vm._v(" "),
-                          _vm._l(_vm.enabledViewModes, function(
-                            viewModeOption,
-                            index
-                          ) {
-                            return (_vm.registeredViewModes[viewModeOption] !=
-                              undefined &&
-                              _vm.registeredViewModes[viewModeOption]
-                                .full_screen == false) ||
-                              (_vm.showFullscreenWithViewModes &&
-                                _vm.registeredViewModes[viewModeOption] !=
-                                  undefined)
-                              ? _c(
-                                  "b-dropdown-item",
-                                  {
-                                    key: index,
-                                    class: {
-                                      "is-active":
-                                        viewModeOption == _vm.viewMode
-                                    },
-                                    attrs: {
-                                      "aria-controls": "items-list-results",
-                                      role: "button",
-                                      value: viewModeOption,
-                                      "aria-role": "listitem"
-                                    }
                                   },
-                                  [
-                                    !_vm.showInlineViewModeOptions
-                                      ? _c("span", {
-                                          staticClass: "gray-icon",
-                                          domProps: {
-                                            innerHTML: _vm._s(
-                                              _vm.registeredViewModes[
-                                                viewModeOption
-                                              ].icon
-                                            )
-                                          }
-                                        })
-                                      : _c("span", {
-                                          directives: [
-                                            {
-                                              name: "tooltip",
-                                              rawName: "v-tooltip",
-                                              value: {
-                                                delay: {
-                                                  show: 500,
-                                                  hide: 300
-                                                },
-                                                content:
+                                  slot: "trigger"
+                                },
+                                [
+                                  _vm.registeredViewModes[_vm.viewMode] !=
+                                  undefined
+                                    ? _c("span", {
+                                        staticClass: "gray-icon view-mode-icon",
+                                        domProps: {
+                                          innerHTML: _vm._s(
+                                            _vm.registeredViewModes[
+                                              _vm.viewMode
+                                            ].icon
+                                          )
+                                        }
+                                      })
+                                    : _vm._e(),
+                                  _vm._v(" "),
+                                  _c(
+                                    "span",
+                                    { staticClass: "is-hidden-touch" },
+                                    [
+                                      _vm._v(
+                                        "   " +
+                                          _vm._s(
+                                            _vm.registeredViewModes[
+                                              _vm.viewMode
+                                            ] != undefined
+                                              ? _vm.registeredViewModes[
+                                                  _vm.viewMode
+                                                ].label
+                                              : _vm.$i18n.get(
+                                                  "label_visualization"
+                                                )
+                                          )
+                                      )
+                                    ]
+                                  ),
+                                  _vm._v(" "),
+                                  _c("span", { staticClass: "icon" }, [
+                                    _c("i", {
+                                      staticClass:
+                                        "tainacan-icon tainacan-icon-1-25em tainacan-icon-arrowdown"
+                                    })
+                                  ])
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _vm._l(_vm.enabledViewModes, function(
+                                viewModeOption,
+                                index
+                              ) {
+                                return (_vm.registeredViewModes[
+                                  viewModeOption
+                                ] != undefined &&
+                                  _vm.registeredViewModes[viewModeOption]
+                                    .full_screen == false) ||
+                                  (_vm.showFullscreenWithViewModes &&
+                                    _vm.registeredViewModes[viewModeOption] !=
+                                      undefined)
+                                  ? _c(
+                                      "b-dropdown-item",
+                                      {
+                                        key: index,
+                                        class: {
+                                          "is-active":
+                                            viewModeOption == _vm.viewMode
+                                        },
+                                        attrs: {
+                                          "aria-controls": "items-list-results",
+                                          role: "button",
+                                          value: viewModeOption,
+                                          "aria-role": "listitem"
+                                        }
+                                      },
+                                      [
+                                        !_vm.showInlineViewModeOptions
+                                          ? _c("span", {
+                                              staticClass: "gray-icon",
+                                              domProps: {
+                                                innerHTML: _vm._s(
                                                   _vm.registeredViewModes[
                                                     viewModeOption
-                                                  ].label,
-                                                autoHide: false,
-                                                placement: "auto-start",
-                                                classes: [
-                                                  "tooltip",
-                                                  _vm.isRepositoryLevel
-                                                    ? "repository-tooltip"
-                                                    : ""
-                                                ]
-                                              },
-                                              expression:
-                                                "{\n                                    delay: {\n                                        show: 500,\n                                        hide: 300,\n                                    },\n                                    content: registeredViewModes[viewModeOption].label,\n                                    autoHide: false,\n                                    placement: 'auto-start',\n                                    classes: ['tooltip', isRepositoryLevel ? 'repository-tooltip' : '']\n                                }"
-                                            }
-                                          ],
-                                          staticClass: "gray-icon",
-                                          domProps: {
-                                            innerHTML: _vm._s(
-                                              _vm.registeredViewModes[
-                                                viewModeOption
-                                              ].icon
-                                            )
-                                          }
-                                        }),
-                                    _vm._v(" "),
-                                    !_vm.showInlineViewModeOptions
-                                      ? _c("span", [
-                                          _vm._v(
-                                            _vm._s(
-                                              _vm.registeredViewModes[
-                                                viewModeOption
-                                              ].label
-                                            )
-                                          )
-                                        ])
-                                      : _vm._e()
-                                  ]
-                                )
-                              : _vm._e()
-                          })
+                                                  ].icon
+                                                )
+                                              }
+                                            })
+                                          : _c("span", {
+                                              directives: [
+                                                {
+                                                  name: "tooltip",
+                                                  rawName: "v-tooltip",
+                                                  value: {
+                                                    delay: {
+                                                      show: 500,
+                                                      hide: 300
+                                                    },
+                                                    content:
+                                                      _vm.registeredViewModes[
+                                                        viewModeOption
+                                                      ].label,
+                                                    autoHide: false,
+                                                    placement: "auto-start",
+                                                    classes: [
+                                                      "tooltip",
+                                                      _vm.isRepositoryLevel
+                                                        ? "repository-tooltip"
+                                                        : ""
+                                                    ]
+                                                  },
+                                                  expression:
+                                                    "{\n                                    delay: {\n                                        show: 500,\n                                        hide: 300,\n                                    },\n                                    content: registeredViewModes[viewModeOption].label,\n                                    autoHide: false,\n                                    placement: 'auto-start',\n                                    classes: ['tooltip', isRepositoryLevel ? 'repository-tooltip' : '']\n                                }"
+                                                }
+                                              ],
+                                              staticClass: "gray-icon",
+                                              domProps: {
+                                                innerHTML: _vm._s(
+                                                  _vm.registeredViewModes[
+                                                    viewModeOption
+                                                  ].icon
+                                                )
+                                              }
+                                            }),
+                                        _vm._v(" "),
+                                        !_vm.showInlineViewModeOptions
+                                          ? _c("span", [
+                                              _vm._v(
+                                                _vm._s(
+                                                  _vm.registeredViewModes[
+                                                    viewModeOption
+                                                  ].label
+                                                )
+                                              )
+                                            ])
+                                          : _vm._e()
+                                      ]
+                                    )
+                                  : _vm._e()
+                              })
+                            ],
+                            2
+                          )
                         ],
-                        2
+                        1
                       )
                     ],
                     1
                   )
-                ],
-                1
-              ),
+                : _vm._e(),
               _vm._v(" "),
               _c(
                 "div",
@@ -68376,33 +68392,38 @@ var render = function() {
                 0
               ),
               _vm._v(" "),
-              _c("div", { staticClass: "search-control-item" }, [
-                _c(
-                  "button",
-                  {
-                    staticClass: "button is-white",
-                    attrs: {
-                      "aria-label": _vm.$i18n.get("label_view_as"),
-                      disabled:
-                        _vm.totalItems == undefined || _vm.totalItems <= 0
-                    },
-                    on: {
-                      click: function($event) {
-                        return _vm.openExposersModal()
-                      }
-                    }
-                  },
-                  [
-                    _vm._m(0),
-                    _vm._v(" "),
+              !_vm.hideExposersButton
+                ? _c("div", { staticClass: "search-control-item" }, [
                     _c(
-                      "span",
-                      { staticClass: "is-hidden-touch is-hidden-desktop-only" },
-                      [_vm._v(_vm._s(_vm.$i18n.get("label_view_as")))]
+                      "button",
+                      {
+                        staticClass: "button is-white",
+                        attrs: {
+                          "aria-label": _vm.$i18n.get("label_view_as"),
+                          disabled:
+                            _vm.totalItems == undefined || _vm.totalItems <= 0
+                        },
+                        on: {
+                          click: function($event) {
+                            return _vm.openExposersModal()
+                          }
+                        }
+                      },
+                      [
+                        _vm._m(0),
+                        _vm._v(" "),
+                        _c(
+                          "span",
+                          {
+                            staticClass:
+                              "is-hidden-touch is-hidden-desktop-only"
+                          },
+                          [_vm._v(_vm._s(_vm.$i18n.get("label_view_as")))]
+                        )
+                      ]
                     )
-                  ]
-                )
-              ])
+                  ])
+                : _vm._e()
             ]
           )
         : _vm._e(),
@@ -68818,6 +68839,9 @@ var render = function() {
         : false,
       "hide-sort-by-button": _vm.$root.hideSortByButton
         ? _vm.$root.hideSortByButton
+        : false,
+      "hide-exposers-button": _vm.$root.hideExposersButton
+        ? _vm.$root.hideExposersButton
         : false,
       "hide-items-per-page-button": _vm.$root.hideItemsPerPageButton
         ? _vm.$root.hideItemsPerPageButton
@@ -82227,11 +82251,12 @@ __webpack_require__.r(__webpack_exports__);
 /*!*************************************************!*\
   !*** ./src/views/theme-search/js/theme-main.js ***!
   \*************************************************/
-/*! no exports provided */
+/*! exports provided: ThemeItemsListing */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ThemeItemsListing", function() { return ThemeItemsListing; });
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.min.js");
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var buefy__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! buefy */ "./node_modules/buefy/dist/esm/index.js");
@@ -82332,55 +82357,55 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(_admin_js_event_bus_search__WEBPA
   store: _admin_js_store_store__WEBPACK_IMPORTED_MODULE_24__["default"],
   router: _theme_router_js__WEBPACK_IMPORTED_MODULE_25__["default"]
 });
-document.addEventListener("DOMContentLoaded", function () {
-  new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
-    el: '#tainacan-items-page',
-    store: _admin_js_store_store__WEBPACK_IMPORTED_MODULE_24__["default"],
-    router: _theme_router_js__WEBPACK_IMPORTED_MODULE_25__["default"],
-    data: {
-      termId: '',
-      taxonomy: '',
-      collectionId: '',
-      defaultViewMode: '',
-      enabledViewModes: {},
-      hideFilters: false,
-      hideHideFiltersButton: false,
-      hideSearch: false,
-      hideAdvancedSearch: false,
-      hideSortByButton: false,
-      hideItemsPerPageButton: false,
-      hideGoToPageButton: false,
-      startWithFiltersHidden: false,
-      filtersAsModal: false,
-      showInlineViewModeOptions: false,
-      showFullscreenWithViewModes: false
-    },
-    beforeMount: function beforeMount() {
-      // Collection or Term source settings
-      if (this.$el.attributes['collection-id'] != undefined) this.collectionId = this.$el.attributes['collection-id'].value;
-      if (this.$el.attributes['term-id'] != undefined) this.termId = this.$el.attributes['term-id'].value;
-      if (this.$el.attributes['taxonomy'] != undefined) this.taxonomy = this.$el.attributes['taxonomy'].value; // View Mode settings
+var ThemeItemsListing = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
+  el: '#tainacan-items-page',
+  store: _admin_js_store_store__WEBPACK_IMPORTED_MODULE_24__["default"],
+  router: _theme_router_js__WEBPACK_IMPORTED_MODULE_25__["default"],
+  data: {
+    termId: '',
+    taxonomy: '',
+    collectionId: '',
+    defaultViewMode: '',
+    enabledViewModes: {},
+    hideFilters: false,
+    hideHideFiltersButton: false,
+    hideSearch: false,
+    hideAdvancedSearch: false,
+    hideSortByButton: false,
+    hideExposersButton: false,
+    hideItemsPerPageButton: false,
+    hideGoToPageButton: false,
+    startWithFiltersHidden: false,
+    filtersAsModal: false,
+    showInlineViewModeOptions: false,
+    showFullscreenWithViewModes: false
+  },
+  beforeMount: function beforeMount() {
+    // Collection or Term source settings
+    if (this.$el.attributes['collection-id'] != undefined) this.collectionId = this.$el.attributes['collection-id'].value;
+    if (this.$el.attributes['term-id'] != undefined) this.termId = this.$el.attributes['term-id'].value;
+    if (this.$el.attributes['taxonomy'] != undefined) this.taxonomy = this.$el.attributes['taxonomy'].value; // View Mode settings
 
-      if (this.$el.attributes['default-view-mode'] != undefined) this.defaultViewMode = this.$el.attributes['default-view-mode'].value;else this.defaultViewMode = 'cards';
-      if (this.$el.attributes['enabled-view-modes'] != undefined) this.enabledViewModes = this.$el.attributes['enabled-view-modes'].value.split(','); // Options related to hidding elements
+    if (this.$el.attributes['default-view-mode'] != undefined) this.defaultViewMode = this.$el.attributes['default-view-mode'].value;else this.defaultViewMode = 'cards';
+    if (this.$el.attributes['enabled-view-modes'] != undefined) this.enabledViewModes = this.$el.attributes['enabled-view-modes'].value.split(','); // Options related to hidding elements
 
-      if (this.$el.attributes['hide-filters'] != undefined) this.hideFilters = this.$el.attributes['hide-filters'].value == 'true' ? true : false;
-      if (this.$el.attributes['hide-hide-filters-button'] != undefined) this.hideHideFiltersButton = this.$el.attributes['hide-hide-filters-button'].value == 'true' ? true : false;
-      if (this.$el.attributes['hide-search'] != undefined) this.hideSearch = this.$el.attributes['hide-search'].value == 'true' ? true : false;
-      if (this.$el.attributes['hide-advanced-search'] != undefined) this.hideAdvancedSearch = this.$el.attributes['hide-advanced-search'].value == 'true' ? true : false;
-      if (this.$el.attributes['hide-sort-by-button'] != undefined) this.hideSortByButton = this.$el.attributes['hide-sort-by-button'].value == 'true' ? true : false;
-      if (this.$el.attributes['hide-items-per-page-button'] != undefined) this.hideItemsPerPageButton = this.$el.attributes['hide-items-per-page-button'].value == 'true' ? true : false;
-      if (this.$el.attributes['hide-go-to-page-button'] != undefined) this.hideGoToPageButton = this.$el.attributes['hide-go-to-page-button'].value == 'true' ? true : false; // Other Tweaks
+    if (this.$el.attributes['hide-filters'] != undefined) this.hideFilters = this.$el.attributes['hide-filters'].value;
+    if (this.$el.attributes['hide-hide-filters-button'] != undefined) this.hideHideFiltersButton = this.$el.attributes['hide-hide-filters-button'].value;
+    if (this.$el.attributes['hide-search'] != undefined) this.hideSearch = this.$el.attributes['hide-search'].value;
+    if (this.$el.attributes['hide-advanced-search'] != undefined) this.hideAdvancedSearch = this.$el.attributes['hide-advanced-search'].value;
+    if (this.$el.attributes['hide-sort-by-button'] != undefined) this.hideSortByButton = this.$el.attributes['hide-sort-by-button'].value;
+    if (this.$el.attributes['hide-exposers-button'] != undefined) this.hideExposersButton = this.$el.attributes['hide-exposers-button'].value;
+    if (this.$el.attributes['hide-items-per-page-button'] != undefined) this.hideItemsPerPageButton = this.$el.attributes['hide-items-per-page-button'].value;
+    if (this.$el.attributes['hide-go-to-page-button'] != undefined) this.hideGoToPageButton = this.$el.attributes['hide-go-to-page-button'].value; // Other Tweaks
 
-      if (this.$el.attributes['start-with-filters-hidden'] != undefined) this.startWithFiltersHidden = this.$el.attributes['start-with-filters-hidden'].value == 'true' ? true : false;
-      if (this.$el.attributes['filters-as-modal'] != undefined) this.filtersAsModal = this.$el.attributes['filters-as-modal'].value == 'true' ? true : false;
-      if (this.$el.attributes['show-inline-view-mode-options'] != undefined) this.showInlineViewModeOptions = this.$el.attributes['show-inline-view-mode-options'].value == 'true' ? true : false;
-      if (this.$el.attributes['show-fullscreen-with-view-modes'] != undefined) this.showFullscreenWithViewModes = this.$el.attributes['show-fullscreen-with-view-modes'].value == 'true' ? true : false;
-    },
-    render: function render(h) {
-      return h(_theme_search_vue__WEBPACK_IMPORTED_MODULE_18__["default"]);
-    }
-  });
+    if (this.$el.attributes['start-with-filters-hidden'] != undefined) this.startWithFiltersHidden = this.$el.attributes['start-with-filters-hidden'].value;
+    if (this.$el.attributes['filters-as-modal'] != undefined) this.filtersAsModal = this.$el.attributes['filters-as-modal'].value;
+    if (this.$el.attributes['show-inline-view-mode-options'] != undefined) this.showInlineViewModeOptions = this.$el.attributes['show-inline-view-mode-options'].value;
+    if (this.$el.attributes['show-fullscreen-with-view-modes'] != undefined) this.showFullscreenWithViewModes = this.$el.attributes['show-fullscreen-with-view-modes'].value;
+  },
+  render: function render(h) {
+    return h(_theme_search_vue__WEBPACK_IMPORTED_MODULE_18__["default"]);
+  }
 }); // Initialize Ponyfill for Custom CSS properties
 
 Object(css_vars_ponyfill__WEBPACK_IMPORTED_MODULE_4__["default"])({// Options...

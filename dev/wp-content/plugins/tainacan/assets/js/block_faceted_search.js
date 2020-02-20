@@ -2738,13 +2738,41 @@ registerBlockType('tainacan/faceted-search', {
       class: "items-list-placeholder"
     }, React.createElement("div", {
       class: "search-control"
-    }), React.createElement("div", {
+    }, !hideSearch ? React.createElement("span", {
+      class: "fake-searchbar"
+    }, !hideAdvancedSearch ? React.createElement("span", {
+      class: "fake-advanced-searchbar"
+    }) : null) : null, React.createElement("span", {
+      class: "fake-button"
+    }), React.createElement("span", {
+      class: "fake-button"
+    }), !hideSortByButton ? React.createElement("span", {
+      class: "fake-button"
+    }) : null, React.createElement("span", {
+      class: "fake-button"
+    }), React.createElement("span", {
+      class: "fake-button"
+    })), React.createElement("div", {
+      class: "below-search-control"
+    }, !hideFilters ? React.createElement("div", {
       class: "filters"
-    }), React.createElement("div", {
+    }, !hideHideFiltersButton ? React.createElement("span", {
+      class: "fake-hide-button"
+    }) : null) : null, React.createElement("div", {
+      class: "aside-filters"
+    }, React.createElement("div", {
       class: "items"
     }), React.createElement("div", {
       class: "pagination"
-    }))), isCollectionModalOpen ? React.createElement(_collection_modal_js__WEBPACK_IMPORTED_MODULE_0__["default"], {
+    }, React.createElement("span", {
+      class: "fake-text"
+    }), !hideItemsPerPageButton ? React.createElement("span", {
+      class: "fake-button"
+    }) : null, !hideGoToPageButton ? React.createElement("span", {
+      class: "fake-button"
+    }) : null, React.createElement("span", {
+      class: "fake-searchbar"
+    })))))), isCollectionModalOpen ? React.createElement(_collection_modal_js__WEBPACK_IMPORTED_MODULE_0__["default"], {
       existingCollectionId: collectionId,
       onSelectCollection: function onSelectCollection(selectedCollectionId) {
         collectionId = selectedCollectionId;
@@ -2801,9 +2829,9 @@ registerBlockType('tainacan/faceted-search', {
         showInlineViewModeOptions = attributes.showInlineViewModeOptions,
         showFullscreenWithViewModes = attributes.showFullscreenWithViewModes,
         listType = attributes.listType;
-    console.log(hideSortByButton);
-    return React.createElement("main", {
-      className: className,
+    return React.createElement("div", {
+      className: className
+    }, React.createElement("main", {
       "term-id": listType == 'term' ? termId : null,
       taxonomy: listType == 'term' ? 'tnc_tax_' + taxonomyId : null,
       "collection-id": listType == 'collection' ? collectionId : null,
@@ -2821,7 +2849,7 @@ registerBlockType('tainacan/faceted-search', {
       "show-inline-view-mode-options": showInlineViewModeOptions.toString(),
       "show-fullscreen-with-view-modes": showFullscreenWithViewModes.toString(),
       id: "tainacan-items-page"
-    });
+    }));
   }
 });
 

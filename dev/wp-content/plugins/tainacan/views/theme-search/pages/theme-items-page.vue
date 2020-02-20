@@ -222,7 +222,9 @@
             </div>
 
             <!-- View Modes Dropdown -->
-            <div class="search-control-item">
+            <div 
+                    v-if="enabledViewModes.length > 1"
+                    class="search-control-item">
                 <b-field>
                     <label 
                             class="label is-hidden-touch is-hidden-desktop-only"
@@ -306,7 +308,9 @@
             </div>
 
             <!-- Exposers or alternative links modal button -->
-            <div class="search-control-item">
+            <div 
+                    v-if="!hideExposersButton"
+                    class="search-control-item">
                 <button 
                         class="button is-white"
                         :aria-label="$i18n.get('label_view_as')"
@@ -533,6 +537,7 @@
             hideSearch: false,
             hideAdvancedSearch: false,
             hideSortByButton: false,
+            hideExposersButton: false,
             hideItemsPerPageButton: false,
             hideGoToPageButton: false,
             // Other Tweaks
@@ -697,15 +702,13 @@
             if (this.$userPrefs.get(prefsViewMode) == undefined)
                 this.$eventBusSearch.setInitialViewMode(this.defaultViewMode);
             else {
-                const userPrefViewMode = this.$userPrefs.get(prefsViewMode);
-
-                let existingViewModeIndex = Object.keys(this.registeredViewModes).findIndex(viewMode => viewMode == userPrefViewMode);
-                let enabledViewModeIndex = this.enabledViewModes.findIndex((viewMode) => viewMode == userPrefViewMode);
-                if (existingViewModeIndex >= 0 && enabledViewModeIndex >= 0)
-                    this.$eventBusSearch.setInitialViewMode(userPrefViewMode);
+                let existingViewModeIndex = Object.keys(this.registeredViewModes).findIndex(viewMode => viewMode == this.$userPrefs.get(prefsViewMode));
+                if (existingViewModeIndex >= 0)
+                    this.$eventBusSearch.setInitialViewMode(this.$userPrefs.get(prefsViewMode));
                 else   
                     this.$eventBusSearch.setInitialViewMode(this.defaultViewMode);
             }
+            
             // For view modes such as slides, we force pagination to request only 12 per page
             let existingViewModeIndex = Object.keys(this.registeredViewModes).findIndex(viewMode => viewMode == this.$userPrefs.get(prefsViewMode));
             if (existingViewModeIndex >= 0) {
@@ -717,7 +720,7 @@
             this.showItemsHiddingDueSortingDialog();
 
             // Watches window resize to adjust filter's top position and compression on mobile
-            if (!this.hideFilters) {            
+            if (!this.hideFilters) {                 
                 this.hideFiltersOnMobile();
                 window.addEventListener('resize', this.hideFiltersOnMobile);
             }
