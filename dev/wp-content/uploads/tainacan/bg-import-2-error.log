@@ -1,9 +1,0 @@
-Fatal Error: Uncaught Error: Call to a member function get_core() on null in /var/www/html/wp-content/plugins/tainacan/classes/repositories/class-tainacan-item-metadata.php:260
-Stack trace:
-#0 /var/www/html/wp-content/plugins/tainacan/classes/entities/class-tainacan-item-metadata-entity.php(349): Tainacan\Repositories\Item_Metadata->get_value(Object(Tainacan\Entities\Item_Metadata_Entity))
-#1 /var/www/html/wp-content/plugins/tainacan/classes/entities/class-tainacan-item-metadata-entity.php(399): Tainacan\Entities\Item_Metadata_Entity->get_value()
-#2 /var/www/html/wp-content/plugins/tainacan/classes/entities/class-tainacan-item.php(406): Tainacan\Entities\Item_Metadata_Entity->validate()
-#3 /var/www/html/wp-content/plugins/tainacan/importer/class-tainacan-csv.php(715): Tainacan\Entities\Item->validate()
-#4 /var/www/html/wp-content/plugins/tainacan/importer/class-tainacan-importer.php(702): Tainacan\Importer\CSV->insert(Array, 0)
-#5 /var/www/html/wp-content/plugins/tainacan/importer/class-tainacan-importer.php(893): Tainaca - /var/www/html/wp-content/plugins/tainacan/classes/repositories/class-tainacan-item-metadata.php - Line: 260
-Process aborted
