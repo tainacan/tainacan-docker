@@ -5,7 +5,6 @@ dev/repo/tainacan-mhn
 dev/repo/plugins
 dev/data/
 dev/docker/init.d
-dev/src
 dev/www
 benchmark/repo/tainacan/
 benchmark/repo/tainacan-theme
