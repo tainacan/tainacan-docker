@@ -1,4 +1,4 @@
-FROM php:7.2.0-apache
+FROM php:7.3-fpm
 
 ENV PHP_DEPS \
         pdo \
@@ -17,7 +17,7 @@ ENV RUBY_DEPS \
         ruby-dev
 
 ENV TOOLS_DEPS \
-        mysql-client \
+        mariadb-client\
         gnupg \
         wget \
         nmap \
@@ -30,32 +30,22 @@ ENV TOOLS_DEPS \
         libpng-dev \
         inotify-tools \
         cron \
+        rsync \
         ghostscript
-#npm \
-#composer \
 
 RUN apt-get update && apt-get install -y \
     $TOOLS_DEPS \    
     $RUBY_DEPS \
     libmemcached-dev zlib1g-dev && \
-    docker-php-ext-install pdo pdo_mysql mysqli gd && \
-    pecl install \
-    xdebug-2.6.0 \
-    memcached-3.0.4
+    docker-php-ext-install pdo pdo_mysql mysqli gd
 
-RUN docker-php-ext-enable xdebug memcached
-
-RUN a2enmod rewrite
-
-COPY ./docker/config.ini /usr/local/etc/php/conf.d/php.config.ini
- 
 ENV path="/var/www/html"
 ENV url="localhost"
 
 RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
     && php composer-setup.php \
-    && php -r "unlink('composer-setup.php');" \
-    && mv composer.phar /usr/local/bin/composer
+   && php -r "unlink('composer-setup.php');" \
+   && mv composer.phar /usr/local/bin/composer
 
 # install phpunit
 RUN wget https://phar.phpunit.de/phpunit-6.4.phar \
@@ -64,13 +54,14 @@ RUN wget https://phar.phpunit.de/phpunit-6.4.phar \
  && phpunit --version
 
 # Instalando o wp-cli
-RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar \
+RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar  \
     && chmod +x wp-cli.phar \
     && mv wp-cli.phar /usr/local/bin/wp    
 
 # Baixando e instalando o Wordpress
-RUN chown -R www-data:www-data $path \
-    && wp --allow-root core download --path="$path"
+RUN mkdir -p $path; 
+RUN  wp --allow-root core download --path="$path"
+RUN chown -R www-data:www-data $path;
 
 RUN mkdir $path/wp-content/uploads; \
     chown -R www-data:www-data $path/wp-content/uploads
@@ -82,13 +73,21 @@ RUN curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash - \
     && apt-get update && apt-get install yarn \
     && gem install sass
 
-COPY ./repo/ /repo/
-COPY ./repo/confs_wp/wp-config.php /var/www/html/wp-config.php
-COPY ./repo/confs_plugin/bootstrap-config.php /repo/tainacan/tests/bootstrap-config.php
-RUN chmod +x /repo/build_plugin.sh /repo/build_theme.sh
-
 RUN apt-get update && apt-get install -y libmagickwand-dev --no-install-recommends
 RUN pecl install imagick && docker-php-ext-enable imagick
 
-EXPOSE 80
-EXPOSE 443
+COPY ./src/ /src/
+
+COPY ./conf/wp/wp-config.php $path/wp-config.php
+COPY ./conf/wp/bootstrap-config.php /src/tainacan/tests/bootstrap-config.php
+
+COPY ./conf/tainacan/plugin_build-config.cfg /src/tainacan/
+COPY ./conf/tainacan/theme_build-config.cfg /src/tainacan-theme/
+
+COPY ./conf/scripts/build_plugin.sh /src/
+COPY ./conf/scripts/build_theme.sh /src/
+COPY ./conf/scripts/run_tests.sh /src/
+
+RUN chmod +x /src/build_plugin.sh /src/build_theme.sh /src/run_tests.sh
+
+EXPOSE 9000
