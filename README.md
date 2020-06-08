@@ -22,18 +22,20 @@ Overview:
 
 ```
 ./tainacan.sh --help
-
+            --setup-init = 
             --build-image =  build docker images for application and database (super user).
+            --build-image-nginx = 
             --build-image-elastic =  build docker images for application, database and elasticsearch server (super user).
             --start       =  start the containers (super user).
             --start-elastic = start the containers and the elastic search server (super user)
+            --start-nginx = 
             --stop        =  stops all containers(super user).
             --clone       =  clones tainacan and tainacan-interface repositories into the dev folder
             --ssh-clone   =  clones tainacan and tainacan-interface repositories into the dev folder using your ssh keys
             --run-tests   =  run phpunit tests (super user).
             --bash        =  enters the container
             --bash-mysql  =  enters the mysql container
-	    --build       =  builds tainacan plugin and theme (super user).
+            --build       =  builds tainacan plugin and theme (super user).
             --watch-build =  watches for changes in the plugin and theme and builds them (super user).
             --help        =  displays this help message
 
