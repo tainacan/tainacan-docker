@@ -41,9 +41,9 @@ EOF
         ;;
         --stop)
             echo "[STOP TAINACAN]"
-            sudo docker-compose -f docker-compose-dev.yml down -v
-            sudo docker-compose -f docker-compose-dev-elastic.yml down -v
-            sudo docker-compose -f docker-compose-dev-nginx.yml down -v
+            sudo docker-compose -f docker-compose-dev.yml down
+            sudo docker-compose -f docker-compose-dev-elastic.yml down
+            sudo docker-compose -f docker-compose-dev-nginx.yml down
             exit
         ;;
         --start)
