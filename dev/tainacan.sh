@@ -3,9 +3,25 @@
 for i in "$@"
 do
     case $i in
+        --setup-init)
+            echo "[SETUP ENV DEV]"
+            mkdir -p www
+            cat > .env <<EOF
+LOCAL_PATH=${PWD}
+WEB_APP_PATH=/www
+EOF
+            ./conf/scripts/clone.sh
+            sudo docker-compose -f docker-compose-dev.yml up --build
+            exit
+        ;;
         --build-image)
             echo "[BUILD IMAGE]"
             sudo docker-compose -f docker-compose-dev.yml build
+            exit
+        ;;
+        --build-image-nginx)
+            echo "[BUILD IMAGE] WITH NGINX"
+            sudo docker-compose -f docker-compose-dev-nginx.yml build
             exit
         ;;
         --build-image-elastic)
@@ -15,23 +31,29 @@ do
         ;;
         --build)
             echo "[BUILD TAINACAN]"
-            sudo ./scripts/build_tainacan.sh --build
+            sudo ./conf/scripts/build_tainacan.sh --build
             exit
         ;;
         --watch-build)
             echo "[BUILD WATCH TAINACAN]"
-            sudo ./scripts/build_tainacan.sh --watch-build
+            sudo ./conf/scripts/build_tainacan.sh --watch-build
             exit
         ;;
         --stop)
             echo "[STOP TAINACAN]"
             sudo docker-compose -f docker-compose-dev.yml down
             sudo docker-compose -f docker-compose-dev-elastic.yml down
+            sudo docker-compose -f docker-compose-dev-nginx.yml down
             exit
         ;;
         --start)
             echo "[START TAINACAN]"
             sudo docker-compose -f docker-compose-dev.yml up
+            exit
+        ;;
+        --start-nginx)
+            echo "[START TAINACAN WUTH NGINX]"
+            sudo docker-compose -f docker-compose-dev-nginx.yml up
             exit
         ;;
         --start-elastic)
@@ -42,22 +64,22 @@ do
         ;;
         --clone)
             echo "[CLONE REPO TAINACAN]"
-            ./scripts/clone.sh
+            ./conf/scripts/clone.sh
             exit
         ;;
         --ssh-clone)
             echo "[CLONE REPO TAINACAN - SSH]"
-            ./scripts/clone.sh --ssh
+            ./conf/scripts/clone.sh --ssh
             exit
         ;;        
         --run-tests)
             echo "[EXECUTANDO TESTES--PHPUnit]"
-            sudo docker exec -it wordpress_tainacan sh /repo/run_tests.sh
+            sudo docker exec -it tainacan-dev sh /src/run_tests.sh
             exit
         ;;
         --bash)
             echo "[INTO A CONTAINER /bin/bash]"
-            sudo docker exec -it wordpress_tainacan /bin/bash
+            sudo docker exec -it tainacan-dev /bin/bash
             exit
         ;;
         --bash-mysql)
