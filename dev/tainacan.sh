@@ -87,10 +87,16 @@ EOF
             sudo docker exec -it mysql_tainacan /bin/bash            
             exit
         ;;
+        --error-logs)
+            echo "[ERRORS LOG tainacan-dev]"
+            sudo docker logs -f tainacan-dev > /dev/null
+            exit
+        ;;
         --help)
             echo "
             --build-image =  build docker images for application and database (super user).
             --build-image-elastic =  build docker images for application, database and elasticsearch server (super user).
+            --build-image-nginx =  build docker images for application and database (super user) using nginx 
             --start       =  start the containers (super user).
             --start-elastic = start the containers and the elastic search server (super user)
             --stop        =  stops all containers(super user).
@@ -101,6 +107,7 @@ EOF
             --bash-mysql  =  enters the mysql container
             --build       =  builds tainacan plugin and theme (super user).
             --watch-build =  watches for changes in the plugin and theme and builds them (super user).
+            --error-logs = display the error logs
             --help        =  displays this help message
             "
             exit

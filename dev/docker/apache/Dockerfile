@@ -4,13 +4,8 @@ ENV PHP_DEPS \
         pdo \
         pdo_mysql \
         mysqli \
-        mbstring \
-        curl \
-        fpm \
         gd \
-        mcrypt \
-        imagick \
-        xml
+        exif
 
 ENV RUBY_DEPS \
         ruby \
@@ -38,7 +33,7 @@ RUN apt-get update && apt-get install -y \
     $TOOLS_DEPS \    
     $RUBY_DEPS \
     libmemcached-dev zlib1g-dev && \
-    docker-php-ext-install pdo pdo_mysql mysqli gd && \
+    docker-php-ext-install  $PHP_DEPS && \
     pecl install \
     xdebug-2.6.0 \
     memcached-3.0.4
