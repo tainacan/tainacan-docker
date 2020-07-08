@@ -1,4 +1,4 @@
-version: "3.3"
+  version: "3.3"
 
 services:
  tainacan:
@@ -28,6 +28,26 @@ services:
     MYSQL_PASSWORD: ${MYSQL_PASSWORD}
   volumes:
   - ${CNT_BASE_PATH}/${NAME_CONTAINER}/data:/var/lib/mysql
+
+ elasticsearch:
+  image: docker.elastic.co/elasticsearch/elasticsearch:6.3.0
+  environment:
+    - cluster.name=docker-cluster-es
+    - bootstrap.memory_lock=true
+    - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    - ELASTIC_PASSWORD=pass
+  ulimits:
+    nproc: 65535
+    memlock:
+      soft: -1
+      hard: -1
+  cap_add:
+    - ALL
+  privileged: true
+  volumes:
+    - ${CNT_BASE_PATH}/${NAME_CONTAINER}/data-es:/usr/share/elasticsearch/data
+  ports:
+    - "9200"
 
 volumes:
   wp_root:
