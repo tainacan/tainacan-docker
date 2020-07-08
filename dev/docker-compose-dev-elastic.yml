@@ -37,43 +37,16 @@ services:
    - ./wp-content:/var/www/html/wp-content
    - /etc/timezone:/etc/timezone:ro
    - /etc/localtime:/etc/localtime:ro
- elasticsearch: #before execute sudo sysctl -w vm.max_map_count=262144
-  image: docker.elastic.co/elasticsearch/elasticsearch:6.3.0
-  container_name: elasticsearch
-  environment:
-    - node.name=es01
-    - cluster.name=docker-cluster-es
-    - bootstrap.memory_lock=true
-    - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-  ulimits:
-    nproc: 65535
-    memlock:
-      soft: -1
-      hard: -1
-  cap_add:
-    - ALL
-  privileged: true
-  volumes:
-    - esdata:/usr/share/elasticsearch/data
-    #-  ./elasticsearch/custom_elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
-    #-  ./elasticsearch/log4j2.properties:/usr/share/elasticsearch/config/log4j2.properties
-  ports:
-    - 9200:9200
+ elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.5.0
+    ports:
     - 9300:9300
-# kibana:
-#   image: docker.elastic.co/kibana/kibana-oss:6.3.0
-#   container_name: kibana
-#   environment:
-#     SERVER_NAME: localhost
-#     ELASTICSEARCH_URL: http://elasticsearch:9200/
-#   ports:
-#     - 5601:5601
-#   ulimits:
-#     nproc: 65535
-#     memlock:
-#       soft: -1
-#       hard: -1
-#   cap_add:
-#     - ALL     
+    - 9200:9200
+    environment:
+    - discovery.type=single-node
+    - cluster.routing.allocation.disk.watermark.flood_stage=99%
+    - cluster.routing.allocation.disk.watermark.high=98%
+    volumes:
+    - esdata:/usr/share/elasticsearch/data
 volumes:
   esdata:
