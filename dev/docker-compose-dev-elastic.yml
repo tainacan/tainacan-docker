@@ -39,7 +39,7 @@ services:
     - ./conf/tainacan/theme_build-config.cfg:/src/tainacan-theme/build-config.cfg
     - ./conf/scripts/build_theme.sh:/src/build_theme.sh
     - ./conf/scripts/build_plugin.sh:/src/build_plugin.sh
-    - ./conf/scripts/run_tests.sh /src/run_tests.sh
+    - ./conf/scripts/run_tests.sh:/src/run_tests.sh
     - /etc/timezone:/etc/timezone:ro
     - /etc/localtime:/etc/localtime:ro
     - type: volume
