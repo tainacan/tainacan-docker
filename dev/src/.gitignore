@@ -1,0 +1,4 @@
+./tainacan
+./tainacan-theme
+build_plugin.sh
+build_theme.sh

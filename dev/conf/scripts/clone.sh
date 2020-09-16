@@ -1,6 +1,6 @@
 #!/bin/bash
 
-_FOLDER_DESTINATIO="./repo/"
+_FOLDER_DESTINATIO="./src/"
 
 _TAINACAN_PLUGIN_REPO="https://github.com/tainacan/tainacan.git"
 _TAINACAN_THEME_REPO="https://github.com/tainacan/tainacan-theme.git"
