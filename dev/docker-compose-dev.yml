@@ -14,6 +14,7 @@ services:
     volumes:
     - ./data:/var/lib/mysql
     - ./docker/init.d:/docker-entrypoint-initdb.d
+    - ./conf/mysql/mysql.cnf:/etc/mysql/conf.d/my-confsql.cnf
   wordpress:
     build:
       context: .
