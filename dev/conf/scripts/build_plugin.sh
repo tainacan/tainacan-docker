@@ -3,11 +3,14 @@ cd /src/tainacan/
 for i in "$@"
 do
     case $i in
-        --build*)
+        --build)
             ./build.sh
         ;;
-        --watch-build*)
+        --watch-build)
             ./build-watch.sh
+        ;;
+        --build-prod)
+            ./build.sh --prod
         ;;
     esac
 done

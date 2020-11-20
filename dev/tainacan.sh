@@ -34,6 +34,11 @@ EOF
             sudo ./conf/scripts/build_tainacan.sh --build
             exit
         ;;
+        --build-prod)
+            echo "[BUILD TAINACAN]"
+            sudo ./conf/scripts/build_tainacan.sh --build-prod
+            exit
+        ;;
         --watch-build)
             echo "[BUILD WATCH TAINACAN]"
             sudo ./conf/scripts/build_tainacan.sh --watch-build
@@ -107,6 +112,7 @@ EOF
             --bash-mysql  =  enters the mysql container
             --build       =  builds tainacan plugin and theme (super user).
             --watch-build =  watches for changes in the plugin and theme and builds them (super user).
+            --build-prod =  builds tainacan plugin and theme (super user) as production mode.
             --error-logs = display the error logs
             --help        =  displays this help message
             "
