@@ -34,6 +34,11 @@ EOF
             sudo ./conf/scripts/build_tainacan.sh --build
             exit
         ;;
+        --build-prod)
+            echo "[BUILD TAINACAN]"
+            sudo ./conf/scripts/build_tainacan.sh --build-prod
+            exit
+        ;;
         --watch-build)
             echo "[BUILD WATCH TAINACAN]"
             sudo ./conf/scripts/build_tainacan.sh --watch-build
