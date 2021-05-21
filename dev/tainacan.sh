@@ -53,18 +53,18 @@ EOF
         ;;
         --start)
             echo "[START TAINACAN]"
-            sudo docker-compose -f docker-compose-dev.yml up
+            sudo docker-compose -f docker-compose-dev.yml up -d
             exit
         ;;
         --start-nginx)
             echo "[START TAINACAN WUTH NGINX]"
-            sudo docker-compose -f docker-compose-dev-nginx.yml up
+            sudo docker-compose -f docker-compose-dev-nginx.yml up -d
             exit
         ;;
         --start-elastic)
             echo "[START TAINACAN WITH ELASTICSEARCH]"
             sudo sysctl -w vm.max_map_count=262144
-            sudo docker-compose -f docker-compose-dev-elastic.yml up
+            sudo docker-compose -f docker-compose-dev-elastic.yml up -d
             exit
         ;;
         --clone)
