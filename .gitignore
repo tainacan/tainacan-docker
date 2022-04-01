@@ -13,3 +13,5 @@ benchmark/repo/tainacan-mhn
 benchmark/data/
 
 prod/data/*
+
+volumes/*

@@ -45,7 +45,7 @@ RUN wget https://phar.phpunit.de/phpunit-6.5.7.phar \
  && phpunit --version
 
 # install nodesource
-RUN curl -sL https://deb.nodesource.com/setup_14.x | bash \
+RUN curl -sL https://deb.nodesource.com/setup_17.x | bash \
     && apt-get install -y nodejs
 
 RUN gem install sass
