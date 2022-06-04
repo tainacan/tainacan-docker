@@ -1,0 +1,26 @@
+version: "3.7"
+services:
+  php:
+    container_name: tainacan_fpm_apache
+    image: tainacan/php:7.4-fpm-apache
+    environment:
+      APACHE_DOCUMENT_ROOT: "/var/www/html/public"
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./volumes/www:/var/www
+  mariadb:
+    container_name: tainacan_db
+    image: mariadb:10.5
+    environment:
+      MYSQL_ROOT_PASSWORD: "tainacan"
+      MARIADB_DATABASE: "tainacan"
+      MARIADB_USER: "tainacan"
+      MARIADB_PASSWORD: "tainacan"
+    volumes:
+      # Add volume for all database files
+      - ./volumes/mysql/database_data/:/var/lib/mysql
+      # Add volume for custom configurations
+      - ./volumes/mysql/conf.d/:/etc/mysql/conf.d
+      - ./volumes/mysql/docker-entrypoint-initdb.d/:/docker-entrypoint-initdb.d

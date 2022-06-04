@@ -1,0 +1,17 @@
+version: "3.7"
+services:
+  build:
+    container_name: tainacan_build
+    image: tainacan/build:php-7.4
+    environment:
+      DOCUMENT_ROOT: "/var/www/html/public"
+      WORDPRESS_DB_HOST: tainacan_db:3306
+      WORDPRESS_DB_USER: tainacan
+      WORDPRESS_DB_PASSWORD: tainacan
+      WORDPRESS_DB: tainacan
+      WORDPRESS_DB_TEST: tainacan_test
+      WORDPRESS_PATH_TEST: /tainacan_test
+      WP_TESTS_DIR: "/tainacan_test/wordpress-tests-lib"
+    volumes:
+      - ./volumes/www:/var/www
+      - ./volumes/src:/src
