@@ -2,15 +2,13 @@
 
 This repository offers Docker files and scripts to build Tainacan environments using Docker.
 
-Currently we have a mature image for development but we are working on a version for production.
-
 Below you will find instructions on how to use this repository for each case.
 
 **In any case, start by cloning this repository.**
 
 ## Building a development environment
 
-Inside this repository there is a folder called `dev`, where all the files related to the docker development environment are. Enter this folder:
+<!-- Inside this repository there is a folder called `dev`, where all the files related to the docker development environment are. Enter this folder:
 
 ```
 cd dev
@@ -22,13 +20,13 @@ Overview:
 
 ```
 ./tainacan.sh --help
-            --setup-init = 
+            --setup-init =
             --build-image =  build docker images for application and database (super user).
-            --build-image-nginx = 
+            --build-image-nginx =
             --build-image-elastic =  build docker images for application, database and elasticsearch server (super user).
             --start       =  start the containers (super user).
             --start-elastic = start the containers and the elastic search server (super user)
-            --start-nginx = 
+            --start-nginx =
             --stop        =  stops all containers(super user).
             --clone       =  clones tainacan and tainacan-interface repositories into the dev folder
             --ssh-clone   =  clones tainacan and tainacan-interface repositories into the dev folder using your ssh keys
@@ -86,4 +84,4 @@ Finally, always run the tests:
 
 The `www/wp-content` folder will have all your plugins and themes. So if you want to have addtional plugins or themes, simply add them there.
 
-The repositories are cloned inside the `src` folder. After making changes to the code, enter those directories to commit.
+The repositories are cloned inside the `src` folder. After making changes to the code, enter those directories to commit. -->
