@@ -24,8 +24,10 @@ if ! $(wp core is-installed --path=${APACHE_DOCUMENT_ROOT} --allow-root); then
     wp core download --locale=$SITE_LANGUAGE --path=${APACHE_DOCUMENT_ROOT} --allow-root
     wp config create --dbname=$DB_NAME --dbuser=$DB_USER --dbpass=$DB_PSWD --dbhost=$DB_HOST --locale=$SITE_LANGUAGE --path=${APACHE_DOCUMENT_ROOT} --skip-check --force --allow-root
     wp core install --url=$SITE_URL --title=$SITE_TITLE --admin_user=$SITE_ADMIN_USER --admin_email=$SITE_ADMIN_EMAIL --path=${APACHE_DOCUMENT_ROOT} --admin_password=$SITE_ADMIN_PASSWORD --allow-root
-    wp option set permalink_structure "/%year%/%monthnum%/%day%/%postname%/" --path=${APACHE_DOCUMENT_ROOT} --allow-root
+    wp rewrite structure '/%postname%/'  --path=${APACHE_DOCUMENT_ROOT} --allow-root
     wp rewrite flush --path=${APACHE_DOCUMENT_ROOT} --allow-root
+    wp plugin install tainacan --activate --path=${APACHE_DOCUMENT_ROOT} --allow-root
+    wp theme install tainacan-interface --path=${APACHE_DOCUMENT_ROOT} --activate --allow-root
     chown -R webuser:webgroup $APACHE_DOCUMENT_ROOT
 else
     echo "WordPress already Installed"

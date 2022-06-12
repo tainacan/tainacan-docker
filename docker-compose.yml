@@ -4,6 +4,7 @@ services:
     container_name: tainacan_fpm_apache
     image: tainacan/php:7.4-fpm-apache
     environment:
+      SITE_URL: http://localhost
       APACHE_DOCUMENT_ROOT: "/var/www/html/public"
     ports:
       - "80:80"

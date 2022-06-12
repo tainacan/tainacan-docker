@@ -52,6 +52,8 @@ COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 # Copy over S6 configurations
 COPY etc/cont-init.d/ /etc/cont-init.d/
 
+COPY etc/ImageMagick-6/policy.xml /etc/ImageMagick-6/policy.xml
+
 # Set the default work directory to our web user
 WORKDIR /var/www/html
 
