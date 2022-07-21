@@ -844,7 +844,7 @@
     "logo": "https://raw.githubusercontent.com/tainacan/tainacan-docker/master/prod/templates/tainacan.jpg",
     "repository": {
       "url": "https://raw.githubusercontent.com/tainacan/tainacan-docker/master/prod/",
-      "stackfile": "/templates/docker-compose.template.yml"
+      "stackfile": "templates/docker-compose.template.yml"
     },
     "ports": [
       "80/tcp",
