@@ -24,7 +24,8 @@ ENV MSMTP_RELAY_SERVER_HOSTNAME="mailhog" \
     APACHE_RUN_USER="webuser" \
     APACHE_RUN_GROUP="webgroup" \
     APACHE_DOCUMENT_ROOT="/var/www/html/public/" \
-    DEBIAN_FRONTEND=noninteractive
+    DEBIAN_FRONTEND=noninteractive \
+    SKIP_WP_INSTALL=true
     
 
 # Install Apache (web), MSMTP (email client), and Supervisor (process management)
@@ -79,4 +80,5 @@ EXPOSE 443
 COPY docker-entrypoint.sh /usr/local/bin/
 RUN ln -s usr/local/bin/docker-entrypoint.sh / # backwards compat
 ENTRYPOINT ["/docker-entrypoint.sh"]
+# USER $APACHE_RUN_USER
 # ENTRYPOINT ["/init"]

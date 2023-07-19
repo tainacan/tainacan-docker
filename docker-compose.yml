@@ -9,11 +9,19 @@ services:
     ports:
       - "80:80"
       - "443:443"
+    # deploy:
+    #   resources:
+    #     limits:
+    #       cpus: '0.001'
+    #       memory: 1000M
     volumes:
       - ./volumes/www:/var/www
+      - ./volumes/src:/src
   mariadb:
     container_name: tainacan_db
     image: mariadb:10.5
+    ports:
+      - "3306:3306"
     environment:
       MYSQL_ROOT_PASSWORD: "tainacan"
       MARIADB_DATABASE: "tainacan"
