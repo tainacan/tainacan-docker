@@ -1,7 +1,7 @@
 #!/bin/bash
 # dev.sh - Script utilitário para gerenciamento do ambiente Docker do Tainacan
 
-# Cores para logs
+# Configuração de cores e formatação
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
@@ -16,6 +16,8 @@ log_warn()    { echo -e "  ${YELLOW}${BOLD}[WARN]${NC} $1"; }
 log_error()   { echo -e "  ${RED}${BOLD}[ERROR]${NC} $1"; }
 
 # Funções auxiliares
+
+# fn_stop - Para todos os containers do tainacan
 function fn_stop {
     log_info "Parando containers do Tainacan..."
     docker compose -f docker-compose.yml down
@@ -25,20 +27,25 @@ function fn_stop {
     log_success "Containers parados."
 }
 
+
+# fn_start - Inicia os containers e executa o build inicial
 function fn_start {
     log_info "Iniciando containers do Tainacan..."
     docker compose -f docker-compose.yml -f docker-compose.dev.yml up
     fn_build
 }
 
+# fn_build - Complila o plugin e o tema do tainacan
 function fn_build {
+    local start_time=$(date +%s)
     log_info "Build do plugin Tainacan..."
     docker exec -it tainacan_build sh -c "/src_base/scripts/build_plugin.sh --build"
     log_info "Build do tema Tainacan..."
     docker exec -it tainacan_build sh -c "/src_base/scripts/build_theme.sh"
-    log_success "Build concluído."
+    log_success "Build concluído em $(($(date +%s) - start_time)) segundos."
 }
 
+# fn_build_prod - Compila para produção
 function fn_build_prod {
     log_info "Build do plugin Tainacan (produção)..."
     docker exec -it tainacan_build sh -c "/src_base/scripts/build_plugin.sh --build-prod"
@@ -47,6 +54,7 @@ function fn_build_prod {
     log_success "Build de produção concluído."
 }
 
+# fn_watch_build - Monitora alterações e recompila automaticamente
 function fn_watch_build {
     log_info "Build watch do tema Tainacan..."
     docker exec -it tainacan_build sh -c "/src_base/scripts/build_theme.sh"
@@ -55,11 +63,13 @@ function fn_watch_build {
     log_success "Watch build ativo."
 }
 
+# fn_error_logs - Exibe logs de erro
 function fn_error_logs {
     log_warn "Exibindo logs de erro do tainacan-dev..."
     docker logs -f tainacan_fpm_apache > /dev/null
 }
 
+# fn_help - Exibe ajuda
 function fn_help {
     log_info "${BOLD}Comandos disponíveis:${NC}"
     echo -e "  ${BLUE}--build-image${NC}         : Build docker images for application and database (super user)."
@@ -78,7 +88,18 @@ function fn_help {
     echo -e "  ${BLUE}--help${NC}                : Display this help message."
 }
 
+# Verifica se o docker está instalado
+if ! command -v docker &> /dev/null; then
+    log_error "Docker não está instalado. Instale-o primeiro."
+    exit 1
+fi
+
 # Processamento dos argumentos
+if [ $# -eq 0 ]; then
+    fn_help
+    exit 0
+fi
+
 for i in "$@"
 do
     case $i in
