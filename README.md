@@ -53,6 +53,7 @@ All environment management is done via the `dev.sh` script in the root of this r
 
 - All plugins and themes are in the `www/wp-content` folder. Add any extra plugins or themes there.
 - After editing code, enter the respective directories in `src` to commit your changes.
+For more information about environment configuration, see the [documentation](https://github.com/tainacan/tainacan-wiki/tree/master/dev).
 
 ---
 
@@ -111,3 +112,4 @@ Todo o gerenciamento do ambiente é feito pelo script `dev.sh` na raiz deste rep
 
 - Todos os plugins e temas ficam na pasta `www/wp-content`. Adicione plugins ou temas extras lá.
 - Após editar o código, entre nos diretórios correspondentes em `src` para commitar suas alterações.
+- Para mais informações sobre o resto da configuração do ambiente va para essa [documentação](https://github.com/tainacan/tainacan-wiki/tree/master/pt-br/dev)
