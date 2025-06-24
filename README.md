@@ -53,11 +53,9 @@ All environment management is done via the `dev.sh` script in the root of this r
 
 - All plugins and themes are in the `www/wp-content` folder. Add any extra plugins or themes there.
 - After editing code, enter the respective directories in `src` to commit your changes.
-For more information about environment configuration, see the [documentation](https://github.com/tainacan/tainacan-wiki/tree/master/dev).
+For more information about environment configuration, see the [documentation](https://tainacan.github.io/tainacan-wiki/#/?id=tainacan-wiki).
 
 ---
-
-# Tainacan Docker
 
 ## Português
 
@@ -112,4 +110,60 @@ Todo o gerenciamento do ambiente é feito pelo script `dev.sh` na raiz deste rep
 
 - Todos os plugins e temas ficam na pasta `www/wp-content`. Adicione plugins ou temas extras lá.
 - Após editar o código, entre nos diretórios correspondentes em `src` para commitar suas alterações.
-- Para mais informações sobre o resto da configuração do ambiente va para essa [documentação](https://github.com/tainacan/tainacan-wiki/tree/master/pt-br/dev)
+- Para mais informações sobre o resto da configuração do ambiente, consulte essa [documentação](https://tainacan.github.io/tainacan-wiki/#/pt-br/?id=wiki-do-tainacan).
+
+---
+
+## Español
+
+Este repositorio proporciona archivos Docker y scripts para construir y administrar entornos de desarrollo de Tainacan.
+
+**Primero, clona este repositorio:**
+
+```bash
+git clone <repo-url>
+cd tainacan-docker
+```
+
+## Requisitos previos
+
+- Docker y Docker Compose instalados
+- Sistema Linux o cualquier sistema Unix compatible
+
+## Script principal
+
+Toda la gestión del entorno se realiza mediante el script `dev.sh` ubicado en la raíz de este repositorio.
+
+## Comandos principales
+
+| Comando                        | Descripción                                                          |
+| ------------------------------ | -------------------------------------------------------------------- |
+| ./dev.sh --build-image         | Construir las imágenes Docker para la aplicación y la base de datos  |
+| ./dev.sh --build-image-nginx   | Construir las imágenes Docker utilizando NGINX |
+| ./dev.sh --build-image-elastic | Construir las imágenes Docker con soporte para Elasticsearch |
+| ./dev.sh --start               | Iniciar los contenedores    |
+| ./dev.sh --start-nginx         | Iniciar los contenedores utilizando NGINX |
+| ./dev.sh --start-elastic       | Iniciar los contenedores con Elasticsearch   |
+| ./dev.sh --stop                | Detener todos los contenedores  |
+| ./dev.sh --build               | Construir el plugin y el tema de Tainacan                 |
+| ./dev.sh --build-prod          | Construir el plugin y el tema en modo de producción          |
+| ./dev.sh --watch-build         | Supervisar cambios y construir automáticamente |
+| ./dev.sh --run-tests           | Ejecutar las pruebas con PHPUnit           |
+| ./dev.sh --bash                | Acceder a la terminal del contenedor principal   |
+| ./dev.sh --bash-mysql          | Acceder a la terminal del contenedor MySQL          |
+| ./dev.sh --error-logs          | Mostrar los registros de errores        |
+| ./dev.sh --help                | Mostrar todos los comandos disponibles      |
+
+## Ejemplos de uso
+
+```bash
+./dev.sh --build-image
+./dev.sh --start
+./dev.sh --build
+./dev.sh --run-tests
+```
+
+## Notas
+
+- Todos los plugins y temas se encuentran en la carpeta www/wp-content. Agrega allí cualquier plugin o tema adicional.
+- Después de editar el código, accede a los directorios correspondientes dentro de src para confirmar tus cambios (commit). Para más información sobre la configuración del entorno, consulta la [documentación](https://tainacan.github.io/tainacan-wiki/#/es-mx/?id=wiki-do-tainacan).
