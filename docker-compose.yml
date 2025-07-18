@@ -2,7 +2,7 @@ version: "3.7"
 services:
   php:
     container_name: tainacan_fpm_apache
-    image: tainacan/php:7.4-fpm-apache
+    image: tainacan/php:8.3-fpm-apache
     environment:
       SITE_URL: http://localhost
       APACHE_DOCUMENT_ROOT: "/var/www/html/public"
@@ -17,6 +17,17 @@ services:
     volumes:
       - ./volumes/www:/var/www
       - ./volumes/src:/src
+  # elasticsearch:
+  #   image: docker.elastic.co/elasticsearch/elasticsearch:7.5.0
+  #   ports:
+  #   - 9300:9300
+  #   - 9200:9200
+  #   environment:
+  #   - discovery.type=single-node
+  #   - cluster.routing.allocation.disk.watermark.flood_stage=99%
+  #   - cluster.routing.allocation.disk.watermark.high=98%
+  #   volumes:
+  #   - esdata:/usr/share/elasticsearch/data
   mariadb:
     container_name: tainacan_db
     image: mariadb:10.5
@@ -33,3 +44,5 @@ services:
       # Add volume for custom configurations
       - ./volumes/mysql/conf.d/:/etc/mysql/conf.d
       - ./volumes/mysql/docker-entrypoint-initdb.d/:/docker-entrypoint-initdb.d
+volumes:
+  esdata:

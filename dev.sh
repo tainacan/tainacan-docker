@@ -15,6 +15,21 @@ function fn_start {
     sudo docker exec -it tainacan_build sh -c "/src_base/scripts/build_theme.sh"
 }
 
+function fn_start_elastic {
+    echo "[START TAINACAN WITH ELASTIC]"
+    sudo sysctl -w vm.max_map_count=262144
+    sudo docker-compose -f docker-compose.yml -f docker-compose.dev.yml -f docker-compose.dev.elastic.yml up
+    sudo docker exec -it tainacan_build sh -c "/src_base/scripts/build_plugin.sh --build"
+    sudo docker exec -it tainacan_build sh -c "/src_base/scripts/build_theme.sh"
+}
+
+function fn_generate_docs {
+    echo "[GENERATE DOCS]"
+    local source=$1
+    local output=$2
+    sudo docker run --rm -v "$source:/data" -it --entrypoint /bin/bash "phpdoc/phpdoc:3"
+}
+
 for i in "$@"
 do
     case $i in
@@ -66,8 +81,7 @@ do
         ;;
         --start-elastic)
             echo "[START TAINACAN WITH ELASTICSEARCH]"
-            sudo sysctl -w vm.max_map_count=262144
-            sudo docker-compose -f docker-compose.dev.elastic.yml -f docker-compose.dev.yml up
+            fn_start_elastic
             exit
         ;;
         --run-tests)
@@ -88,6 +102,10 @@ do
         --error-logs)
             echo "[ERRORS LOG tainacan-dev]"
             sudo docker logs -f tainacan_fpm_apache > /dev/null
+            exit
+        ;;
+        --generate-docs)
+            fn_generate_docs "$2"
             exit
         ;;
         --help)

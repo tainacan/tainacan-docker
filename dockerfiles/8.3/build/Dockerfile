@@ -1,8 +1,8 @@
 ####################################################
-# Tainacan -  PHP 7.4 / FPM image 
+# Tainacan -  PHP 8.3 / FPM image 
 #####################################################
 
-FROM tainacan/php:7.4-cli
+FROM tainacan/php:8.3-cli
 
 LABEL maintainer="Vinícius Nunes (@vnmedeiros)"
 
@@ -39,16 +39,17 @@ RUN apt-get update -y \
     $RUBY_DEPS
 
 # install phpunit
-RUN wget https://phar.phpunit.de/phpunit-6.5.7.phar \
- && chmod +x phpunit-6.5.7.phar \
- && mv phpunit-6.5.7.phar /usr/local/bin/phpunit \
+RUN wget https://phar.phpunit.de/phpunit-9.6.16.phar \
+ && chmod +x phpunit-9.6.16.phar \
+ && mv phpunit-9.6.16.phar /usr/local/bin/phpunit \
  && phpunit --version
 
 # install nodesource
-RUN curl -sL https://deb.nodesource.com/setup_14.x | bash \
+RUN curl -sL https://deb.nodesource.com/setup_22.x | bash \
     && apt-get install -y nodejs
 
-RUN gem install sass
+# RUN gem install sass
+RUN npm install -g sass@1.58.3
 
 #clean
 RUN apt-get clean \
