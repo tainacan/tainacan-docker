@@ -8,7 +8,7 @@ Below you will find instructions on how to use this repository for each case.
 
 ## Building a development environment
 
-<!-- Inside this repository there is a folder called `dev`, where all the files related to the docker development environment are. Enter this folder:
+<!-- Inside this repository there is a folder called `dev`, where all the files related to the docker development environment are. Enter this folder: -->
 
 ```
 cd dev
