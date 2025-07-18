@@ -31,7 +31,9 @@ ENV TOOLS_DEPS \
     rsync \
     grsync \
     ghostscript \
-    python
+    python3 \
+    python3-pip \
+    python-is-python3 \
 
 RUN apt-get update -y \
     && apt-get install -y \
@@ -39,10 +41,10 @@ RUN apt-get update -y \
     $RUBY_DEPS
 
 # install phpunit
-RUN wget https://phar.phpunit.de/phpunit-9.6.16.phar \
- && chmod +x phpunit-9.6.16.phar \
- && mv phpunit-9.6.16.phar /usr/local/bin/phpunit \
- && phpunit --version
+RUN curl -Ls https://phar.phpunit.de/phpunit-9.6.16.phar -o phpunit \
+    && chmod +x phpunit \
+    && mv phpunit /usr/local/bin/phpunit \
+    && phpunit --version
 
 # install nodesource
 RUN curl -sL https://deb.nodesource.com/setup_22.x | bash \
