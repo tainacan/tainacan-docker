@@ -1,2 +1,9 @@
-scripts.sh
-volumes/*
+# Local environment file
+.env
+
+# Documentation build output, only produced by a host-side `mkdocs build`.
+# The Makefile builds inside the container and keeps nothing.
+site/
+
+# OS / editor noise
+.DS_Store

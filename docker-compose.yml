@@ -1,47 +1,121 @@
+# Tainacan local development stack.
+#
+# Three containers run by default: db, wordpress (php-fpm) and nginx. The
+# `builder` service is profile-gated and only runs for `make assets` and
+# `make watch`.
+#
+# WordPress core lives in a named volume. The only host directory exposed is the
+# Tainacan plugin source, mounted read-only for the web tier so WordPress can
+# never write generated files back into that repository. The builder is the only
+# service with write access, and it is not reachable over HTTP.
+
 services:
-  php:
-    container_name: tainacan_fpm_apache
-    image: tainacan/php:8.3-fpm-apache
+  db:
+    image: mariadb:11
+    restart: unless-stopped
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
     environment:
-      SITE_URL: http://localhost
-      APACHE_DOCUMENT_ROOT: "/var/www/html/public"
+      MARIADB_DATABASE: ${DB_NAME:-tainacan}
+      MARIADB_USER: ${DB_USER:-tainacan}
+      MARIADB_PASSWORD: ${DB_PASSWORD:-tainacan}
+      MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-tainacan}
     ports:
-      - "80:80"
-      - "443:443"
-    # deploy:
-    #   resources:
-    #     limits:
-    #       cpus: '0.001'
-    #       memory: 1000M
+      - "${DB_PORT:-3306}:3306"
     volumes:
-      - ./volumes/www:/var/www
-      - ./volumes/src:/src
-  # elasticsearch:
-  #   image: docker.elastic.co/elasticsearch/elasticsearch:7.5.0
-  #   ports:
-  #   - 9300:9300
-  #   - 9200:9200
-  #   environment:
-  #   - discovery.type=single-node
-  #   - cluster.routing.allocation.disk.watermark.flood_stage=99%
-  #   - cluster.routing.allocation.disk.watermark.high=98%
-  #   volumes:
-  #   - esdata:/usr/share/elasticsearch/data
-  mariadb:
-    container_name: tainacan_db
-    image: mariadb:10.5
-    ports:
-      - "3306:3306"
+      - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+
+  wordpress:
+    build:
+      context: ./dockerfiles/wordpress
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
     environment:
-      MYSQL_ROOT_PASSWORD: "tainacan"
-      MARIADB_DATABASE: "tainacan"
-      MARIADB_USER: "tainacan"
-      MARIADB_PASSWORD: "tainacan"
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_NAME: ${DB_NAME:-tainacan}
+      WORDPRESS_DB_USER: ${DB_USER:-tainacan}
+      WORDPRESS_DB_PASSWORD: ${DB_PASSWORD:-tainacan}
+      WORDPRESS_TABLE_PREFIX: ${DB_PREFIX:-wp_}
+      WORDPRESS_DEBUG: ${WP_DEBUG:-1}
     volumes:
-      # Add volume for all database files
-      - ./volumes/mysql/database_data/:/var/lib/mysql
-      # Add volume for custom configurations
-      - ./volumes/mysql/conf.d/:/etc/mysql/conf.d
-      - ./volumes/mysql/docker-entrypoint-initdb.d/:/docker-entrypoint-initdb.d
+      - wordpress_data:/var/www/html
+      # Read-only: WordPress must never write into the Tainacan repository.
+      # WP-CLI also runs in this container (`make wp`), as uid 33.
+      - type: bind
+        source: ${TAINACAN_PLUGIN_PATH:-./tainacan}/src
+        target: /var/www/html/wp-content/plugins/tainacan
+        read_only: true
+
+  nginx:
+    image: nginx:1.27-alpine
+    restart: unless-stopped
+    depends_on:
+      - wordpress
+    ports:
+      - "${WP_PORT:-8080}:80"
+    volumes:
+      - wordpress_data:/var/www/html:ro
+      - type: bind
+        source: ${TAINACAN_PLUGIN_PATH:-./tainacan}/src
+        target: /var/www/html/wp-content/plugins/tainacan
+        read_only: true
+      - ./dockerfiles/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q -O /dev/null http://127.0.0.1/ || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+      start_period: 20s
+
+  # Asset builder and watcher, and the WordPress test runner. It is the only
+  # service with write access to the plugin source. Profile-gated, so it never
+  # starts with `make up`.
+  builder:
+    build:
+      context: ./dockerfiles/builder
+    profiles: ["watch"]
+    working_dir: /repo
+    volumes:
+      - type: bind
+        source: ${TAINACAN_PLUGIN_PATH:-./tainacan}
+        target: /repo
+      # node_modules stays off the macOS bind mount for I/O speed.
+      - tainacan_node_modules:/repo/node_modules
+      # WordPress test suite download cache, used by `make test`.
+      - wp_tests:/tmp/wp-tests
+    command:
+      - sh
+      - -lc
+      - |
+        set -e
+        ./build.sh
+        touch /tmp/plugin.stamp
+        echo "Watching tainacan/src for changes (polling every 2s)..."
+        while :; do
+          sleep 2
+          plugin_changed=$(find src -type f -newer /tmp/plugin.stamp \
+            -not -path 'src/assets/js/*' \
+            -not -path 'src/assets/css/*' \
+            -not -path 'src/vendor/*' \
+            -print -quit)
+          if [ -n "$$plugin_changed" ]; then
+            touch /tmp/plugin.stamp
+            echo "Change detected in tainacan/src; rebuilding plugin assets"
+            ./build.sh
+          fi
+        done
+
 volumes:
-  esdata:
+  db_data:
+  wordpress_data:
+  tainacan_node_modules:
+  wp_tests:

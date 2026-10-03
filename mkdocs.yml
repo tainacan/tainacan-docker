@@ -1,0 +1,67 @@
+site_name: Tainacan Dev Stack
+site_description: Local development environment for the Tainacan WordPress plugin
+docs_dir: docs
+site_dir: site
+
+theme:
+  name: material
+  language: en
+  features:
+    - navigation.instant
+    - navigation.tracking
+    - navigation.sections
+    - navigation.top
+    - toc.follow
+    - content.code.copy
+    - content.code.annotate
+    - search.suggest
+    - search.highlight
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+
+# Diátaxis order: learning, doing, looking up, understanding.
+nav:
+  - Home: index.md
+  - Tutorials:
+      - Get started: tutorials/get-started.md
+  - How-to guides:
+      - Develop with live reload: how-to/develop-with-live-reload.md
+  - Reference:
+      - Make targets: reference/make-targets.md
+  - Explanation:
+      - Architecture: explanation/architecture.md
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - md_in_html
+  - tables
+  - footnotes
+  - toc:
+      permalink: true
+  - pymdownx.details
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+
+plugins:
+  - search

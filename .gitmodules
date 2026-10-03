@@ -1,0 +1,3 @@
+[submodule "tainacan"]
+	path = tainacan
+	url = https://github.com/tainacan/tainacan.git

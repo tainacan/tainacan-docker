@@ -1,0 +1,11 @@
+# Documentation build dependency.
+#
+# The Makefile runs MkDocs from the squidfunk/mkdocs-material image, so this file
+# is only needed if you build the site on the host instead:
+#
+#   python -m pip install -r requirements-docs.txt
+#   mkdocs serve
+
+# Pinned below 10: MkDocs 2.0 removes the plugin system and rewrites theming,
+# so the 9.x line is the last one this configuration is known to work on.
+mkdocs-material>=9.5,<10

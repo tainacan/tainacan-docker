@@ -1,0 +1,32 @@
+# Elasticsearch override for Tainacan's optional Elasticsearch integration.
+#
+#   make up-elastic
+#
+# Tainacan expects the host http://elasticsearch:9200 (configure it in the
+# Tainacan admin under Settings > Elasticsearch).
+#
+# Elasticsearch requires vm.max_map_count >= 262144. On Linux set it on the
+# host; on macOS the Docker Desktop VM usually already satisfies it.
+
+services:
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.15.3
+    restart: unless-stopped
+    environment:
+      discovery.type: single-node
+      xpack.security.enabled: "false"
+      xpack.security.http.ssl.enabled: "false"
+      ES_JAVA_OPTS: "-Xms512m -Xmx512m"
+    ports:
+      - "${ES_PORT:-9200}:9200"
+    volumes:
+      - es_data:/usr/share/elasticsearch/data
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fs http://localhost:9200/_cluster/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 40s
+
+volumes:
+  es_data:
