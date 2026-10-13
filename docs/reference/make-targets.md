@@ -32,6 +32,7 @@ list. There are no shell wrapper scripts.
 
 | Target | Effect |
 |---|---|
+| `make vendor` | Install plugin PHP dependencies (`src/vendor`) when missing; prerequisite of `make assets` |
 | `make assets` | One-shot development build of the plugin |
 | `make assets-prod` | One-shot production build |
 | `make watch` | Rebuild assets when sources change (polling, every 2s) |

@@ -1,4 +1,4 @@
-gi# Tainacan local development stack.
+# Tainacan local development stack.
 #
 # Every workflow lives here. There are no shell scripts at all; everything is a
 # Make target.
@@ -27,12 +27,12 @@ DB_ROOT_PASSWORD  ?= tainacan
 
 # WP-CLI runs inside the already-running wordpress container as www-data, so
 # anything it writes (wp-config.php) stays owned by the web user.
-WP    := $(COMPOSE) exec -T -u 33 wordpress wp
+WP    := $(COMPOSE) exec -T -u 33 -e WP_CLI_CACHE_DIR=/tmp/wp-cli-cache wordpress wp
 WATCH := $(COMPOSE) --profile watch
 
 .DEFAULT_GOAL := help
 
-.PHONY: help env submodules config ps up up-elastic down reset restart logs \
+.PHONY: help env submodules config vendor ps up up-elastic down reset restart logs \
         shell db-shell wp assets assets-prod watch setup harden test guard \
         docs-serve docs-build
 
@@ -47,6 +47,13 @@ submodules: ## Initialise and update the tainacan submodule
 
 config: env ## Generate the plugin build-config.cfg (gitignored upstream)
 	@printf 'wp_base_dir=/var/www/html\nwp_url=%s\nwp_plugin_dir=/tmp/tainacan-dist\n' "$(WP_SITE_URL)" > tainacan/build-config.cfg
+
+vendor: config ## Install plugin PHP dependencies when src/vendor is missing
+	@if [ ! -f tainacan/src/vendor/autoload.php ]; then \
+		echo ">> Installing Composer dependencies (src/vendor is missing)"; \
+		$(WATCH) build builder; \
+		$(WATCH) run --rm --no-deps builder composer install; \
+	fi
 
 ps: ## Show container status
 	$(COMPOSE) ps
@@ -80,11 +87,11 @@ db-shell: ## Open a MariaDB shell on the application database
 wp: ## Run a wp-cli command, e.g. make wp ARGS="plugin list"
 	$(WP) $(ARGS)
 
-assets: config ## Compile plugin assets once (development)
+assets: vendor ## Compile plugin assets once (development)
 	@$(WATCH) build builder
 	@$(WATCH) run --rm --no-deps builder ./build.sh
 
-assets-prod: config ## Compile plugin assets once (production)
+assets-prod: vendor ## Compile plugin assets once (production)
 	@$(WATCH) build builder
 	@$(WATCH) run --rm --no-deps builder ./build.sh --prod
 
@@ -103,12 +110,14 @@ setup: env config assets up ## First run: build assets, start the stack, install
 			--title="$(WP_TITLE)" \
 			--admin_user="$(WP_ADMIN_USER)" \
 			--admin_password="$(WP_ADMIN_PASSWORD)" \
-			--admin_email="$(WP_ADMIN_EMAIL)" \
-			--skip-check; \
+			--admin_email="$(WP_ADMIN_EMAIL)"; \
 	fi
 	@$(WP) config set WP_HOME "$(WP_SITE_URL)"
 	@$(WP) config set WP_SITEURL "$(WP_SITE_URL)"
-	@$(WP) plugin activate tainacan || true
+	@echo ">> Updating WordPress core to the latest release"
+	@$(WP) core update
+	@$(WP) core update-db
+	@$(WP) plugin is-active tainacan >/dev/null 2>&1 || $(WP) plugin activate tainacan
 	@$(WP) rewrite structure '/%postname%/'
 	@$(WP) rewrite flush
 	@$(WP) config set AUTOMATIC_UPDATER_DISABLED true --raw

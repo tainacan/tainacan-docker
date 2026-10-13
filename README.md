@@ -84,6 +84,7 @@ Run `make` or `make help` for the list. The main ones:
 
 | Target | Purpose |
 |---|---|
+| `make vendor` | Install the plugin's PHP dependencies when `src/vendor` is missing |
 | `make setup` | First run: assets, stack, WordPress install, hardening |
 | `make up` / `make down` | Start / stop the stack |
 | `make reset` | Stop and delete the database and WordPress volumes |
@@ -115,6 +116,17 @@ layers prevent it:
    `DISALLOW_FILE_MODS` to freeze the filesystem entirely.
 4. **Detection.** `make guard` scans both checkouts for WordPress core artifacts
    and fails if any appear. Run it before committing.
+
+### Core updates
+
+WordPress core lives in the `wordpress_data` volume, which is seeded once from
+the image and then keeps whatever version it was created with. Left alone it
+drifts behind the image and the admin shows a "Please update now" notice.
+
+To avoid that, `make setup` runs `wp core update` followed by `wp core update-db`
+right after install, so both a fresh setup and a re-run bring the volume to the
+latest release. Background auto-updates (`AUTOMATIC_UPDATER_DISABLED`,
+`WP_AUTO_UPDATE_CORE`) stay disabled; the update is explicit, part of setup.
 
 ## Elasticsearch
 
@@ -149,6 +161,19 @@ usually already satisfies it).
   the submodule, so the container holds a stale bind mount.
   Recreate the web tier: `docker compose up -d --force-recreate wordpress nginx`.
 
+## Documentation
+
+The docs site is built from the Markdown under `docs/`. Its HTML is produced on
+demand and never committed: `site/` is gitignored, and `make docs-build` writes
+to a throwaway path inside the container, so a validation run leaves nothing
+behind. There is no generated HTML to push; publish it from a build artifact
+instead of the repository.
+
+```sh
+make docs-serve    # preview at http://localhost:8000
+make docs-build    # strict validation; keeps no output
+```
+
 ## Layout
 
 ```
@@ -157,7 +182,7 @@ docker-compose.yml           db, wordpress (php-fpm), nginx, builder
 docker-compose.elastic.yml   Elasticsearch override
 dockerfiles/wordpress/       PHP limits over the official php-fpm image
 dockerfiles/nginx/           nginx vhost (static files + fastcgi to php-fpm)
-dockerfiles/builder/         node + php + composer + rsync build image
+dockerfiles/builder/         node 22 + PHP 8.3 + composer + rsync build image
 tainacan/                    plugin submodule (source, dev)
 .agents/skills/              skills for coding agents
 .agents/memories/            durable memory recorded across sessions

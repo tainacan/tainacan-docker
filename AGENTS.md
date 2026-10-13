@@ -64,7 +64,7 @@ docker-compose.elastic.yml   Elasticsearch override
 .gitmodules                  pinned tainacan submodule
 dockerfiles/wordpress/       PHP limits over wordpress:php8.3-fpm
 dockerfiles/nginx/           nginx vhost (static files + fastcgi)
-dockerfiles/builder/         node 22 + php + composer + rsync + inotify-tools
+dockerfiles/builder/         node 22 + PHP 8.3 + composer + rsync + inotify-tools
 .agents/skills/              skills for agents
 .agents/memories/            durable agent memory
 docs/                        documentation site (Diátaxis, MkDocs Material)
@@ -120,7 +120,8 @@ external clone. Pass the repository root; the stack appends `/src` itself.
 | `make env` | create `.env` from `.env.example` if missing |
 | `make submodules` | `git submodule update --init --recursive` |
 | `make config` | write gitignored `build-config.cfg` for both submodules |
-| `make setup` | first run: assets, stack, WordPress install, hardening |
+| `make vendor` | install plugin PHP dependencies when `src/vendor` is missing |
+| `make setup` | first run: assets, stack, WordPress install, core update, hardening |
 | `make up` / `up-elastic` | start the stack (with Elasticsearch) |
 | `make watch` | rebuild assets on change (polling) |
 | `make assets` / `assets-prod` | one-shot development / production build |
@@ -159,9 +160,9 @@ make watch          # in a second terminal, for JS/CSS/SCSS
 make down           # stop;  make reset to wipe data
 ```
 
-`make setup` builds assets, starts the stack, installs WordPress, activates the
-plugin, sets pretty permalinks and applies hardening constants via
-`wp config set`.
+`make setup` builds assets, starts the stack, installs WordPress, updates core to
+the latest release (`wp core update` + `wp core update-db`), activates the plugin,
+sets pretty permalinks and applies hardening constants via `wp config set`.
 
 ---
 
@@ -259,6 +260,14 @@ admin UI.
 
 It then rsyncs to a throwaway path (`/tmp/tainacan-dist`, set by `make config`),
 which is harmless here because WordPress reads the mounted source directly.
+
+The step gate is a checksum file, and `build.sh` writes it even when
+`composer install` fails, so a failed install silently disables the Composer step
+on the next run. `make vendor` closes that hole: `make assets`,
+`make assets-prod` and therefore `make setup` install the PHP dependencies
+whenever `tainacan/src/vendor/autoload.php` is missing. The builder image runs
+PHP 8.3 (from the Sury repository, since bookworm ships 8.2) so Composer resolves
+against the same PHP version the `wordpress:php8.3-fpm` runtime serves.
 
 ### 7.3 Webpack and Sass
 
@@ -361,6 +370,11 @@ External sources of truth for the plugin:
 When you change the stack, update `README.md` and `AGENTS.md`, and record the
 decision in `.agents/memories/` per the agent-memory skill.
 
+Built documentation is never committed. The site HTML is produced on demand by
+`make docs-build` (into a throwaway path) or `make docs-serve`; `site/` is
+gitignored so a host-side build cannot be committed either. Do not add a deploy
+step that writes generated HTML back into the repository.
+
 ---
 
 ## 10. REST API
@@ -448,6 +462,7 @@ project-documentation skill.
 | Test ignored | file must be named `test-*.php`, not `__test-*` or `_test-*` |
 | `bootstrap-config.php` missing | `make test` creates it; for manual runs copy `tests/bootstrap-config-sample.php` |
 | ES container exits | `vm.max_map_count` too low (see the elasticsearch skill) |
+| `WordPress X.Y.Z is available! Please update now` | the `wordpress_data` volume is behind the image; re-run `make setup` (it runs `wp core update`), or `make wp ARGS="core update"` |
 | `Operation not permitted` under `wp-content` | the host source dir was deleted and recreated (for example after restoring a submodule), leaving a stale bind mount: `docker compose up -d --force-recreate wordpress nginx` |
 
 ---

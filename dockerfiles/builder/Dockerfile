@@ -2,7 +2,9 @@
 #
 # It carries only what the upstream build scripts need:
 #   - Node (webpack, sass, clean-css)
-#   - PHP CLI + Composer (composer install writes src/vendor)
+#   - PHP CLI 8.3 + Composer (composer install writes src/vendor). The CLI must
+#     match the wordpress:php8.3-fpm runtime: some locked dependencies (for
+#     example maennchen/zipstream-php) require PHP ^8.3.
 #   - rsync (used by the plugin build.sh)
 #   - inotify-tools (present so build-watch.sh can be reused, though the
 #     compose watchers poll instead, because macOS does not deliver inotify
@@ -10,16 +12,25 @@
 
 FROM node:22-bookworm-slim
 
+# Debian bookworm ships PHP 8.2, which is too old for the plugin's locked
+# dependencies. Install PHP 8.3 from the Sury repository so the builder matches
+# the WordPress runtime.
 RUN set -eux; \
     apt-get update; \
+    apt-get install -y --no-install-recommends ca-certificates curl gnupg; \
+    curl -fsSL https://packages.sury.org/php/apt.gpg \
+        -o /usr/share/keyrings/sury-php.gpg; \
+    echo "deb [signed-by=/usr/share/keyrings/sury-php.gpg] https://packages.sury.org/php/ bookworm main" \
+        > /etc/apt/sources.list.d/sury-php.list; \
+    apt-get update; \
     apt-get install -y --no-install-recommends \
-        php-cli \
-        php-mbstring \
-        php-xml \
-        php-zip \
-        php-gd \
-        php-curl \
-        php-intl \
+        php8.3-cli \
+        php8.3-mbstring \
+        php8.3-xml \
+        php8.3-zip \
+        php8.3-gd \
+        php8.3-curl \
+        php8.3-intl \
         rsync \
         inotify-tools \
         unzip \

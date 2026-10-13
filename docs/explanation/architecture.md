@@ -66,6 +66,21 @@ and keeping core off the host makes that structurally impossible rather than
 merely discouraged. The host exposes exactly one directory to the stack: the
 plugin source.
 
+## Why the builder runs PHP 8.3
+
+The plugin's Composer lock file pins dependencies that require PHP 8.3 (for
+example `maennchen/zipstream-php`). Debian bookworm ships PHP 8.2, so the builder
+image installs PHP 8.3 from the Sury repository rather than the distribution
+package. Keeping the builder's CLI on the same version as the
+`wordpress:php8.3-fpm` runtime means `composer install` and the PHPUnit run use
+the exact PHP that WordPress serves.
+
+The plugin's own `build.sh` gates `composer install` behind a checksum file and
+writes that file even when the install fails, which can leave `src/vendor`
+missing while the gate believes the step is done. `make vendor` is the
+environment's guard against that: it installs the dependencies whenever
+`tainacan/src/vendor/autoload.php` is absent.
+
 ## Why the watchers poll
 
 Docker Desktop on macOS does not deliver inotify events from host files into
@@ -84,6 +99,18 @@ The image also supports `WORDPRESS_CONFIG_EXTRA`, but that value is `eval`ed at
 runtime by the image's config template, so it never appears in the file and
 cannot be inspected by `var_dump` or `wp config get`. A containment guarantee that
 cannot be verified is a weak guarantee, so the file-based path won.
+
+## Why core is updated during setup
+
+WordPress core lives in `wordpress_data`, which is seeded from the image the
+first time the volume is created and then keeps that version for its lifetime.
+Left alone it drifts behind the image and the admin shows the "Please update now"
+notice.
+
+The environment converges instead of hiding: `make setup` runs `wp core update`
+and `wp core update-db` right after install, so the volume moves to the latest
+release while background auto-updates remain disabled. The update is visible and
+repeatable, not suppressed.
 
 ## Detection as the last line
 
