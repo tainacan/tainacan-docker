@@ -86,3 +86,5 @@ Finally, always run the tests:
 The `www/wp-content` folder will have all your plugins and themes. So if you want to have addtional plugins or themes, simply add them there.
 
 The repositories are cloned inside the `src` folder. After making changes to the code, enter those directories to commit. -->
+
+
