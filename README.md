@@ -189,3 +189,14 @@ tainacan/                    plugin submodule (source, dev)
 docs/ + mkdocs.yml           documentation site (Diátaxis, MkDocs Material)
 AGENTS.md                    project guide for coding agents
 ```
+<<<<<<< HEAD
+=======
+
+### Final remarks
+
+The `www/wp-content` folder will have all your plugins and themes. So if you want to have addtional plugins or themes, simply add them there.
+
+The repositories are cloned inside the `src` folder. After making changes to the code, enter those directories to commit. -->
+
+
+>>>>>>> c3f2b633cfa17e1758485e34c328f32b25d0cc58
