@@ -5,10 +5,16 @@
 #   - PHP CLI 8.3 + Composer (composer install writes src/vendor). The CLI must
 #     match the wordpress:php8.3-fpm runtime: some locked dependencies (for
 #     example maennchen/zipstream-php) require PHP ^8.3.
+#     php8.3-mysqli is required by the WordPress test bootstrap (wpdb), and
+#     php8.3-xml/mbstring/intl by PHPUnit and the plugin test suite.
 #   - rsync (used by the plugin build.sh)
 #   - inotify-tools (present so build-watch.sh can be reused, though the
 #     compose watchers poll instead, because macOS does not deliver inotify
 #     events across the Docker file-sharing boundary)
+#   - subversion: tests/bin/install-wp-tests.sh checks out the WordPress test
+#     library with `svn co`; without it the wp_tests volume is left half built.
+#   - default-mysql-client: the same script creates the test database with
+#     `mysqladmin`; without it the database is never created.
 
 FROM node:22-bookworm-slim
 
@@ -31,10 +37,13 @@ RUN set -eux; \
         php8.3-gd \
         php8.3-curl \
         php8.3-intl \
+        php8.3-mysqli \
         rsync \
         inotify-tools \
         unzip \
-        git; \
+        git \
+        subversion \
+        default-mysql-client; \
     rm -rf /var/lib/apt/lists/*
 
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer

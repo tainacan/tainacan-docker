@@ -25,6 +25,13 @@ DB_USER           ?= tainacan
 DB_PASSWORD       ?= tainacan
 DB_ROOT_PASSWORD  ?= tainacan
 
+# Base URL the WordPress container uses to reach its own admin-ajax.php
+# (the background-process loopback). The public WP_SITE_URL
+# (http://localhost:8080) points at a host-published port and is not
+# reachable from inside the container, so dispatches fail silently and
+# background processes (imports, exports, bulk edit) stay in "waiting".
+TAINACAN_BG_LOOPBACK_URL ?= http://nginx
+
 # WP-CLI runs inside the already-running wordpress container as www-data, so
 # anything it writes (wp-config.php) stays owned by the web user.
 WP    := $(COMPOSE) exec -T -u 33 -e WP_CLI_CACHE_DIR=/tmp/wp-cli-cache wordpress wp
@@ -33,8 +40,8 @@ WATCH := $(COMPOSE) --profile watch
 .DEFAULT_GOAL := help
 
 .PHONY: help env submodules config vendor ps up up-elastic down reset restart logs \
-        shell db-shell wp assets assets-prod watch setup harden test guard \
-        docs-serve docs-build
+        shell db-shell wp assets assets-prod watch setup harden bg-loopback cron \
+        test guard docs-serve docs-build
 
 help: ## Show this help
 	@grep -hE '^[a-zA-Z_-]+:.*?## ' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-14s\033[0m %s\n", $$1, $$2}'
@@ -123,9 +130,16 @@ setup: env config assets up ## First run: build assets, start the stack, install
 	@$(WP) config set AUTOMATIC_UPDATER_DISABLED true --raw
 	@$(WP) config set WP_AUTO_UPDATE_CORE false --raw
 	@$(WP) config set DISALLOW_FILE_EDIT true --raw
+	@$(WP) config set TAINACAN_BG_PROCESS_LOOPBACK_URL "$(TAINACAN_BG_LOOPBACK_URL)" --type=constant
 
 harden: env ## Also block every plugin/theme install from inside WordPress
 	$(WP) config set DISALLOW_FILE_MODS true --raw
+
+bg-loopback: env ## Point background-process loopback at internal nginx (fixes processes stuck in "waiting")
+	$(WP) config set TAINACAN_BG_PROCESS_LOOPBACK_URL "$(TAINACAN_BG_LOOPBACK_URL)" --type=constant
+
+cron: env ## Run all due WP-Cron events once (the stack has no real cron daemon)
+	$(WP) cron event run --due-now
 
 test: config assets up ## Run the plugin PHPUnit suite in the builder image
 	@test -f tainacan/tests/bootstrap-config.php || cp tainacan/tests/bootstrap-config-sample.php tainacan/tests/bootstrap-config.php

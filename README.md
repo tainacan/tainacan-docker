@@ -95,6 +95,8 @@ Run `make` or `make help` for the list. The main ones:
 | `make logs` | Follow WordPress logs |
 | `make up-elastic` | Enable Elasticsearch 8 for Tainacan |
 | `make test` | Run the plugin PHPUnit suite |
+| `make bg-loopback` | Point the background-process loopback at internal nginx (fixes processes stuck in `waiting`) |
+| `make cron` | Run the due WP-Cron events once (the stack has no cron daemon) |
 | `make docs-serve` / `make docs-build` | Serve / build the documentation site |
 | `make guard` | Fail if WordPress files leaked into a Tainacan checkout |
 
@@ -149,6 +151,13 @@ usually already satisfies it).
   because Composer or npm did not run. Run `make assets`.
 - **`make guard` fails.** A WordPress artifact exists inside `tainacan/`. Delete
   it and find out how it got there; the read-only mount should have prevented it.
+- **A Tainacan import, export or bulk edit stays in `waiting`.** Background
+  processes dispatch themselves with a loopback HTTP request to the site, and
+  `WP_SITE_URL` (`http://localhost:8080`) points at a host port the container
+  cannot reach. `make setup` sets `TAINACAN_BG_PROCESS_LOOPBACK_URL=http://nginx`;
+  apply it to an existing install with `make bg-loopback`. WP-Cron is
+  request-driven too, so run `make cron` to fire due events such as the
+  background-process watchdog.
 - **Node builds feel slow.** `node_modules` is a named volume, not the host bind
   mount, to avoid macOS file-sharing overhead. If dependencies change, rebuild
   with `make assets`.

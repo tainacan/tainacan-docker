@@ -65,6 +65,7 @@ docker-compose.elastic.yml   Elasticsearch override
 dockerfiles/wordpress/       PHP limits over wordpress:php8.3-fpm
 dockerfiles/nginx/           nginx vhost (static files + fastcgi)
 dockerfiles/builder/         node 22 + PHP 8.3 + composer + rsync + inotify-tools
+                             (+ svn, php8.3-mysqli, mysql client for make test)
 .agents/skills/              skills for agents
 .agents/memories/            durable agent memory
 docs/                        documentation site (Diátaxis, MkDocs Material)
@@ -107,10 +108,16 @@ host, which is what keeps WordPress out of the repositories.
 
 All defaults are documented in `.env.example`. Important ones:
 `WP_PORT`, `WP_SITE_URL`, `WP_TITLE`, `WP_ADMIN_*`, `DB_*`, `DB_PREFIX`,
-`TAINACAN_PLUGIN_PATH`, `ES_PORT`.
+`TAINACAN_PLUGIN_PATH`, `TAINACAN_BG_LOOPBACK_URL`, `ES_PORT`.
 
 `TAINACAN_PLUGIN_PATH` accepts `./tainacan` (submodule) or an absolute path to an
 external clone. Pass the repository root; the stack appends `/src` itself.
+
+`TAINACAN_BG_LOOPBACK_URL` (default `http://nginx`) is the internally reachable
+base URL the WordPress container uses to trigger Tainacan background processes.
+Without it the loopback request goes to `WP_SITE_URL` (`http://localhost:8080`),
+a host-published port the container cannot reach, and every import, export and
+bulk edit stays in `waiting`. See section 13 and 4.4.
 
 ### 4.4 Make targets
 
@@ -132,6 +139,8 @@ external clone. Pass the repository root; the stack appends `/src` itself.
 | `make test` | PHPUnit suite |
 | `make guard` | containment check |
 | `make harden` | add `DISALLOW_FILE_MODS` |
+| `make bg-loopback` | set `TAINACAN_BG_PROCESS_LOOPBACK_URL` (fixes stuck background processes) |
+| `make cron` | run due WP-Cron events once (no cron daemon in the stack) |
 
 ### 4.5 WP-CLI
 
@@ -461,9 +470,13 @@ project-documentation skill.
 | Sass complains about a missing file | `compile-sass.sh` uses an explicit list; add or fix the line |
 | Test ignored | file must be named `test-*.php`, not `__test-*` or `_test-*` |
 | `bootstrap-config.php` missing | `make test` creates it; for manual runs copy `tests/bootstrap-config-sample.php` |
+| `phpunit tests/test-x.php` -> `Class test-x could not be found` | PHPUnit's file mode derives the class from the filename, but plugin test classes do not match it; run `phpunit --filter <Class>` instead |
+| `make test` -> `svn: command not found` / `mysqli_report() undefined` / `Unknown database 'tainacan_test'` | the builder image is missing `subversion`, `php8.3-mysqli` or the MySQL client; rebuild it (`docker compose --profile watch build builder`) and remove a half-built test library (`docker volume rm tainacan-docker_wp_tests`) |
 | ES container exits | `vm.max_map_count` too low (see the elasticsearch skill) |
 | `WordPress X.Y.Z is available! Please update now` | the `wordpress_data` volume is behind the image; re-run `make setup` (it runs `wp core update`), or `make wp ARGS="core update"` |
 | `Operation not permitted` under `wp-content` | the host source dir was deleted and recreated (for example after restoring a submodule), leaving a stale bind mount: `docker compose up -d --force-recreate wordpress nginx` |
+| Background process stuck in `waiting` (import, export, bulk edit) | the loopback dispatch cannot reach `WP_SITE_URL` (`http://localhost:8080`) from inside the container; run `make bg-loopback` (sets `TAINACAN_BG_PROCESS_LOOPBACK_URL=http://nginx`) |
+| WP-Cron events never run (`next_run_relative` stays `now`) | there is no cron daemon and the `wp-cron.php` loopback is unreachable; run `make cron` (`wp cron event run --due-now`) |
 
 ---
 
