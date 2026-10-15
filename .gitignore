@@ -5,5 +5,8 @@
 # The Makefile builds inside the container and keeps nothing.
 site/
 
+# Production plugin package from `make package`.
+dist/
+
 # OS / editor noise
 .DS_Store

@@ -39,6 +39,7 @@ nav:
       - Get started: tutorials/get-started.md
   - How-to guides:
       - Develop with live reload: how-to/develop-with-live-reload.md
+      - Package a plugin zip: how-to/package-a-plugin-zip.md
   - Reference:
       - Make targets: reference/make-targets.md
   - Explanation:

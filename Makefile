@@ -37,11 +37,56 @@ TAINACAN_BG_LOOPBACK_URL ?= http://nginx
 WP    := $(COMPOSE) exec -T -u 33 -e WP_CLI_CACHE_DIR=/tmp/wp-cli-cache wordpress wp
 WATCH := $(COMPOSE) --profile watch
 
+# Installable production zip. The plugin tree stays in the container at
+# /tmp/tainacan-dist. Only the zip is written to the host, into a directory
+# this user owns, so a later run can replace it without chown.
+PACKAGE_ZIP := $(CURDIR)/dist/tainacan.zip
+
+# PHP ZipArchive, run in the builder. Make eats single $, so PHP variables are $$.
+define PACKAGE_ZIP_PHP
+$$root = '/tmp/tainacan-dist';
+$$dest = '/out/tainacan.zip';
+if (!is_file($$root . '/tainacan.php')) {
+    fwrite(STDERR, "production build did not produce tainacan.php\n");
+    exit(1);
+}
+$$zip = new ZipArchive();
+if ($$zip->open($$dest, ZipArchive::CREATE | ZipArchive::OVERWRITE) !== true) {
+    fwrite(STDERR, "could not create zip\n");
+    exit(1);
+}
+$$iterator = new RecursiveIteratorIterator(
+    new RecursiveDirectoryIterator($$root, FilesystemIterator::SKIP_DOTS)
+);
+$$sawPlugin = false;
+foreach ($$iterator as $$file) {
+    if (!$$file->isFile()) {
+        continue;
+    }
+    $$rel = str_replace('\\', '/', substr($$file->getPathname(), strlen($$root) + 1));
+    if (str_ends_with($$rel, '.js.map') || str_ends_with($$rel, '.vue') || str_starts_with($$rel, 'vendor/phpunit/')) {
+        fwrite(STDERR, "unexpected file in package: $$rel\n");
+        exit(1);
+    }
+    if ($$rel === 'tainacan.php') {
+        $$sawPlugin = true;
+    }
+    $$zip->addFile($$file->getPathname(), 'tainacan/' . $$rel);
+}
+if (!$$sawPlugin) {
+    fwrite(STDERR, "zip is missing tainacan/tainacan.php\n");
+    exit(1);
+}
+$$zip->close();
+echo $$dest, "\n";
+endef
+export PACKAGE_ZIP_PHP
+
 .DEFAULT_GOAL := help
 
 .PHONY: help env submodules config vendor ps up up-elastic down reset restart logs \
-        shell db-shell wp assets assets-prod watch setup harden bg-loopback cron \
-        test guard docs-serve docs-build
+        shell db-shell wp assets assets-prod package watch setup harden \
+        bg-loopback cron test guard docs-serve docs-build
 
 help: ## Show this help
 	@grep -hE '^[a-zA-Z_-]+:.*?## ' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-14s\033[0m %s\n", $$1, $$2}'
@@ -101,6 +146,19 @@ assets: vendor ## Compile plugin assets once (development)
 assets-prod: vendor ## Compile plugin assets once (production)
 	@$(WATCH) build builder
 	@$(WATCH) run --rm --no-deps builder ./build.sh --prod
+
+package: config ## Write dist/tainacan.zip for upload to another WordPress site
+	@echo ">> Building a production package (a few minutes)"
+	@mkdir -p "$(CURDIR)/dist"
+	@$(WATCH) build builder
+	@set -e; \
+	status=0; \
+	$(WATCH) run --rm --no-deps -v "$(CURDIR)/dist:/out" -e PACKAGE_ZIP_PHP builder sh -lc 'rm -rf /out/tainacan; rm -f /out/tainacan.zip last-*; ./build.sh --prod && php -r "$$PACKAGE_ZIP_PHP"' || status=$$?; \
+	echo ">> Restoring development Composer dependencies in tainacan/src/vendor"; \
+	$(WATCH) run --rm --no-deps builder composer install; \
+	test "$$status" -eq 0
+	@echo ">> Wrote $(PACKAGE_ZIP)"
+	@echo ">> Compiled assets in tainacan/src are production files. Run 'make assets' to build development assets again."
 
 watch: config ## Rebuild plugin assets when sources change (polling, macOS-safe)
 	$(WATCH) up builder
