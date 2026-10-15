@@ -89,6 +89,9 @@ before committing.
 - **Elasticsearch exits.** Raise `vm.max_map_count` (see the elasticsearch skill).
 - **Changes to `.env` not applied.** Compose reads `.env` at parse time; recreate
   the affected containers.
+- **Imports or exports stuck at 0%.** Dispatch loopback uses `WP_SITE_URL`, which
+  is the host port. PHP-FPM must call `http://nginx` instead. `make setup` sets
+  `TAINACAN_BG_PROCESS_LOOPBACK_URL`.
 
 ## Pitfalls
 

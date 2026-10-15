@@ -114,6 +114,7 @@ setup: env config assets up ## First run: build assets, start the stack, install
 	fi
 	@$(WP) config set WP_HOME "$(WP_SITE_URL)"
 	@$(WP) config set WP_SITEURL "$(WP_SITE_URL)"
+	@$(WP) config set TAINACAN_BG_PROCESS_LOOPBACK_URL "http://nginx"
 	@echo ">> Updating WordPress core to the latest release"
 	@$(WP) core update
 	@$(WP) core update-db

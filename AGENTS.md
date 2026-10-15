@@ -464,6 +464,7 @@ project-documentation skill.
 | ES container exits | `vm.max_map_count` too low (see the elasticsearch skill) |
 | `WordPress X.Y.Z is available! Please update now` | the `wordpress_data` volume is behind the image; re-run `make setup` (it runs `wp core update`), or `make wp ARGS="core update"` |
 | `Operation not permitted` under `wp-content` | the host source dir was deleted and recreated (for example after restoring a submodule), leaving a stale bind mount: `docker compose up -d --force-recreate wordpress nginx` |
+| Imports or exports stuck at 0% | PHP-FPM cannot reach `WP_SITE_URL` (`localhost:${WP_PORT}`). `make setup` sets `TAINACAN_BG_PROCESS_LOOPBACK_URL` to `http://nginx`. On an existing volume: `make wp ARGS="config set TAINACAN_BG_PROCESS_LOOPBACK_URL http://nginx"` |
 
 ---
 

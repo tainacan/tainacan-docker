@@ -160,6 +160,10 @@ usually already satisfies it).
   host source directory was deleted and recreated, for example after restoring
   the submodule, so the container holds a stale bind mount.
   Recreate the web tier: `docker compose up -d --force-recreate wordpress nginx`.
+- **Imports or exports stay at 0%.** The public site URL is `localhost` on the
+  host port, which PHP-FPM cannot call. `make setup` points background-process
+  dispatch at `http://nginx`. On a volume created before that, run
+  `make wp ARGS="config set TAINACAN_BG_PROCESS_LOOPBACK_URL http://nginx"`.
 
 ## Documentation
 
