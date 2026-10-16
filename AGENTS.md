@@ -132,6 +132,7 @@ bulk edit stays in `waiting`. See section 13 and 4.4.
 | `make up` / `up-elastic` | start the stack (with Elasticsearch) |
 | `make watch` | rebuild assets on change (polling) |
 | `make assets` / `assets-prod` | one-shot development / production build |
+| `make package` | production zip at `dist/tainacan.zip` (`tainacan/tainacan.php` at the archive root) |
 | `make down` / `reset` | stop / stop and delete data volumes |
 | `make restart`, `make logs`, `make ps` | lifecycle and observability |
 | `make shell` / `db-shell` | shells |
@@ -267,8 +268,10 @@ admin UI.
 3. `sh compile-sass.sh` when any `.scss` changed
 4. `npm run build` or `build-prod` when any `.js` / `.vue` changed
 
-It then rsyncs to a throwaway path (`/tmp/tainacan-dist`, set by `make config`),
-which is harmless here because WordPress reads the mounted source directly.
+It then rsyncs to `/tmp/tainacan-dist` (set by `make config`). `make assets` and
+`make assets-prod` discard that container, because WordPress reads the mounted
+source directly. `make package` zips that in-container tree to `dist/tainacan.zip`
+and runs `composer install` again so `src/vendor` keeps its development packages.
 
 The step gate is a checksum file, and `build.sh` writes it even when
 `composer install` fails, so a failed install silently disables the Composer step

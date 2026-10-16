@@ -90,6 +90,7 @@ Run `make` or `make help` for the list. The main ones:
 | `make reset` | Stop and delete the database and WordPress volumes |
 | `make watch` | Rebuild assets on change |
 | `make assets` / `make assets-prod` | One-shot asset builds |
+| `make package` | Production zip at `dist/tainacan.zip` for another WordPress site |
 | `make shell` / `make db-shell` | Shells into WordPress / MariaDB |
 | `make wp ARGS="plugin list"` | Run any wp-cli command |
 | `make logs` | Follow WordPress logs |

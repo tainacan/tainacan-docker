@@ -66,7 +66,11 @@ enqueue registration before blaming the build.
   because macOS file-sharing makes module I/O slow. Do not move it.
 - Watch mode polls; it is intentionally not inotify-based (see the
   dev-environment skill).
-- `make assets-prod` also strips `.js.map` and development-only PHP files.
+- `make assets-prod` also strips `.js.map` and development-only PHP files from the
+  throwaway `/tmp/tainacan-dist` inside the builder. That directory is not kept.
+- `make package` is the installable production zip (`dist/tainacan.zip`). The
+  tree stays inside the builder at `/tmp/tainacan-dist`; only the zip is written
+  to the host. Development Composer dependencies are restored afterwards.
 
 ## Debugging
 
