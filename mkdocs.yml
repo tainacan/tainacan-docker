@@ -39,10 +39,30 @@ nav:
       - Get started: tutorials/get-started.md
   - How-to guides:
       - Develop with live reload: how-to/develop-with-live-reload.md
+      - Try semantic search locally: how-to/try-semantic-search-locally.md
   - Reference:
       - Make targets: reference/make-targets.md
   - Explanation:
       - Architecture: explanation/architecture.md
+      - Abilities and RAG plan: explanation/abilities-and-rag.md
+  - Sprints:
+      - Roadmap: sprints/roadmap.md
+      - Sprint 01 Foundation and bridge: sprints/sprint-01-foundation-and-bridge.md
+      - Sprint 02 Tier 1 content: sprints/sprint-02-tier1-content.md
+      - Sprint 03 Tier 1 structure: sprints/sprint-03-tier1-structure.md
+      - Sprint 04 Media and ingest: sprints/sprint-04-media-and-ingest.md
+      - Sprint 05 Workflows: sprints/sprint-05-workflows.md
+      - Sprint 06 Phase 1 close: sprints/sprint-06-phase1-close.md
+      - Sprint 07 Environment gate: sprints/sprint-07-environment-gate.md
+      - Sprint 08 Vector spaces: sprints/sprint-08-vector-spaces.md
+      - Sprint 09 Embedding providers: sprints/sprint-09-embedding-providers.md
+      - Sprint 10 Indexing pipeline: sprints/sprint-10-indexing-pipeline.md
+      - Sprint 11 Resilience: sprints/sprint-11-resilience.md
+      - Sprint 12 Retrieval: sprints/sprint-12-retrieval.md
+      - Sprint 13 Admin console: sprints/sprint-13-admin-console.md
+      - Sprint 14 Hybrid and answers: sprints/sprint-14-hybrid-and-answers.md
+  - Progress:
+      - Activity log: progress/activity-log.md
 
 markdown_extensions:
   - admonition

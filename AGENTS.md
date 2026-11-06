@@ -370,6 +370,13 @@ documentation (`wp-documentor`), OpenAPI specs and class diagrams into
 `tainacan/docs/`. It needs the Composer dev dependencies
 (`composer install`), which `make assets` provides.
 
+Forward-looking design (not yet implemented): the WordPress Abilities API
+exposure of the REST surface, the MariaDB-vector semantic search layer, and the
+portable agent skills and playbooks are planned in
+`docs/explanation/abilities-and-rag.md`. That page also fixes the trust boundary:
+agents run outside WordPress, and the only server-side inference is single-shot
+assisted authoring that returns proposals and cannot write.
+
 External sources of truth for the plugin:
 
 - Official wiki: <https://wiki.tainacan.org/>
