@@ -19,7 +19,7 @@ you are about to touch a specific area, load the matching skill from
 | The environment | this repository | Docker Compose, Makefile, thin images |
 | The plugin | `tainacan/` (submodule) | the WordPress plugin you develop |
 | Design record | `.agents/memories/` | why the stack looks like this |
-| Agent skills | `.agents/skills/` | eight focused skills |
+| Agent skills | `.agents/skills/` | nine focused skills |
 | Agent memory | `.agents/memories/` | durable knowledge recorded across sessions |
 | Docs site | `docs/` + `mkdocs.yml` | Diátaxis documentation built with MkDocs Material |
 
@@ -497,6 +497,7 @@ project-documentation skill.
 | [`.agents/skills/tainacan-build-and-assets`](.agents/skills/tainacan-build-and-assets/SKILL.md) | npm, webpack, sass, composer, enqueueing |
 | [`.agents/skills/tainacan-testing`](.agents/skills/tainacan-testing/SKILL.md) | PHPUnit wiring, factories, REST tests |
 | [`.agents/skills/tainacan-elasticsearch`](.agents/skills/tainacan-elasticsearch/SKILL.md) | enabling, indexing, debugging faceted search |
+| [`.agents/skills/tainacan-extending-core`](.agents/skills/tainacan-extending-core/SKILL.md) | extending Tainacan from a separate plugin: repositories, hooks, admin form hooks, view modes, REST gotchas, anti-patterns |
 | [`.agents/skills/agent-memory`](.agents/skills/agent-memory/SKILL.md) | CoALA memory store in `.agents/memories/` |
 | [`.agents/skills/project-documentation`](.agents/skills/project-documentation/SKILL.md) | Diátaxis + MkDocs Material site in `docs/` |
 
