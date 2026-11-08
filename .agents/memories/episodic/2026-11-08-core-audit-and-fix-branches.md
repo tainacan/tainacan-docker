@@ -50,6 +50,24 @@ Pull requests against `tainacan/tainacan:develop` wait for Marcos' confirmation.
   repository, so JS/Vue/SCSS branches only carry sources; verify them after
   `make assets`.
 
+**Second round (same day).** Two feature branches were built on the findings:
+`feature/advanced-search-or-relation` (AND/OR selector in the advanced search,
+stacked on the facets fix because the OR path used to crash the facets) and
+`feature/dashboard-theme-support-notice` (`Tainacan\Theme_Support` detection +
+dismissible notice on the Tainacan dashboard, rendered through
+`tainacan-dashboard-before-cards` because `admin_notices` are removed on plugin
+screens). Agent knowledge went to this repository as
+`docs/memories-core-extension-pitfalls` (ten semantic memories) and the skills
+`tainacan-extending-core` and `tainacan-code-review`, one branch each.
+
+Decisions: a single global AND/OR control, no per-group relation (WP_Query ANDs
+meta_query and tax_query together); when a facet is applied on top of an OR
+search the store nests the OR group under the default AND level; reloading a
+URL with a nested group must not re-run the advanced search, or `(A OR B) AND C`
+becomes `A OR B OR C`. `tainacan-register-metadata-type` fires while
+`tainacan.php` is included, so extension plugins must hook it at top level and
+load before the core.
+
 **Side effects to remember.** `/code-review` forks may check out the reviewed
 branch in the main submodule checkout and leave scratch test files behind;
 after a review, verify `git -C tainacan rev-parse HEAD` and `git status`.
