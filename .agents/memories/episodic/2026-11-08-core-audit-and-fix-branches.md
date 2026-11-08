@@ -46,8 +46,9 @@ Pull requests against `tainacan/tainacan:develop` wait for Marcos' confirmation.
 - A facets `context=extended` value whose referenced entity is gone is kept
   without the extra data; dropping it would make `X-WP-Total` inconsistent.
 - Commits to the official plugin carry no AI attribution lines (project rule).
-- Built assets (`src/assets`) are committed upstream but were not rebuilt in
-  the JS branch; maintainers run `npm run build`.
+- Built assets (`src/assets/js`, `src/assets/css`) are gitignored in the plugin
+  repository, so JS/Vue/SCSS branches only carry sources; verify them after
+  `make assets`.
 
 **Side effects to remember.** `/code-review` forks may check out the reviewed
 branch in the main submodule checkout and leave scratch test files behind;
