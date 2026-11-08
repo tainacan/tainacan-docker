@@ -1,6 +1,6 @@
 # Agent skills
 
-Eight focused skills for working on Tainacan in this repository. Each is a
+Nine focused skills for working on Tainacan in this repository. Each is a
 directory with a `SKILL.md` that an agent loads on demand.
 
 They live under `.agents/skills/` (they previously lived in `skills/`).
@@ -13,6 +13,7 @@ They live under `.agents/skills/` (they previously lived in `skills/`).
 | [`tainacan-build-and-assets`](tainacan-build-and-assets/SKILL.md) | npm, webpack, sass, composer, asset output and enqueueing |
 | [`tainacan-testing`](tainacan-testing/SKILL.md) | Running or writing PHPUnit tests, factories, REST test cases |
 | [`tainacan-elasticsearch`](tainacan-elasticsearch/SKILL.md) | Enabling, indexing or debugging Elasticsearch and faceted search |
+| [`tainacan-code-review`](tainacan-code-review/SKILL.md) | Reviewing a core PR or an extension plugin: security, performance, API usage, compatibility, report format |
 | [`agent-memory`](agent-memory/SKILL.md) | Saving or recalling durable knowledge in `.agents/memories/` |
 | [`project-documentation`](project-documentation/SKILL.md) | Writing docs under `docs/` with Diátaxis, MkDocs and Material |
 
