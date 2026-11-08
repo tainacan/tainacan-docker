@@ -68,6 +68,16 @@ becomes `A OR B OR C`. `tainacan-register-metadata-type` fires while
 `tainacan.php` is included, so extension plugins must hook it at top level and
 load before the core.
 
+**Opened upstream (2026-11-08).** `tainacan/tainacan` issue -> PR, base `develop`:
+CSV encoding #1319 -> #1320; facets `relation` #1321 -> #1322; migrations #1323
+-> #1324; REST status codes #1325 -> #1326; admin JS #1327 -> #1328; PHP 8.4
+#1329 -> #1330; advanced search OR #1331 -> #1332 (stacked on #1322, review that
+first); dashboard theme notice #1333 -> #1334. `tainacan/tainacan-docker`: PRs
+#26-#29 (memories, ten semantic memories, two skills). The upstream repo has no
+`bug` label (its labels look like `[Module] API`), so issues were opened
+unlabelled; `gh pr comment` and `gh label list` were blocked by the session
+permission layer, `gh issue/pr create` worked after explicit authorization.
+
 **Side effects to remember.** `/code-review` forks may check out the reviewed
 branch in the main submodule checkout and leave scratch test files behind;
 after a review, verify `git -C tainacan rev-parse HEAD` and `git status`.
