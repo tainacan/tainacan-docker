@@ -274,7 +274,7 @@ The step gate is a checksum file, and `build.sh` writes it even when
 `composer install` fails, so a failed install silently disables the Composer step
 on the next run. `make vendor` closes that hole: `make assets`,
 `make assets-prod` and therefore `make setup` install the PHP dependencies
-whenever `tainacan/src/vendor/autoload.php` is missing. The builder image runs
+whenever `$TAINACAN_PLUGIN_PATH/src/vendor/autoload.php` is missing. The builder image runs
 PHP 8.3 (from the Sury repository, since bookworm ships 8.2) so Composer resolves
 against the same PHP version the `wordpress:php8.3-fpm` runtime serves.
 

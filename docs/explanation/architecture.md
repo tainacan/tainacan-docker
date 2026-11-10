@@ -79,7 +79,7 @@ The plugin's own `build.sh` gates `composer install` behind a checksum file and
 writes that file even when the install fails, which can leave `src/vendor`
 missing while the gate believes the step is done. `make vendor` is the
 environment's guard against that: it installs the dependencies whenever
-`tainacan/src/vendor/autoload.php` is absent.
+`$TAINACAN_PLUGIN_PATH/src/vendor/autoload.php` is absent (`tainacan/` by default).
 
 ## Why the watchers poll
 
