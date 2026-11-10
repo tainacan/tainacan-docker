@@ -25,6 +25,10 @@ DB_USER           ?= tainacan
 DB_PASSWORD       ?= tainacan
 DB_ROOT_PASSWORD  ?= tainacan
 
+# Plugin checkout the stack mounts: the submodule or an external clone/worktree.
+# Same default as docker-compose.yml; every recipe below works on this path.
+TAINACAN_PLUGIN_PATH ?= ./tainacan
+
 # Base URL the WordPress container uses to reach its own admin-ajax.php
 # (the background-process loopback). The public WP_SITE_URL
 # (http://localhost:8080) points at a host-published port and is not
@@ -53,10 +57,10 @@ submodules: ## Initialise and update the tainacan submodule
 	git submodule update --init --recursive
 
 config: env ## Generate the plugin build-config.cfg (gitignored upstream)
-	@printf 'wp_base_dir=/var/www/html\nwp_url=%s\nwp_plugin_dir=/tmp/tainacan-dist\n' "$(WP_SITE_URL)" > tainacan/build-config.cfg
+	@printf 'wp_base_dir=/var/www/html\nwp_url=%s\nwp_plugin_dir=/tmp/tainacan-dist\n' "$(WP_SITE_URL)" > "$(TAINACAN_PLUGIN_PATH)/build-config.cfg"
 
 vendor: config ## Install plugin PHP dependencies when src/vendor is missing
-	@if [ ! -f tainacan/src/vendor/autoload.php ]; then \
+	@if [ ! -f "$(TAINACAN_PLUGIN_PATH)/src/vendor/autoload.php" ]; then \
 		echo ">> Installing Composer dependencies (src/vendor is missing)"; \
 		$(WATCH) build builder; \
 		$(WATCH) run --rm --no-deps builder composer install; \
@@ -142,7 +146,7 @@ cron: env ## Run all due WP-Cron events once (the stack has no real cron daemon)
 	$(WP) cron event run --due-now
 
 test: config assets up ## Run the plugin PHPUnit suite in the builder image
-	@test -f tainacan/tests/bootstrap-config.php || cp tainacan/tests/bootstrap-config-sample.php tainacan/tests/bootstrap-config.php
+	@test -f "$(TAINACAN_PLUGIN_PATH)/tests/bootstrap-config.php" || cp "$(TAINACAN_PLUGIN_PATH)/tests/bootstrap-config-sample.php" "$(TAINACAN_PLUGIN_PATH)/tests/bootstrap-config.php"
 	$(WATCH) run --rm --no-deps \
 		-e WP_TESTS_DIR=/tmp/wp-tests/wordpress-tests-lib \
 		builder sh -lc './tests/bin/install-wp-tests.sh tainacan_test root "$(DB_ROOT_PASSWORD)" /tmp/wp-tests db:3306 latest && src/vendor/bin/phpunit'
@@ -150,8 +154,8 @@ test: config assets up ## Run the plugin PHPUnit suite in the builder image
 guard: ## Fail when WordPress core files appear inside the Tainacan checkout
 	@status=0; \
 	for artifact in wp-admin wp-includes wp-content wp-config.php wp-settings.php wp-login.php wp-cron.php xmlrpc.php uploads debug.log .htaccess index.php; do \
-		if [ -e "tainacan/$$artifact" ] && ! git -C tainacan ls-files --error-unmatch "$$artifact" >/dev/null 2>&1; then \
-			echo "GUARD: unexpected WordPress artifact: tainacan/$$artifact"; \
+		if [ -e "$(TAINACAN_PLUGIN_PATH)/$$artifact" ] && ! git -C "$(TAINACAN_PLUGIN_PATH)" ls-files --error-unmatch "$$artifact" >/dev/null 2>&1; then \
+			echo "GUARD: unexpected WordPress artifact: $(TAINACAN_PLUGIN_PATH)/$$artifact"; \
 			status=1; \
 		fi; \
 	done; \
