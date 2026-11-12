@@ -12,6 +12,8 @@ is not listed here will not be found by recall.
 | [mariadb-vector-index-created-but-unused](semantic/mariadb-vector-index-created-but-unused.md) | semantic | mariadb, vector, index, retrieval, query-plan | high | active |
 | [rag-fusion-is-by-rank-and-generation-needs-a-filter](semantic/rag-fusion-is-by-rank-and-generation-needs-a-filter.md) | semantic | rag, hybrid-search, ranking, answers, wordpress-ai | high | active |
 | [run-tainacan-phpunit](procedural/run-tainacan-phpunit.md) | procedural | testing, phpunit, make, builder | high | active |
+| [run-phpunit-against-a-worktree](procedural/run-phpunit-against-a-worktree.md) | procedural | testing, phpunit, worktree, builder | high | active |
+| [2026-11-08 core audit and fix branches](episodic/2026-11-08-core-audit-and-fix-branches.md) | episodic | core, audit, bugfix, pull-request, decision | high | active |
 | [2026-10-15 importer source-file retry fix](episodic/2026-10-15-importer-source-file-retry-fix.md) | episodic | importer, background-process, watchdog, bugfix | high | active |
 | [2026-11-03 heartbeat timezone watchdog fix](episodic/2026-11-03-bg-heartbeat-timezone-watchdog.md) | episodic | background-process, watchdog, timezone, utc, bugfix | high | active |
 | [2026-11-05 Sprint 12 retrieval](episodic/2026-11-05-sprint-12-retrieval.md) | episodic | sprint, retrieval, visibility, bugfix, vector | high | active |
