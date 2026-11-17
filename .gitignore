@@ -1,6 +1,10 @@
 # Local environment file
 .env
 
+# Plugin source is loaded from an external path (default ../tainacan), not
+# checked into this repository.
+tainacan/
+
 # Documentation build output, only produced by a host-side `mkdocs build`.
 # The Makefile builds inside the container and keeps nothing.
 site/

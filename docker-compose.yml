@@ -51,7 +51,7 @@ services:
       # Read-only: WordPress must never write into the Tainacan repository.
       # WP-CLI also runs in this container (`make wp`), as uid 33.
       - type: bind
-        source: ${TAINACAN_PLUGIN_PATH:-./tainacan}/src
+        source: ${TAINACAN_PLUGIN_PATH:-../tainacan}/src
         target: /var/www/html/wp-content/plugins/tainacan
         read_only: true
 
@@ -65,7 +65,7 @@ services:
     volumes:
       - wordpress_data:/var/www/html:ro
       - type: bind
-        source: ${TAINACAN_PLUGIN_PATH:-./tainacan}/src
+        source: ${TAINACAN_PLUGIN_PATH:-../tainacan}/src
         target: /var/www/html/wp-content/plugins/tainacan
         read_only: true
       - ./dockerfiles/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
@@ -86,7 +86,7 @@ services:
     working_dir: /repo
     volumes:
       - type: bind
-        source: ${TAINACAN_PLUGIN_PATH:-./tainacan}
+        source: ${TAINACAN_PLUGIN_PATH:-../tainacan}
         target: /repo
       # node_modules stays off the macOS bind mount for I/O speed.
       - tainacan_node_modules:/repo/node_modules

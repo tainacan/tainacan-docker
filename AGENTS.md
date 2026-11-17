@@ -3,8 +3,8 @@
 Guide for coding agents (and humans) working in this repository.
 
 This repository is a **local development environment** for the Tainacan WordPress
-plugin. It is not the plugin. The plugin is a git submodule that is mounted into
-a containerised WordPress at runtime.
+plugin. It is not the plugin. The plugin is an external checkout (default
+`../tainacan`) mounted into a containerised WordPress at runtime.
 
 If you only read one section, read [Rules](#2-rules-that-are-not-negotiable). If
 you are about to touch a specific area, load the matching skill from
@@ -17,15 +17,16 @@ you are about to touch a specific area, load the matching skill from
 | Thing | Where | Notes |
 |---|---|---|
 | The environment | this repository | Docker Compose, Makefile, thin images |
-| The plugin | `tainacan/` (submodule) | the WordPress plugin you develop |
+| The plugin | `../tainacan/` (external clone, configurable via `TAINACAN_PLUGIN_PATH`) | the WordPress plugin you develop |
 | Design record | `.agents/memories/` | why the stack looks like this |
 | Agent skills | `.agents/skills/` | eight focused skills |
 | Agent memory | `.agents/memories/` | durable knowledge recorded across sessions |
 | Docs site | `docs/` + `mkdocs.yml` | Diátaxis documentation built with MkDocs Material |
 
-The plugin that WordPress actually loads is `tainacan/src/`, **not** the plugin
-repository root. Everything outside `src/` in the plugin repo is the development
-workspace: build scripts, composer, npm, tests.
+The plugin that WordPress actually loads is `${TAINACAN_PLUGIN_PATH}/src/`
+(default `../tainacan/src/`), **not** the plugin repository root. Everything
+outside `src/` in the plugin repo is the development workspace: build scripts,
+composer, npm, tests.
 
 ---
 
@@ -33,7 +34,7 @@ workspace: build scripts, composer, npm, tests.
 
 1. **Never let WordPress files into a Tainacan checkout.** No `wp-admin/`,
    `wp-includes/`, `wp-content/`, `wp-config.php`, `wp-settings.php`,
-   `.htaccess`, `uploads/` or `debug.log` inside `tainacan/`. Run `make guard`
+   `.htaccess`, `uploads/` or `debug.log` inside the plugin directory. Run `make guard`
    before committing.
 2. **The plugin is mounted read-only** for the `wordpress` and `nginx`
    containers. Do not design features that write into the plugin
@@ -47,8 +48,9 @@ workspace: build scripts, composer, npm, tests.
 5. **Stay close to upstream images.** The only custom Dockerfiles are PHP limits
    over the official WordPress FPM image, an nginx vhost, and the builder
    toolchain. Do not reintroduce the removed custom `tainacan/php` images.
-6. **Commit inside the submodule.** Changes to plugin code belong to the plugin
-   repository, not to this one. When you change the stack, commit here.
+6. **Commit inside the plugin repository.** Changes to plugin code belong to the
+   plugin repository (`TAINACAN_PLUGIN_PATH`), not to this one. When you change
+   the stack, commit here.
 
 ---
 
@@ -61,7 +63,7 @@ Makefile                     every workflow target
 docker-compose.yml           core stack
 docker-compose.elastic.yml   Elasticsearch override
 .env.example                 documented defaults (copy to .env)
-.gitmodules                  pinned tainacan submodule
+.gitignore                   ignores tainacan/ if cloned locally by habit
 dockerfiles/wordpress/       PHP limits over wordpress:php8.3-fpm
 dockerfiles/nginx/           nginx vhost (static files + fastcgi)
 dockerfiles/builder/         node 22 + PHP 8.3 + composer + rsync + inotify-tools
@@ -70,7 +72,7 @@ dockerfiles/builder/         node 22 + PHP 8.3 + composer + rsync + inotify-tool
 .agents/memories/            durable agent memory
 docs/                        documentation site (Diátaxis, MkDocs Material)
 mkdocs.yml                   documentation site config
-tainacan/                    plugin submodule
+../tainacan/                 plugin repo (sibling; TAINACAN_PLUGIN_PATH)
 ```
 
 ---
@@ -94,8 +96,8 @@ Request flow: browser -> `nginx:80` -> static files from the shared volume, or
 
 | Host | Container | Mode | Services |
 |---|---|---|---|
-| `tainacan/src` | `/var/www/html/wp-content/plugins/tainacan` | read-only | wordpress, nginx |
-| `tainacan/` | `/repo` | read-write | builder |
+| `${TAINACAN_PLUGIN_PATH}/src` | `/var/www/html/wp-content/plugins/tainacan` | read-only | wordpress, nginx |
+| `${TAINACAN_PLUGIN_PATH}` | `/repo` | read-write | builder |
 | `dockerfiles/nginx/default.conf` | `/etc/nginx/conf.d/default.conf` | read-only | nginx |
 
 Named volumes: `db_data`, `wordpress_data`, `tainacan_node_modules`, `wp_tests`,
@@ -110,8 +112,8 @@ All defaults are documented in `.env.example`. Important ones:
 `WP_PORT`, `WP_SITE_URL`, `WP_TITLE`, `WP_ADMIN_*`, `DB_*`, `DB_PREFIX`,
 `TAINACAN_PLUGIN_PATH`, `TAINACAN_BG_LOOPBACK_URL`, `ES_PORT`.
 
-`TAINACAN_PLUGIN_PATH` accepts `./tainacan` (submodule) or an absolute path to an
-external clone. Pass the repository root; the stack appends `/src` itself.
+`TAINACAN_PLUGIN_PATH` defaults to `../tainacan` (a sibling folder). Pass the
+repository root; the stack appends `/src` itself.
 
 `TAINACAN_BG_LOOPBACK_URL` (default `http://nginx`) is the internally reachable
 base URL the WordPress container uses to trigger Tainacan background processes.
@@ -125,8 +127,7 @@ bulk edit stays in `waiting`. See section 13 and 4.4.
 |---|---|
 | `make help` | list targets (default goal) |
 | `make env` | create `.env` from `.env.example` if missing |
-| `make submodules` | `git submodule update --init --recursive` |
-| `make config` | write gitignored `build-config.cfg` for both submodules |
+| `make config` | write gitignored `build-config.cfg` for the plugin |
 | `make vendor` | install plugin PHP dependencies when `src/vendor` is missing |
 | `make setup` | first run: assets, stack, WordPress install, core update, hardening |
 | `make up` / `up-elastic` | start the stack (with Elasticsearch) |
@@ -162,7 +163,8 @@ Both use `/var/www/html` as the WordPress root, and both need `make up` running.
 ## 5. Lifecycle
 
 ```sh
-git clone --recurse-submodules <repo> && cd tainacan-docker
+git clone https://github.com/tainacan/tainacan.git ../tainacan
+git clone <repo> && cd tainacan-docker
 make setup          # slow first time: npm ci + composer install
 # edit PHP -> refresh browser
 make watch          # in a second terminal, for JS/CSS/SCSS
@@ -179,7 +181,7 @@ sets pretty permalinks and applies hardening constants via `wp config set`.
 
 ### 6.1 The autoloader contract
 
-`tainacan/src/classes/tainacan-creator.php` registers a **non-PSR-4** autoloader.
+`src/classes/tainacan-creator.php` (in the plugin repo) registers a **non-PSR-4** autoloader.
 For `Tainacan\Some_Class` it looks for a file literally named
 `class-tainacan-some-class.php` inside the directories listed in `DIRS`.
 
@@ -236,7 +238,7 @@ Repositories are the data access layer and the entity factory. Always
 
 ### 6.5 Migrations
 
-Schema changes go through `tainacan/src/migrations.php`, which runs on `init`.
+Schema changes go through `src/migrations.php` (in the plugin repo), which runs on `init`.
 Do not add ad-hoc `dbDelta` calls elsewhere; existing installs must upgrade
 cleanly.
 
@@ -260,7 +262,7 @@ admin UI.
 
 ### 7.2 Order and gating
 
-`tainacan/build.sh` runs, gated by md5 checksums so unchanged steps are skipped:
+The plugin's `build.sh` runs, gated by md5 checksums so unchanged steps are skipped:
 
 1. `npm ci` when `package.json` / lock file changed
 2. `composer install` when `composer.json` changed (`--no-dev` with `--prod`)
@@ -274,7 +276,7 @@ The step gate is a checksum file, and `build.sh` writes it even when
 `composer install` fails, so a failed install silently disables the Composer step
 on the next run. `make vendor` closes that hole: `make assets`,
 `make assets-prod` and therefore `make setup` install the PHP dependencies
-whenever `tainacan/src/vendor/autoload.php` is missing. The builder image runs
+whenever `${TAINACAN_PLUGIN_PATH}/src/vendor/autoload.php` is missing. The builder image runs
 PHP 8.3 (from the Sury repository, since bookworm ships 8.2) so Composer resolves
 against the same PHP version the `wordpress:php8.3-fpm` runtime serves.
 
@@ -302,7 +304,7 @@ file sharing makes module I/O slow. Keep it that way.
 
 ### 8.1 Wiring
 
-- `tainacan/phpunit.xml.dist`: bootstrap `tests/bootstrap.php`, one testsuite
+- `phpunit.xml.dist` (in the plugin repo): bootstrap `tests/bootstrap.php`, one testsuite
   collecting `./tests/` with prefix `test-` and suffix `.php`.
 - `tests/bootstrap.php` requires `tests/bootstrap-config.php` (gitignored),
   resolves `WP_TESTS_DIR` from the environment (falling back to the config),
@@ -363,11 +365,11 @@ Full coverage map and pitfalls: the `tainacan-testing` skill.
 | `.agents/skills/` | agents, on demand | one skill per area; keep trigger words specific |
 | `.agents/memories/` | agents, across sessions | durable knowledge; follow the agent-memory skill |
 | `docs/` + `mkdocs.yml` | users and maintainers | Diátaxis site built with MkDocs Material; `make docs-build` |
-| `tainacan/docs/` + `tainacan/generate_docs.sh` | plugin developers | generated API/hook/OpenAPI docs; run inside the plugin repo |
+| `${TAINACAN_PLUGIN_PATH}/docs/` + `generate_docs.sh` | plugin developers | generated API/hook/OpenAPI docs; run inside the plugin repo |
 
 `generate_docs.sh` (in the plugin repo) generates phpDocumentor output, hook
-documentation (`wp-documentor`), OpenAPI specs and class diagrams into
-`tainacan/docs/`. It needs the Composer dev dependencies
+documentation (`wp-documentor`), OpenAPI specs and class diagrams into the
+plugin's `docs/` directory. It needs the Composer dev dependencies
 (`composer install`), which `make assets` provides.
 
 Forward-looking design (not yet implemented): the WordPress Abilities API
@@ -437,7 +439,7 @@ singleton trait if needed, and register any hooks from `tainacan-creator.php`.
 **Add a webpack entry.** Add the entry to `webpack.common.js`, then add the
 matching `wp_enqueue_script` with `TAINACAN_VERSION`, then `make assets`.
 
-**Add a Sass entry.** Add the compile line to `tainacan/compile-sass.sh` and the
+**Add a Sass entry.** Add the compile line to the plugin's `compile-sass.sh` and the
 matching enqueue, then `make assets`.
 
 **Add a test.** Add `tests/test-<area>.php` (see section 8), extend the right base
@@ -447,8 +449,8 @@ case, run `make test`.
 `docker compose config` to validate, `make down && make up`, then update
 `README.md` and `AGENTS.md`.
 
-**Point at an external clone.** Set `TAINACAN_PLUGIN_PATH` in `.env` to an
-absolute path and `make up`.
+**Point at a different clone.** Set `TAINACAN_PLUGIN_PATH` in `.env` to a
+different path and `make up`.
 
 **Refresh assets after a pull.** `make assets`. If `package-lock.json` changed it
 runs `npm ci`; if `composer.json` changed it runs `composer install`.
@@ -481,7 +483,7 @@ project-documentation skill.
 | `make test` -> `svn: command not found` / `mysqli_report() undefined` / `Unknown database 'tainacan_test'` | the builder image is missing `subversion`, `php8.3-mysqli` or the MySQL client; rebuild it (`docker compose --profile watch build builder`) and remove a half-built test library (`docker volume rm tainacan-docker_wp_tests`) |
 | ES container exits | `vm.max_map_count` too low (see the elasticsearch skill) |
 | `WordPress X.Y.Z is available! Please update now` | the `wordpress_data` volume is behind the image; re-run `make setup` (it runs `wp core update`), or `make wp ARGS="core update"` |
-| `Operation not permitted` under `wp-content` | the host source dir was deleted and recreated (for example after restoring a submodule), leaving a stale bind mount: `docker compose up -d --force-recreate wordpress nginx` |
+| `Operation not permitted` under `wp-content` | the host source dir was deleted and recreated, leaving a stale bind mount: `docker compose up -d --force-recreate wordpress nginx` |
 | Background process stuck in `waiting` (import, export, bulk edit) | the loopback dispatch cannot reach `WP_SITE_URL` (`http://localhost:8080`) from inside the container; run `make bg-loopback` (sets `TAINACAN_BG_PROCESS_LOOPBACK_URL=http://nginx`) |
 | WP-Cron events never run (`next_run_relative` stays `now`) | there is no cron daemon and the `wp-cron.php` loopback is unreachable; run `make cron` (`wp cron event run --due-now`) |
 

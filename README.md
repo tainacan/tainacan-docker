@@ -20,12 +20,14 @@ permalinks.
 
 - Docker Desktop (or Docker Engine + Compose v2)
 - `make`
-- Git, for the submodule
+- A local clone of the [Tainacan plugin](https://github.com/tainacan/tainacan)
+  as a sibling directory (or anywhere you like)
 
 ## Quick start
 
 ```sh
-git clone --recurse-submodules <this-repo>
+git clone https://github.com/tainacan/tainacan.git ../tainacan
+git clone <this-repo>
 cd tainacan-docker
 make setup
 ```
@@ -40,15 +42,14 @@ Then open <http://localhost:8080> and sign in with the credentials from `.env`
 
 ## Where the source comes from
 
-The plugin lives in `tainacan/src/` — that is the directory the upstream build
-script publishes, and the one mounted into WordPress:
+The plugin source is a separate git repository, expected by default as a sibling
+folder `../tainacan`:
 
 | WordPress path | Host source |
 |---|---|
 | `wp-content/plugins/tainacan` | `${TAINACAN_PLUGIN_PATH}/src` |
 
-It defaults to the checked-out submodule. To point at an external clone instead,
-change the path in `.env` — no compose edits:
+To point at a different location, set `TAINACAN_PLUGIN_PATH` in `.env`:
 
 ```sh
 TAINACAN_PLUGIN_PATH=/Users/you/projects/tainacan
@@ -64,7 +65,7 @@ make up        # start db + WordPress (detached)
 make watch     # second terminal: rebuild assets on change
 ```
 
-- Edit a PHP file under `tainacan/src/` and refresh the browser.
+- Edit a PHP file under `../tainacan/src/` (or wherever your clone lives) and refresh the browser.
 - Edit a `.js`, `.vue` or `.scss` file and the watcher rebuilds automatically.
 
 If you prefer building on demand instead of watching:
@@ -149,8 +150,9 @@ usually already satisfies it).
   `docker compose up -d --force-recreate nginx`.
 - **Plugin activates but the admin is blank.** The front-end assets are missing
   because Composer or npm did not run. Run `make assets`.
-- **`make guard` fails.** A WordPress artifact exists inside `tainacan/`. Delete
-  it and find out how it got there; the read-only mount should have prevented it.
+- **`make guard` fails.** A WordPress artifact exists inside the plugin
+  checkout. Delete it and find out how it got there; the read-only mount should
+  have prevented it.
 - **A Tainacan import, export or bulk edit stays in `waiting`.** Background
   processes dispatch themselves with a loopback HTTP request to the site, and
   `WP_SITE_URL` (`http://localhost:8080`) points at a host port the container
@@ -163,11 +165,11 @@ usually already satisfies it).
   with `make assets`.
 - **Elasticsearch container exits.** Check `vm.max_map_count` (see above).
 - **`make test` cannot find the WordPress test library.** The suite installs it
-  into `/tmp` inside the builder. Make sure the `tainacan` submodule is
-  populated and run `make assets` first.
+  into `/tmp` inside the builder. Make sure `TAINACAN_PLUGIN_PATH` points at
+  a populated clone and run `make assets` first.
 - **`Operation not permitted` when listing the plugin inside a container.** The
-  host source directory was deleted and recreated, for example after restoring
-  the submodule, so the container holds a stale bind mount.
+  host source directory was deleted and recreated, so the container holds a
+  stale bind mount.
   Recreate the web tier: `docker compose up -d --force-recreate wordpress nginx`.
 
 ## Documentation
@@ -192,7 +194,7 @@ docker-compose.elastic.yml   Elasticsearch override
 dockerfiles/wordpress/       PHP limits over the official php-fpm image
 dockerfiles/nginx/           nginx vhost (static files + fastcgi to php-fpm)
 dockerfiles/builder/         node 22 + PHP 8.3 + composer + rsync build image
-tainacan/                    plugin submodule (source, dev)
+../tainacan/                 plugin repo (sibling; set TAINACAN_PLUGIN_PATH to change)
 .agents/skills/              skills for coding agents
 .agents/memories/            durable memory recorded across sessions
 docs/ + mkdocs.yml           documentation site (Diátaxis, MkDocs Material)
