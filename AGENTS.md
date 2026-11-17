@@ -19,7 +19,8 @@ you are about to touch a specific area, load the matching skill from
 | The environment | this repository | Docker Compose, Makefile, thin images |
 | The plugin | `../tainacan/` (external clone, configurable via `TAINACAN_PLUGIN_PATH`) | the WordPress plugin you develop |
 | Design record | `.agents/memories/` | why the stack looks like this |
-| Agent skills | `.agents/skills/` | eight focused skills |
+| Tainacan skills | [`tainacan-skills`](https://github.com/tainacan/tainacan-skills) (sibling repo) | 10 plugin development skills |
+| Local skills | `.agents/skills/` | agent memory and project documentation (this repo only) |
 | Agent memory | `.agents/memories/` | durable knowledge recorded across sessions |
 | Docs site | `docs/` + `mkdocs.yml` | Diátaxis documentation built with MkDocs Material |
 
@@ -68,11 +69,12 @@ dockerfiles/wordpress/       PHP limits over wordpress:php8.3-fpm
 dockerfiles/nginx/           nginx vhost (static files + fastcgi)
 dockerfiles/builder/         node 22 + PHP 8.3 + composer + rsync + inotify-tools
                              (+ svn, php8.3-mysqli, mysql client for make test)
-.agents/skills/              skills for agents
+.agents/skills/              local skills (agent memory, project docs)
 .agents/memories/            durable agent memory
 docs/                        documentation site (Diátaxis, MkDocs Material)
 mkdocs.yml                   documentation site config
 ../tainacan/                 plugin repo (sibling; TAINACAN_PLUGIN_PATH)
+../tainacan-skills/          plugin development skills (sibling repo)
 ```
 
 ---
@@ -491,14 +493,27 @@ project-documentation skill.
 
 ## 14. Skills index
 
+### Tainacan plugin skills (in [`tainacan-skills`](https://github.com/tainacan/tainacan-skills))
+
+Clone as a sibling: `git clone https://github.com/tainacan/tainacan-skills.git ../tainacan-skills`
+
 | Skill | Scope |
 |---|---|
-| [`.agents/skills/tainacan-dev-environment`](.agents/skills/tainacan-dev-environment/SKILL.md) | stack, mounts, make targets, guard rails, troubleshooting |
-| [`.agents/skills/tainacan-plugin-architecture`](.agents/skills/tainacan-plugin-architecture/SKILL.md) | autoloader, namespaces, repositories and entities, domain model |
-| [`.agents/skills/tainacan-rest-api`](.agents/skills/tainacan-rest-api/SKILL.md) | endpoints, permissions, exposers, OAI-PMH, calling the API |
-| [`.agents/skills/tainacan-build-and-assets`](.agents/skills/tainacan-build-and-assets/SKILL.md) | npm, webpack, sass, composer, enqueueing |
-| [`.agents/skills/tainacan-testing`](.agents/skills/tainacan-testing/SKILL.md) | PHPUnit wiring, factories, REST tests |
-| [`.agents/skills/tainacan-elasticsearch`](.agents/skills/tainacan-elasticsearch/SKILL.md) | enabling, indexing, debugging faceted search |
+| [`plugin-architecture`](../tainacan-skills/skills/plugin-architecture/SKILL.md) | autoloader, namespaces, entities, repositories, singleton pattern |
+| [`data-model`](../tainacan-skills/skills/data-model/SKILL.md) | collections, items, metadata, taxonomies, filters, item metadata |
+| [`rest-api`](../tainacan-skills/skills/rest-api/SKILL.md) | endpoints, permissions, exposers, mappers, OAI-PMH |
+| [`vue-admin`](../tainacan-skills/skills/vue-admin/SKILL.md) | Vue 3 admin SPA, metadata type components, filter type components, Gutenberg blocks |
+| [`build-pipeline`](../tainacan-skills/skills/build-pipeline/SKILL.md) | npm, webpack, sass, composer, asset enqueueing |
+| [`testing`](../tainacan-skills/skills/testing/SKILL.md) | PHPUnit wiring, factories, REST tests |
+| [`background-processes`](../tainacan-skills/skills/background-processes/SKILL.md) | importers, exporters, bulk edit, heartbeat, cron |
+| [`elasticsearch`](../tainacan-skills/skills/elasticsearch/SKILL.md) | ElasticPress integration, indexing, faceted search |
+| [`hooks-and-extensions`](../tainacan-skills/skills/hooks-and-extensions/SKILL.md) | WordPress hooks, capabilities, roles, extension points |
+| [`dev-environment`](../tainacan-skills/skills/dev-environment/SKILL.md) | Docker stack setup, services, mounts, troubleshooting |
+
+### Local skills (in this repository)
+
+| Skill | Scope |
+|---|---|
 | [`.agents/skills/agent-memory`](.agents/skills/agent-memory/SKILL.md) | CoALA memory store in `.agents/memories/` |
 | [`.agents/skills/project-documentation`](.agents/skills/project-documentation/SKILL.md) | Diátaxis + MkDocs Material site in `docs/` |
 
