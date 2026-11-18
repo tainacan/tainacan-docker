@@ -497,18 +497,49 @@ project-documentation skill.
 
 Clone as a sibling: `git clone https://github.com/tainacan/tainacan-skills.git ../tainacan-skills`
 
+**Core — how the plugin works:**
+
 | Skill | Scope |
 |---|---|
 | [`plugin-architecture`](../tainacan-skills/skills/plugin-architecture/SKILL.md) | autoloader, namespaces, entities, repositories, singleton pattern |
 | [`data-model`](../tainacan-skills/skills/data-model/SKILL.md) | collections, items, metadata, taxonomies, filters, item metadata |
-| [`rest-api`](../tainacan-skills/skills/rest-api/SKILL.md) | endpoints, permissions, exposers, mappers, OAI-PMH |
-| [`vue-admin`](../tainacan-skills/skills/vue-admin/SKILL.md) | Vue 3 admin SPA, metadata type components, filter type components, Gutenberg blocks |
+| [`rest-api`](../tainacan-skills/skills/rest-api/SKILL.md) | endpoints, permissions, consuming the API, exposers, mappers, OAI-PMH |
+| [`hooks-and-extensions`](../tainacan-skills/skills/hooks-and-extensions/SKILL.md) | WordPress hooks, extension points, capabilities, roles |
+
+**Workflow — how to develop:**
+
+| Skill | Scope |
+|---|---|
 | [`build-pipeline`](../tainacan-skills/skills/build-pipeline/SKILL.md) | npm, webpack, sass, composer, asset enqueueing |
+| [`vue-admin`](../tainacan-skills/skills/vue-admin/SKILL.md) | Vue 3 admin SPA, metadata/filter type components, Gutenberg blocks |
+| [`ui-admin`](../tainacan-skills/skills/ui-admin/SKILL.md) | plugin UI in Tainacan admin: Pages API, form hooks, drawer, REST writes |
 | [`testing`](../tainacan-skills/skills/testing/SKILL.md) | PHPUnit wiring, factories, REST tests |
+| [`dev-environment`](../tainacan-skills/skills/dev-environment/SKILL.md) | Docker stack setup, services, mounts, troubleshooting |
+| [`guardrails`](../tainacan-skills/skills/guardrails/SKILL.md) | safe code change workflow: understand, plan, implement, verify |
+| [`validation`](../tainacan-skills/skills/validation/SKILL.md) | pre-commit/delivery checks: lint, phpcs, tests, Plugin Check |
+| [`code-review`](../tainacan-skills/skills/code-review/SKILL.md) | technical review by role: security, performance, correctness |
+| [`diagnostics`](../tainacan-skills/skills/diagnostics/SKILL.md) | bug investigation: reproduce, isolate, fix and prove |
+| [`lessons-learned`](../tainacan-skills/skills/lessons-learned/SKILL.md) | capturing reusable knowledge as rules, references or project notes |
+
+**Integrations — optional features:**
+
+| Skill | Scope |
+|---|---|
 | [`background-processes`](../tainacan-skills/skills/background-processes/SKILL.md) | importers, exporters, bulk edit, heartbeat, cron |
 | [`elasticsearch`](../tainacan-skills/skills/elasticsearch/SKILL.md) | ElasticPress integration, indexing, faceted search |
-| [`hooks-and-extensions`](../tainacan-skills/skills/hooks-and-extensions/SKILL.md) | WordPress hooks, capabilities, roles, extension points |
-| [`dev-environment`](../tainacan-skills/skills/dev-environment/SKILL.md) | Docker stack setup, services, mounts, troubleshooting |
+| [`performance`](../tainacan-skills/skills/performance/SKILL.md) | large-collection bottlenecks, measurement, safe optimisation |
+| [`plugin-coexistence`](../tainacan-skills/skills/plugin-coexistence/SKILL.md) | multi-plugin compatibility: collisions, naming, hooks, CSS/JS |
+
+**Ecosystem — publishing and extending:**
+
+| Skill | Scope |
+|---|---|
+| [`plugin-scaffold`](../tainacan-skills/skills/plugin-scaffold/SKILL.md) | creating new Tainacan extension plugins from scratch |
+| [`theme-development`](../tainacan-skills/skills/theme-development/SKILL.md) | WordPress themes for Tainacan: templates, view modes, Customizer |
+| [`collection-migration`](../tainacan-skills/skills/collection-migration/SKILL.md) | migrating collections from legacy systems: CSV, reconciliation |
+| [`release`](../tainacan-skills/skills/release/SKILL.md) | version publishing: checklist, semver, build, ZIP, tag, git-flow |
+| [`wordpress-org`](../tainacan-skills/skills/wordpress-org/SKILL.md) | Plugin Check compliance, directory review, readme |
+| [`core-contribution`](../tainacan-skills/skills/core-contribution/SKILL.md) | contributing to tainacan/tainacan: GitFlow, tests, PR template |
 
 ### Local skills (in this repository)
 
